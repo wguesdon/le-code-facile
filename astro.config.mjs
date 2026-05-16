@@ -9,7 +9,24 @@ export default defineConfig({
     starlight({
       title: 'Le Code Facile',
       description: 'La programmation à la portée de tous.',
+      favicon: '/favicon.svg',
       defaultLocale: 'fr',
+      head: [
+        {
+          tag: 'meta',
+          attrs: {
+            name: 'robots',
+            content: 'noindex, nofollow, noarchive, nosnippet, noimageindex',
+          },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            name: 'googlebot',
+            content: 'noindex, nofollow, noarchive, nosnippet, noimageindex',
+          },
+        },
+      ],
       locales: {
         root: { label: 'Français', lang: 'fr' },
       },
