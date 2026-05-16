@@ -1,0 +1,118 @@
+---
+title: break, continue et else
+description: Sortir d'une boucle, sauter un tour, ou exécuter du code à la fin.
+---
+
+Python offre trois outils pour contrôler le déroulement d'une boucle.
+
+## Le concept
+
+- `break` sort immédiatement de la boucle.
+- `continue` saute le reste du tour actuel et passe au suivant.
+- `else` après une boucle s'exécute si la boucle s'est terminée sans `break`.
+
+Ces trois mots clés rendent le code plus souple. On peut arrêter une recherche, ignorer certains éléments, ou réagir à la fin d'une boucle.
+
+## Exemple
+
+Voici `break`. Vous cherchez un ami dans une liste d'invités. Dès que vous le trouvez, vous arrêtez de chercher.
+
+```python
+invites = ["Léa", "Marc", "Sofia", "Karim", "Nina"]
+
+for nom in invites:
+    if nom == "Sofia":
+        print("Sofia est là !")
+        break
+    print("Pas encore...", nom)
+
+# Sortie:
+# Pas encore... Léa
+# Pas encore... Marc
+# Sofia est là !
+```
+
+Voici `continue`. Vous voulez afficher uniquement les nombres pairs entre 1 et 6.
+
+```python
+for i in range(1, 7):
+    if i % 2 != 0:
+        continue
+    print(i)
+
+# Sortie:
+# 2
+# 4
+# 6
+```
+
+Quand le nombre est impair, `continue` saute la suite et passe au tour suivant. Le `print` n'est exécuté que pour les nombres pairs.
+
+## En pratique
+
+Le `else` sur une boucle est moins connu. Il s'exécute uniquement si la boucle se termine normalement, sans `break`.
+
+Exemple. Vous cherchez un produit en promotion dans un rayon.
+
+```python
+produits = ["pain", "lait", "oeufs", "fromage"]
+cherche = "chocolat"
+
+for produit in produits:
+    if produit == cherche:
+        print("Trouvé !")
+        break
+else:
+    print("Produit non trouvé.")
+
+# Sortie: Produit non trouvé.
+```
+
+La boucle a parcouru toute la liste sans trouver « chocolat ». Comme il n'y a pas eu de `break`, le bloc `else` s'exécute.
+
+Si on cherche « lait », le résultat est différent.
+
+```python
+produits = ["pain", "lait", "oeufs", "fromage"]
+cherche = "lait"
+
+for produit in produits:
+    if produit == cherche:
+        print("Trouvé !")
+        break
+else:
+    print("Produit non trouvé.")
+
+# Sortie: Trouvé !
+```
+
+Le `else` fonctionne aussi avec `while`.
+
+```python
+essais = 0
+
+while essais < 3:
+    reponse = input("Mot de passe : ")
+    if reponse == "soleil":
+        print("Accès accordé.")
+        break
+    essais = essais + 1
+else:
+    print("Trop d'essais. Compte bloqué.")
+```
+
+Si l'utilisateur trouve le mot de passe en 3 essais ou moins, le `break` interrompt la boucle. Le `else` n'est pas exécuté. Sinon, le compte est bloqué.
+
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="tip">
+Le `else` sur une boucle est utile pour réagir à une recherche infructueuse. Sans `break`, le code dans `else` s'exécute toujours à la fin.
+</Aside>
+
+## À retenir
+
+- `break` sort immédiatement de la boucle.
+- `continue` saute la fin du tour et passe au suivant.
+- `else` sur une boucle s'exécute si aucun `break` n'a eu lieu.
+- Ces outils s'utilisent dans les boucles `for` et `while`.
+- Utilisez `break` pour arrêter une recherche dès que possible.

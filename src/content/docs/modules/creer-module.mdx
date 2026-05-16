@@ -1,0 +1,102 @@
+---
+title: Créer son propre module
+description: Réutiliser ses fonctions dans plusieurs scripts.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Vous pouvez fabriquer vos propres modules. C'est plus simple qu'il n'y paraît.
+
+## Le concept
+
+En Python, tout fichier `.py` est déjà un module. Si vous écrivez des fonctions dans `outils.py`, vous pouvez les importer depuis un autre fichier, exactement comme vous importez `math`.
+
+Cela permet de ranger votre code. Les fonctions utiles vont dans un fichier à part, et les scripts principaux les utilisent au besoin.
+
+## Exemple
+
+Créez un dossier pour ce mini projet. À l'intérieur, créez deux fichiers : `outils.py` et `programme.py`.
+
+Le fichier `outils.py` contient une fonction.
+
+```python
+# outils.py
+
+def saluer(prenom):
+    return f"Bonjour {prenom} !"
+```
+
+Le fichier `programme.py` utilise cette fonction.
+
+```python
+# programme.py
+
+from outils import saluer
+
+message = saluer("Alice")
+print(message)
+```
+
+Lancez `programme.py` depuis VSCode ou l'Anaconda Prompt.
+
+Sortie attendue :
+
+```
+Bonjour Alice !
+```
+
+<Aside type="note" title="Même dossier">
+Pour que l'import fonctionne sans configuration, les deux fichiers doivent être dans le même dossier. C'est largement suffisant pour vos premiers projets.
+</Aside>
+
+## En pratique
+
+Quand vous lancez un fichier Python, vous pouvez vouloir distinguer deux cas. Soit le fichier est exécuté directement, soit il est importé par un autre fichier. Pour cela, Python propose une astuce.
+
+```python
+# outils.py
+
+def saluer(prenom):
+    return f"Bonjour {prenom} !"
+
+if __name__ == "__main__":
+    print(saluer("Test"))
+```
+
+La ligne `if __name__ == "__main__":` se lit ainsi : "si ce fichier est lancé directement, exécute ce qui suit". Quand un autre fichier importe `outils`, ce bloc n'est pas exécuté.
+
+Cela permet de tester rapidement le contenu d'un module sans gêner les autres fichiers qui l'importent.
+
+```python
+# programme.py
+
+from outils import saluer
+
+print(saluer("Bob"))
+```
+
+Si vous lancez `programme.py`, vous voyez :
+
+```
+Bonjour Bob !
+```
+
+Si vous lancez `outils.py` tout seul, vous voyez :
+
+```
+Bonjour Test !
+```
+
+Dans les deux cas, la fonction `saluer` reste disponible et utilisable.
+
+<Aside type="tip" title="Donnez de bons noms">
+Choisissez des noms de fichiers courts et clairs : `outils.py`, `donnees.py`, `affichage.py`. Évitez les noms qui existent déjà dans Python, comme `math.py` ou `random.py`. Cela créerait des conflits avec les modules standards.
+</Aside>
+
+## À retenir
+
+- Un fichier `.py` est déjà un module.
+- Mettez vos fonctions dans un fichier comme `outils.py`.
+- Importez les avec `from outils import saluer` depuis un fichier du même dossier.
+- `if __name__ == "__main__":` permet de tester le module quand on le lance directement.
+- Évitez les noms qui chevauchent les modules standards.

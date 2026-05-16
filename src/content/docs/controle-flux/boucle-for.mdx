@@ -1,0 +1,117 @@
+---
+title: Boucle for
+description: Répéter une action pour chaque élément d'une collection.
+---
+
+Parfois, on veut faire la même chose plusieurs fois. La boucle `for` est faite pour cela.
+
+## Le concept
+
+Une boucle `for` parcourt chaque élément d'une collection. À chaque tour, elle prend un élément et exécute le code à l'intérieur.
+
+La structure est simple.
+
+```python
+for element in collection:
+    # code à répéter
+    print(element)
+```
+
+Le mot `element` est une variable. Vous pouvez lui donner le nom que vous voulez. Le mot `in` veut dire « dans ».
+
+## Exemple
+
+Voici une liste de prénoms. On va dire bonjour à chacun.
+
+```python
+prenoms = ["Alice", "Boubacar", "Chloé"]
+
+for prenom in prenoms:
+    print("Bonjour", prenom)
+
+# Sortie:
+# Bonjour Alice
+# Bonjour Boubacar
+# Bonjour Chloé
+```
+
+On peut aussi parcourir les lettres d'un mot.
+
+```python
+mot = "chat"
+
+for lettre in mot:
+    print(lettre)
+
+# Sortie:
+# c
+# h
+# a
+# t
+```
+
+## En pratique
+
+La fonction `range()` génère une séquence de nombres. Elle est très utile pour répéter une action un certain nombre de fois.
+
+```python
+for i in range(5):
+    print(i)
+
+# Sortie:
+# 0
+# 1
+# 2
+# 3
+# 4
+```
+
+`range(5)` donne les nombres de 0 à 4. La fin n'est pas incluse.
+
+On peut choisir le départ et l'arrivée.
+
+```python
+for i in range(1, 11):
+    print(i)
+
+# Sortie: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+```
+
+On peut aussi choisir le pas.
+
+```python
+for i in range(0, 10, 2):
+    print(i)
+
+# Sortie: 0, 2, 4, 6, 8
+```
+
+Voici un exemple concret. Vous voulez calculer le total de votre liste de courses.
+
+```python
+prix = [2.5, 1.8, 3.2, 0.95]
+total = 0
+
+for p in prix:
+    total = total + p
+
+print("Total :", total, "euros")
+
+# Sortie: Total : 8.45 euros
+```
+
+À chaque tour, on ajoute le prix courant au total. À la fin, on connaît la somme totale.
+
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="note">
+Dans `range(début, fin)`, la valeur de fin n'est jamais incluse. Pour aller jusqu'à 10, écrivez `range(1, 11)`.
+</Aside>
+
+## À retenir
+
+- `for element in collection:` parcourt chaque élément.
+- `range(n)` produit les nombres de 0 à n moins 1.
+- `range(début, fin, pas)` permet de personnaliser la séquence.
+- La boucle `for` est idéale quand on connaît la collection à parcourir.
+- Le code à l'intérieur doit être indenté de 4 espaces.

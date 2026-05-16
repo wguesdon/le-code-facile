@@ -1,0 +1,136 @@
+---
+title: Portée des variables
+description: Comprendre où une variable existe.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Toutes les variables ne vivent pas au même endroit. Comprendre où une variable existe vous évitera bien des surprises.
+
+## Le concept
+
+Imaginez une cuisine commune dans un immeuble. À l'intérieur de votre appartement, vous avez vos propres ustensiles. Dans la cuisine commune, il y a des ustensiles partagés par tout l'immeuble.
+
+Les variables d'un programme suivent une logique similaire.
+
+Une variable créée **à l'intérieur** d'une fonction est dite **locale**. Elle n'existe que pendant l'exécution de la fonction. Une fois la fonction terminée, la variable disparaît. Personne d'autre n'y a accès.
+
+Une variable créée **à l'extérieur** de toute fonction est dite **globale**. Elle existe pour tout le programme. Toutes les fonctions peuvent la lire.
+
+Cette séparation s'appelle la **portée** d'une variable. En anglais on dit *scope*. C'est la zone du programme dans laquelle la variable est visible.
+
+## Exemple
+
+Voici une variable locale qui n'existe que dans la fonction.
+
+```python
+def calculer():
+    resultat = 42
+    print("Dans la fonction:", resultat)
+
+calculer()
+print("Dehors:", resultat)
+# Sortie: Dans la fonction: 42
+# Erreur: NameError: name 'resultat' is not defined
+```
+
+À l'intérieur de la fonction, `resultat` existe. À l'extérieur, il n'existe plus. Python signale une erreur si on essaie de l'utiliser.
+
+C'est en réalité une bonne chose. Chaque fonction travaille dans sa propre bulle. Ses variables ne risquent pas d'écraser celles d'une autre fonction.
+
+## Lire une variable globale
+
+Une fonction peut lire une variable définie à l'extérieur, sans aucune cérémonie.
+
+```python
+taux_tva = 20
+
+def prix_ttc(prix_ht):
+    return prix_ht * (1 + taux_tva / 100)
+
+print(prix_ttc(100))
+# Sortie: 120.0
+```
+
+La variable `taux_tva` est globale. La fonction `prix_ttc` la lit sans problème.
+
+## Modifier une variable globale
+
+Modifier une variable globale depuis une fonction est plus délicat. Par défaut, Python interprète une affectation à l'intérieur d'une fonction comme la création d'une nouvelle variable locale.
+
+```python
+compteur = 0
+
+def incrementer():
+    compteur = compteur + 1
+
+incrementer()
+# Erreur: UnboundLocalError
+```
+
+Python voit `compteur = ...` dans la fonction et décide que `compteur` est local. Mais la ligne essaie aussi de lire ce `compteur` local avant qu'il existe. D'où l'erreur.
+
+Si vous voulez vraiment modifier la variable globale, vous pouvez utiliser le mot-clé `global`.
+
+```python
+compteur = 0
+
+def incrementer():
+    global compteur
+    compteur = compteur + 1
+
+incrementer()
+incrementer()
+print(compteur)
+# Sortie: 2
+```
+
+<Aside type="caution">
+Utiliser `global` est rarement une bonne idée. Le code devient plus difficile à suivre, car une fonction modifie alors des variables qu'on ne voit pas dans ses paramètres. Préférez passer la valeur en argument et renvoyer le résultat avec `return`.
+</Aside>
+
+Voici la même logique sans `global`, de façon plus saine.
+
+```python
+def incrementer(valeur):
+    return valeur + 1
+
+compteur = 0
+compteur = incrementer(compteur)
+compteur = incrementer(compteur)
+print(compteur)
+# Sortie: 2
+```
+
+La fonction est plus claire. Elle prend une valeur, elle en renvoie une. Elle ne dépend de rien de caché.
+
+## En pratique
+
+Une variable locale peut porter le même nom qu'une variable globale sans poser de problème. Ce sont alors deux variables distinctes.
+
+```python
+message = "Bonjour à tous"
+
+def parler():
+    message = "Je suis local"
+    print(message)
+
+parler()
+print(message)
+# Sortie: Je suis local
+# Sortie: Bonjour à tous
+```
+
+À l'intérieur de `parler`, le `message` local cache temporairement le `message` global. Une fois la fonction terminée, le global reprend sa place. Le global n'a jamais été modifié.
+
+<Aside type="tip">
+Considérez que les variables d'une fonction sont strictement les siennes. Les paramètres rentrent. Le `return` sort. Cette discipline rend chaque fonction facile à lire, à tester et à réutiliser.
+</Aside>
+
+## À retenir
+
+- Une variable définie dans une fonction est locale. Elle disparaît à la fin de la fonction.
+- Une fonction peut lire une variable globale sans cérémonie.
+- Modifier une variable globale demande le mot-clé `global`, mais c'est à éviter.
+- Préférez passer les valeurs en arguments et utiliser `return` pour récupérer les résultats.
+- Une variable locale peut avoir le même nom qu'une globale, sans la modifier.

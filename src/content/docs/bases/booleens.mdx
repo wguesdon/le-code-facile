@@ -1,0 +1,155 @@
+---
+title: Booléens et comparaisons
+description: Vrai ou faux et comment comparer des valeurs.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Un booléen est une valeur qui répond à une question simple. C'est soit `True`, soit `False`.
+
+## Le concept
+
+Python a deux valeurs booléennes :
+
+- `True` pour vrai.
+- `False` pour faux.
+
+Attention à la majuscule. Python est sensible à la casse.
+
+```python
+est_majeur = True
+est_pluvieux = False
+
+print(est_majeur)
+# Sortie: True
+
+print(est_pluvieux)
+# Sortie: False
+```
+
+## Les opérateurs de comparaison
+
+Une comparaison produit un booléen. Voici les opérateurs courants.
+
+| Opérateur | Signification               | Exemple        | Résultat |
+|-----------|-----------------------------|----------------|----------|
+| `==`      | Égal à                      | `3 == 3`       | `True`   |
+| `!=`      | Différent de                | `3 != 4`       | `True`   |
+| `<`       | Plus petit que              | `3 < 4`        | `True`   |
+| `>`       | Plus grand que              | `3 > 4`        | `False`  |
+| `<=`      | Plus petit ou égal          | `3 <= 3`       | `True`   |
+| `>=`      | Plus grand ou égal          | `4 >= 5`       | `False`  |
+
+<Aside type="caution">
+Ne confondez pas `=` et `==`. Le simple `=` sert à ranger une valeur dans une variable. Le double `==` sert à comparer deux valeurs.
+</Aside>
+
+## Exemple
+
+```python
+age = 20
+
+majeur = age >= 18
+print(majeur)
+# Sortie: True
+
+prenom = "Alice"
+est_alice = prenom == "Alice"
+print(est_alice)
+# Sortie: True
+
+prix = 12.50
+trop_cher = prix > 20
+print(trop_cher)
+# Sortie: False
+```
+
+## Les opérateurs logiques
+
+On combine plusieurs comparaisons avec `and`, `or` et `not`.
+
+- `and` est vrai si les deux côtés sont vrais.
+- `or` est vrai si au moins un côté est vrai.
+- `not` inverse la valeur.
+
+```python
+age = 25
+a_permis = True
+
+peut_louer = age >= 21 and a_permis
+print(peut_louer)
+# Sortie: True
+
+est_weekend = False
+est_ferie = True
+
+repos = est_weekend or est_ferie
+print(repos)
+# Sortie: True
+
+pluie = False
+sortie_possible = not pluie
+print(sortie_possible)
+# Sortie: True
+```
+
+## En pratique
+
+Vérifions si un client a droit à une remise.
+
+```python
+age = 65
+client_fidele = True
+
+remise_seniors = age >= 60
+remise_fidelite = client_fidele
+
+a_droit_remise = remise_seniors or remise_fidelite
+
+print(a_droit_remise)
+# Sortie: True
+```
+
+Vérifions si un panier respecte les conditions de livraison gratuite.
+
+```python
+montant = 45.00
+code_promo = "ETE2026"
+
+livraison_gratuite = montant >= 40 and code_promo == "ETE2026"
+
+print(livraison_gratuite)
+# Sortie: True
+```
+
+## Valeurs vraies et fausses
+
+En Python, certaines valeurs sont considérées comme fausses sans être `False`. Les plus courantes sont :
+
+- Le nombre `0`.
+- La chaîne vide `""`.
+- La valeur spéciale `None`.
+
+Toutes les autres valeurs sont vraies. Cela permet d'écrire des tests courts.
+
+```python
+prenom = ""
+
+if prenom:
+    print("Bonjour", prenom)
+else:
+    print("Prénom manquant.")
+# Sortie: Prénom manquant.
+```
+
+<Aside type="note">
+Pas besoin de retenir tous les détails maintenant. Souvenez vous simplement qu'une chaîne vide et le zéro se comportent comme `False` dans les tests.
+</Aside>
+
+## À retenir
+
+- Un booléen vaut `True` ou `False`, toujours avec une majuscule.
+- Les comparaisons `==`, `!=`, `<`, `>`, `<=`, `>=` produisent des booléens.
+- `=` range une valeur, `==` compare deux valeurs.
+- `and`, `or` et `not` combinent des conditions.
+- Une chaîne vide et le nombre `0` sont considérés comme faux.

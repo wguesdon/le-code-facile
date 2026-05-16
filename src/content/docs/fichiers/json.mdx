@@ -1,0 +1,166 @@
+---
+title: Le format JSON
+description: Stocker des structures plus complexes dans un fichier.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+JSON veut dire "JavaScript Object Notation". C'est un format texte qui sait représenter des dictionnaires, des listes, des nombres et des chaînes. Si vos données ne ressemblent pas à un simple tableau, JSON est souvent le bon choix.
+
+## Le concept
+
+Le format JSON ressemble beaucoup à la syntaxe Python pour les dictionnaires et les listes.
+
+Voici un exemple, `contacts.json` :
+
+```json
+[
+  {
+    "nom": "Dupont",
+    "prenom": "Marie",
+    "email": "marie@exemple.fr"
+  },
+  {
+    "nom": "Martin",
+    "prenom": "Paul",
+    "email": "paul@exemple.fr"
+  }
+]
+```
+
+C'est presque la même chose qu'une liste de dictionnaires en Python. Quelques petites différences existent. JSON utilise toujours des guillemets doubles. Les valeurs booléennes sont `true` et `false`, en minuscules.
+
+Python propose un module pour ce format, le module `json`. Il fait partie de la bibliothèque standard.
+
+```python
+import json
+```
+
+## Quatre fonctions utiles
+
+Le module `json` propose deux paires de fonctions :
+
+- `json.dump` et `json.load` travaillent avec des fichiers.
+- `json.dumps` et `json.loads` travaillent avec des chaînes de caractères.
+
+Le `s` final veut dire "string", soit chaîne.
+
+## Écrire dans un fichier
+
+`json.dump` enregistre un objet Python dans un fichier.
+
+```python
+import json
+
+contacts = [
+    {"nom": "Dupont", "prenom": "Marie", "email": "marie@exemple.fr"},
+    {"nom": "Martin", "prenom": "Paul", "email": "paul@exemple.fr"},
+]
+
+with open("contacts.json", "w", encoding="utf-8") as f:
+    json.dump(contacts, f, ensure_ascii=False, indent=2)
+```
+
+Deux options bien utiles :
+
+- `ensure_ascii=False` garde les accents lisibles. Sans cette option, `é` deviendrait `é`.
+- `indent=2` ajoute des espaces et des sauts de ligne pour rendre le fichier lisible.
+
+Le fichier `contacts.json` contient alors :
+
+```json
+[
+  {
+    "nom": "Dupont",
+    "prenom": "Marie",
+    "email": "marie@exemple.fr"
+  },
+  {
+    "nom": "Martin",
+    "prenom": "Paul",
+    "email": "paul@exemple.fr"
+  }
+]
+```
+
+## Lire un fichier
+
+`json.load` lit un fichier et le transforme en objet Python.
+
+```python
+import json
+
+with open("contacts.json", "r", encoding="utf-8") as f:
+    contacts = json.load(f)
+
+print(contacts)
+# Sortie:
+# [{'nom': 'Dupont', 'prenom': 'Marie', 'email': 'marie@exemple.fr'}, {'nom': 'Martin', 'prenom': 'Paul', 'email': 'paul@exemple.fr'}]
+```
+
+Vous récupérez une liste Python, exactement comme avant l'enregistrement.
+
+## Travailler avec des chaînes
+
+Parfois, on a une chaîne JSON sans fichier. Par exemple, une chaîne reçue d'un site internet.
+
+```python
+import json
+
+texte = '{"nom": "Dupont", "prenom": "Marie"}'
+donnees = json.loads(texte)
+print(donnees["prenom"])
+# Sortie: Marie
+```
+
+`json.dumps` fait l'inverse, il transforme un objet Python en chaîne.
+
+```python
+personne = {"nom": "Dupont", "prenom": "Marie"}
+texte = json.dumps(personne, ensure_ascii=False)
+print(texte)
+# Sortie: {"nom": "Dupont", "prenom": "Marie"}
+```
+
+## Exemple
+
+Voici un programme complet qui enregistre une liste de contacts puis la relit.
+
+```python
+import json
+
+contacts = [
+    {"nom": "Dupont", "prenom": "Marie", "email": "marie@exemple.fr"},
+    {"nom": "Martin", "prenom": "Paul", "email": "paul@exemple.fr"},
+    {"nom": "Durand", "prenom": "Sophie", "email": "sophie@exemple.fr"},
+]
+
+with open("contacts.json", "w", encoding="utf-8") as f:
+    json.dump(contacts, f, ensure_ascii=False, indent=2)
+
+print("Contacts enregistrés.")
+
+with open("contacts.json", "r", encoding="utf-8") as f:
+    contacts_lus = json.load(f)
+
+for contact in contacts_lus:
+    print(f"{contact['prenom']} {contact['nom']} : {contact['email']}")
+
+# Sortie:
+# Contacts enregistrés.
+# Marie Dupont : marie@exemple.fr
+# Paul Martin : paul@exemple.fr
+# Sophie Durand : sophie@exemple.fr
+```
+
+<Aside type="tip">
+JSON est idéal quand vos données ont une structure imbriquée, par exemple une liste de dictionnaires ou un dictionnaire qui contient une autre liste. CSV est mieux pour les tableaux simples à plat.
+</Aside>
+
+## À retenir
+
+- JSON ressemble à un mélange de dictionnaires et de listes Python.
+- Importez le module avec `import json`.
+- `json.dump` écrit dans un fichier, `json.load` lit depuis un fichier.
+- `json.dumps` et `json.loads` font la même chose avec des chaînes.
+- Ajoutez `ensure_ascii=False` et `indent=2` pour un fichier lisible avec accents.

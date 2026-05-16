@@ -1,0 +1,119 @@
+---
+title: "Premier programme : Bonjour le monde"
+description: Écrire et exécuter votre tout premier programme Python.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Dans cette leçon, vous allez écrire votre tout premier vrai programme Python. Une tradition vieille de cinquante ans.
+
+## Le concept
+
+Quand on apprend un nouveau langage de programmation, il existe une tradition. On écrit un programme minuscule qui affiche la phrase « Bonjour le monde ». En anglais, on dit « Hello, world ». C'est un rite de passage. Vous allez le vivre maintenant.
+
+Le but n'est pas le résultat, c'est l'expérience. Vous allez taper du texte. Vous allez le sauvegarder. Vous allez le lancer. Et l'ordinateur va vous répondre.
+
+## Étapes
+
+<Steps>
+
+1. Ouvrez VSCode. Si votre dossier `code-facile` ne s'affiche pas dans l'explorateur à gauche, ouvrez le avec **Fichier**, puis **Ouvrir le dossier**, puis sélectionnez `C:\Users\VotreNom\code-facile`.
+
+2. Dans le panneau Explorateur, survolez le nom du dossier et cliquez sur l'icône **Nouveau fichier**.
+
+3. Tapez le nom du fichier, `bonjour.py`, et appuyez sur Entrée.
+
+4. Dans l'éditeur, tapez la ligne suivante. Faites attention aux guillemets droits.
+
+   ```python
+   print("Bonjour le monde")
+   ```
+
+5. Enregistrez le fichier avec Ctrl plus S.
+
+6. Ouvrez un terminal dans VSCode. Menu **Terminal**, puis **Nouveau terminal**.
+
+7. Dans le terminal, tapez la commande suivante.
+
+   ```powershell
+   python bonjour.py
+   ```
+
+8. Appuyez sur Entrée.
+
+</Steps>
+
+## Exemple
+
+Voici ce que vous devez voir dans le terminal.
+
+```
+# Sortie:
+Bonjour le monde
+```
+
+Prenez un moment. Vous venez d'écrire et d'exécuter votre premier programme Python. Vous êtes officiellement un débutant en Python. C'est une belle étape.
+
+## Que fait `print` ?
+
+`print` est ce qu'on appelle une **fonction**. Une fonction, c'est une commande prête à l'emploi qui fait une chose précise. La fonction `print` fait une seule chose, mais elle la fait bien. Elle prend ce qu'on lui donne entre parenthèses, et elle l'affiche à l'écran.
+
+Dans notre exemple, on lui a donné le texte `"Bonjour le monde"`. Les guillemets servent à dire à Python, ceci est du texte, ne cherche pas à le comprendre. Python a obéi, et a affiché le texte tel quel.
+
+Vous reverrez `print` mille fois dans ce site. C'est l'outil de base pour voir ce que fait votre programme.
+
+## Variations à essayer
+
+Vous pouvez donner à `print` plusieurs morceaux de texte, séparés par des virgules. Python les affichera à la suite, avec un espace entre chaque.
+
+```python
+print("Bonjour", "Alice")
+```
+
+Sortie attendue.
+
+```
+# Sortie:
+Bonjour Alice
+```
+
+Essayez maintenant avec votre propre prénom. Modifiez le fichier, enregistrez, et relancez la commande `python bonjour.py`.
+
+```python
+print("Bonjour", "votre prénom ici")
+```
+
+Vous pouvez aussi utiliser plusieurs lignes `print` dans le même fichier. Chaque ligne s'affiche sur une nouvelle ligne du terminal.
+
+```python
+print("Bonjour le monde")
+print("Je m'appelle Alice")
+print("J'apprends Python")
+```
+
+Sortie attendue.
+
+```
+# Sortie:
+Bonjour le monde
+Je m'appelle Alice
+J'apprends Python
+```
+
+<Aside type="tip">
+N'ayez pas peur de modifier le code et de relancer. C'est en essayant des choses qu'on apprend le mieux. Et un programme cassé ne casse pas l'ordinateur.
+</Aside>
+
+## Problèmes courants
+
+- **`SyntaxError` quand vous lancez le programme.** Vous avez sans doute oublié une parenthèse ou un guillemet. Comparez votre ligne à l'exemple. Python est très pointilleux.
+- **Les guillemets ne sont pas reconnus.** Certains traitements de texte remplacent les guillemets droits `"` par des guillemets typographiques `«` ou `"`. Dans VSCode, vous n'aurez pas ce souci. Tapez vos guillemets directement dans VSCode.
+- **Le terminal n'affiche rien.** Vérifiez que vous avez bien tapé `python bonjour.py` et pas autre chose. Vérifiez aussi que le fichier `bonjour.py` est dans le dossier où vous vous trouvez dans le terminal.
+
+## À retenir
+
+- Tout programme Python commence par un fichier `.py` à exécuter.
+- `print` affiche à l'écran ce qu'on lui donne entre parenthèses.
+- On peut donner plusieurs valeurs à `print`, séparées par des virgules.
+- Modifier, enregistrer, relancer. C'est la boucle de base de la programmation.
+- « Bonjour le monde » est la porte d'entrée. Vous l'avez franchie.

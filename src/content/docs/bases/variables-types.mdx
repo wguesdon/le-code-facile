@@ -1,0 +1,144 @@
+---
+title: Variables et types de données
+description: Stocker une valeur dans une variable et découvrir les types de base.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Une variable, c'est comme une boîte avec une étiquette. On range une valeur dedans, et on la retrouve plus tard.
+
+## Le concept
+
+En Python, on crée une variable avec le signe `=`. À gauche, le nom de la boîte. À droite, la valeur que l'on range.
+
+```python
+prenom = "Alice"
+age = 30
+taille = 1.65
+```
+
+On peut réutiliser la variable autant de fois que l'on veut. On peut aussi changer sa valeur. On parle alors de réassignation.
+
+```python
+score = 10
+print(score)
+# Sortie: 10
+
+score = 25
+print(score)
+# Sortie: 25
+```
+
+### Règles pour nommer une variable
+
+Quelques règles simples à respecter :
+
+- Le nom peut contenir des lettres, des chiffres et le caractère `_`.
+- Le nom ne peut pas commencer par un chiffre.
+- Le nom ne peut pas contenir d'espace.
+- Les majuscules et minuscules comptent. `age` et `Age` sont deux variables différentes.
+
+Par convention, on écrit les noms en `snake_case`. On met tout en minuscules et on sépare les mots par un underscore.
+
+```python
+prix_total = 42.50
+nombre_de_clients = 12
+```
+
+<Aside type="tip">
+Un bon nom de variable décrit clairement ce qu'il contient. `x` est rarement une bonne idée. `prix_total` est beaucoup plus clair.
+</Aside>
+
+## Exemple
+
+Voici un petit programme qui utilise plusieurs variables.
+
+```python
+prenom = "Alice"
+age = 30
+taille = 1.65
+est_majeur = True
+
+print(prenom)
+# Sortie: Alice
+
+print(age)
+# Sortie: 30
+
+print(taille)
+# Sortie: 1.65
+
+print(est_majeur)
+# Sortie: True
+```
+
+## Les types de base
+
+Chaque valeur a un type. Python connaît plusieurs types de base.
+
+- `str` pour une chaîne de caractères, c'est à dire du texte.
+- `int` pour un nombre entier.
+- `float` pour un nombre à virgule.
+- `bool` pour une valeur vraie ou fausse.
+
+La fonction `type()` permet de demander à Python le type d'une variable.
+
+```python
+prenom = "Alice"
+age = 30
+taille = 1.65
+est_majeur = True
+
+print(type(prenom))
+# Sortie: <class 'str'>
+
+print(type(age))
+# Sortie: <class 'int'>
+
+print(type(taille))
+# Sortie: <class 'float'>
+
+print(type(est_majeur))
+# Sortie: <class 'bool'>
+```
+
+## En pratique
+
+Imaginons une petite fiche client.
+
+```python
+nom_client = "Sophie Martin"
+age_client = 42
+solde_compte = 1250.75
+client_fidele = True
+
+print(nom_client)
+# Sortie: Sophie Martin
+
+print(solde_compte)
+# Sortie: 1250.75
+```
+
+On peut aussi remplacer une valeur par une autre du même type, ou même d'un autre type.
+
+```python
+note = 15
+print(note)
+# Sortie: 15
+
+note = "quinze"
+print(note)
+# Sortie: quinze
+```
+
+<Aside type="caution">
+Changer le type d'une variable en cours de route est possible, mais cela rend souvent le code plus difficile à lire. Mieux vaut garder un type stable pour chaque variable.
+</Aside>
+
+## À retenir
+
+- Une variable est une boîte étiquetée qui contient une valeur.
+- On crée une variable avec `nom = valeur`.
+- On peut réassigner une variable à tout moment.
+- Les noms suivent la convention `snake_case` et ne commencent jamais par un chiffre.
+- Les types de base sont `str`, `int`, `float` et `bool`. La fonction `type()` donne le type d'une valeur.

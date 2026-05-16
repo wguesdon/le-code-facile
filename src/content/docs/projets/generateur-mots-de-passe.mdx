@@ -1,0 +1,179 @@
+---
+title: Générateur de mots de passe
+description: Créer des mots de passe aléatoires en quelques lignes.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Choisir un bon mot de passe est pénible. Laissons l'ordinateur le faire pour nous.
+
+## L'objectif
+
+Le programme demande la longueur souhaitée, puis quelques options. On veut des chiffres ? Des symboles ? Selon les réponses, il construit un alphabet, puis tire au hasard les caractères. À la fin, il affiche un mot de passe prêt à copier.
+
+## Le plan
+
+- Importer `random` et `string` depuis la bibliothèque standard.
+- Demander la longueur, vérifier que c'est bien un entier positif.
+- Demander si l'on veut inclure des chiffres et des symboles.
+- Construire l'alphabet en fonction des choix.
+- Tirer les caractères avec `random.choices` et les assembler.
+
+## Le code
+
+Commençons par les briques de base. Le module `string` contient déjà des listes prêtes à l'emploi.
+
+```python
+import string
+
+print(string.ascii_letters)
+# abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+print(string.digits)
+# 0123456789
+print(string.punctuation)
+# !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+```
+
+<Aside type="note">
+Ces constantes contiennent toutes les lettres, tous les chiffres et la ponctuation courante. C'est exactement la matière première qu'il nous faut.
+</Aside>
+
+Pour tirer des caractères, on utilise `random.choices`. Cette fonction renvoie une liste de caractères tirés au hasard dans une chaîne. Le paramètre `k` indique combien on en veut.
+
+```python
+import random
+import string
+
+alphabet = string.ascii_letters + string.digits
+mot_de_passe = "".join(random.choices(alphabet, k=12))
+print(mot_de_passe)
+# Exemple : "k3LpQ9vRZ2hT"
+```
+
+<Aside type="caution">
+Le module `random` est très bien pour ce tutoriel. Pour de vrais mots de passe utilisés au quotidien, préférez le module `secrets` de la bibliothèque standard. Il utilise une source d'aléa plus solide pour la sécurité.
+</Aside>
+
+Voyons maintenant le script complet. Il pose les questions, valide les réponses, et imprime trois mots de passe d'un coup pour vous laisser le choix.
+
+```python
+import random
+import string
+
+
+def lire_longueur():
+    """Demande la longueur du mot de passe à l'utilisateur.
+
+    Returns:
+        int: La longueur choisie, au moins 4.
+    """
+    while True:
+        reponse = input("Longueur souhaitée (entre 8 et 64) : ").strip()
+        try:
+            valeur = int(reponse)
+        except ValueError:
+            print("Tape un nombre entier.")
+            continue
+        if valeur < 4:
+            print("C'est vraiment trop court. Minimum 4.")
+            continue
+        if valeur > 200:
+            print("C'est trop long. Maximum 200.")
+            continue
+        return valeur
+
+
+def lire_oui_non(question):
+    """Pose une question oui ou non.
+
+    Args:
+        question (str): Le texte de la question.
+
+    Returns:
+        bool: True si la réponse commence par o, False sinon.
+    """
+    reponse = input(f"{question} (o/n) : ").strip().lower()
+    return reponse.startswith("o")
+
+
+def construire_alphabet(avec_chiffres, avec_symboles):
+    """Construit l'alphabet en fonction des options choisies.
+
+    Args:
+        avec_chiffres (bool): True pour inclure 0 à 9.
+        avec_symboles (bool): True pour inclure la ponctuation.
+
+    Returns:
+        str: La chaîne de caractères à utiliser pour le tirage.
+    """
+    alphabet = string.ascii_letters
+    if avec_chiffres:
+        alphabet += string.digits
+    if avec_symboles:
+        alphabet += string.punctuation
+    return alphabet
+
+
+def generer(longueur, alphabet):
+    """Tire un mot de passe au hasard.
+
+    Args:
+        longueur (int): Nombre de caractères voulus.
+        alphabet (str): Caractères autorisés.
+
+    Returns:
+        str: Le mot de passe généré.
+    """
+    return "".join(random.choices(alphabet, k=longueur))
+
+
+def main():
+    """Pose les questions, puis affiche trois suggestions."""
+    print("Bienvenue dans le générateur de mots de passe.\n")
+    longueur = lire_longueur()
+    avec_chiffres = lire_oui_non("Inclure des chiffres ?")
+    avec_symboles = lire_oui_non("Inclure des symboles ?")
+
+    alphabet = construire_alphabet(avec_chiffres, avec_symboles)
+
+    print("\nVoici trois suggestions :")
+    for i in range(1, 4):
+        print(f"  {i}. {generer(longueur, alphabet)}")
+
+    print("\nCopie celui qui te plaît. Et n'oublie pas de l'enregistrer.")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Exemple d'exécution :
+
+```
+Bienvenue dans le générateur de mots de passe.
+
+Longueur souhaitée (entre 8 et 64) : 16
+Inclure des chiffres ? (o/n) : o
+Inclure des symboles ? (o/n) : o
+
+Voici trois suggestions :
+  1. k3L!p9Q@vR2hT$mN
+  2. xZ&7bH#dW1cF*qP4
+  3. M9p%nE2jR&5tY!aL
+
+Copie celui qui te plaît. Et n'oublie pas de l'enregistrer.
+```
+
+## Pour aller plus loin
+
+- Garantir au moins un chiffre et un symbole quand ces options sont actives.
+- Remplacer `random` par `secrets.choice` dans une boucle pour un usage réel.
+- Sauvegarder les mots de passe générés dans un fichier chiffré.
+
+## À retenir
+
+- Le module `string` fournit `ascii_letters`, `digits` et `punctuation` tout prêts.
+- `random.choices(alphabet, k=n)` tire `n` caractères avec remise.
+- `"".join(...)` colle une liste de caractères en une seule chaîne.
+- Pour la vraie sécurité, le module `secrets` est plus adapté que `random`.
+- Découper en petites fonctions rend le script lisible et facile à étendre.

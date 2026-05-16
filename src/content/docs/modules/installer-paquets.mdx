@@ -1,0 +1,87 @@
+---
+title: Installer un paquet
+description: Ajouter une bibliothèque externe avec conda ou pip.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Tous les outils ne sont pas livrés avec Python. Beaucoup de bibliothèques très utiles s'installent en une commande.
+
+## Le concept
+
+Un paquet, c'est un module ou un ensemble de modules disponible sur internet. Avec Anaconda, deux outils permettent d'installer un paquet : `conda` et `pip`. On utilise d'abord `conda`, car il gère bien les dépendances. Si le paquet n'est pas disponible dans conda, on passe à `pip`.
+
+Les commandes d'installation ne se tapent pas dans Python. Elles se tapent dans une fenêtre spéciale : l'Anaconda Prompt sous Windows.
+
+## Exemple
+
+Ouvrez l'Anaconda Prompt depuis le menu Démarrer. Vous voyez alors une fenêtre noire avec un curseur. Tapez la commande suivante.
+
+```bash
+conda install requests
+```
+
+Conda affiche la liste des paquets à installer et demande une confirmation. Tapez `y` puis Entrée.
+
+Si le paquet n'existe pas dans conda, vous pouvez essayer pip.
+
+```bash
+pip install requests
+```
+
+Pour vérifier que tout fonctionne, lancez cette petite commande dans l'Anaconda Prompt.
+
+```bash
+python -c "import requests; print(requests.__version__)"
+```
+
+Sortie possible :
+
+```
+2.31.0
+```
+
+Si vous voyez un numéro de version, le paquet est bien installé.
+
+## En pratique
+
+Pour voir tous les paquets installés, tapez :
+
+```bash
+pip list
+```
+
+Vous obtenez une longue liste avec un nom et une version pour chaque paquet.
+
+<Aside type="caution" title="Conda d'abord, pip ensuite">
+Mélanger conda et pip dans le même environnement peut créer des conflits. La règle simple : essayez `conda install` en premier. Si conda ne trouve pas le paquet, alors utilisez `pip install`. Évitez de réinstaller le même paquet avec les deux outils.
+</Aside>
+
+Une fois le paquet installé, vous pouvez l'utiliser dans n'importe quel script Python.
+
+```python
+import requests
+
+reponse = requests.get("https://api.github.com")
+print(reponse.status_code)
+```
+
+Sortie attendue :
+
+```
+200
+```
+
+Le code 200 signifie que la requête a réussi.
+
+<Aside type="tip" title="Et si la commande échoue ?">
+Si vous voyez un message d'erreur, vérifiez que vous êtes bien dans l'Anaconda Prompt, et non dans un terminal Windows classique. Vérifiez aussi l'orthographe du nom du paquet.
+</Aside>
+
+## À retenir
+
+- Les commandes d'installation se tapent dans l'Anaconda Prompt.
+- Essayez d'abord `conda install <paquet>`.
+- Si conda ne le trouve pas, utilisez `pip install <paquet>`.
+- `pip list` affiche la liste des paquets installés.
+- Une fois installé, le paquet s'utilise comme tout autre module avec `import`.

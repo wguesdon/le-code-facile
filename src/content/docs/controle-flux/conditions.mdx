@@ -1,0 +1,97 @@
+---
+title: "Conditions : if, elif, else"
+description: Faire des choix dans son programme.
+---
+
+Un programme doit souvent réagir selon la situation. Les conditions servent à cela.
+
+## Le concept
+
+Une condition pose une question à votre programme. Si la réponse est vraie, le programme exécute un bloc de code. Sinon, il fait autre chose.
+
+Python utilise trois mots clés pour cela.
+
+- `if` veut dire « si ».
+- `elif` veut dire « sinon, si ».
+- `else` veut dire « sinon ».
+
+L'indentation est très importante en Python. Le code à l'intérieur d'un `if` doit commencer par 4 espaces. Sans cela, le programme ne fonctionne pas.
+
+```python
+age = 20
+
+if age >= 18:
+    print("Vous êtes majeur.")
+else:
+    print("Vous êtes mineur.")
+
+# Sortie: Vous êtes majeur.
+```
+
+## Exemple
+
+Imaginons que vous voulez savoir s'il faut prendre un parapluie ce matin.
+
+```python
+meteo = "pluie"
+
+if meteo == "pluie":
+    print("Prenez un parapluie.")
+elif meteo == "neige":
+    print("Mettez un manteau chaud.")
+elif meteo == "soleil":
+    print("Mettez des lunettes de soleil.")
+else:
+    print("Sortez tranquillement.")
+
+# Sortie: Prenez un parapluie.
+```
+
+Python regarde chaque condition dans l'ordre. Dès qu'une condition est vraie, il exécute le bloc et ignore le reste.
+
+## En pratique
+
+On peut combiner plusieurs conditions avec `and` et `or`.
+
+```python
+age = 25
+a_un_billet = True
+
+if age >= 18 and a_un_billet:
+    print("Vous pouvez entrer au concert.")
+else:
+    print("Vous ne pouvez pas entrer.")
+
+# Sortie: Vous pouvez entrer au concert.
+```
+
+On peut aussi placer un `if` à l'intérieur d'un autre `if`. C'est ce qu'on appelle une condition imbriquée.
+
+```python
+temperature = 28
+soleil = True
+
+if temperature > 20:
+    if soleil:
+        print("Belle journée pour la plage.")
+    else:
+        print("Il fait chaud mais gris.")
+
+# Sortie: Belle journée pour la plage.
+```
+
+Évitez de trop imbriquer les conditions. Trois niveaux maximum, sinon le code devient difficile à lire.
+
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="tip">
+Pour comparer deux valeurs, utilisez `==` avec deux signes égal. Un seul `=` sert à assigner une valeur.
+</Aside>
+
+## À retenir
+
+- `if` exécute du code si une condition est vraie.
+- `elif` teste une nouvelle condition si la précédente est fausse.
+- `else` s'exécute quand aucune condition n'est vraie.
+- L'indentation de 4 espaces est obligatoire en Python.
+- On peut combiner des conditions avec `and` et `or`.

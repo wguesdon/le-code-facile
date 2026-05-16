@@ -1,0 +1,83 @@
+---
+title: Le constructeur __init__
+description: Initialiser un objet proprement à sa création.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Ajouter les attributs un par un après la création est fastidieux. Python propose une méthode spéciale pour les définir d'un coup : `__init__`.
+
+## Le concept
+
+`__init__` est une méthode appelée automatiquement quand on crée un objet. On l'écrit avec deux soulignements de chaque côté. On dit souvent « dunder init », pour « double underscore init ».
+
+Elle sert à initialiser l'objet. Tout ce dont l'objet a besoin pour exister, on le met ici.
+
+La signature ressemble à ceci :
+
+```python
+def __init__(self, parametre1, parametre2):
+    self.parametre1 = parametre1
+    self.parametre2 = parametre2
+```
+
+Quand on écrit `Contact("Alice", 30)`, Python appelle `__init__` en passant `"Alice"` et `30`.
+
+## Exemple
+
+Créons une classe `Livre` avec un titre, un auteur et une année :
+
+```python
+class Livre:
+    def __init__(self, titre, auteur, annee):
+        self.titre = titre
+        self.auteur = auteur
+        self.annee = annee
+
+    def decrire(self):
+        return self.titre + " par " + self.auteur + " (" + str(self.annee) + ")"
+
+livre1 = Livre("Le Petit Prince", "Saint-Exupéry", 1943)
+print(livre1.decrire())
+# Sortie: Le Petit Prince par Saint-Exupéry (1943)
+
+livre2 = Livre("L'Étranger", "Camus", 1942)
+print(livre2.decrire())
+# Sortie: L'Étranger par Camus (1942)
+```
+
+Le code est plus propre. En une seule ligne, on crée un livre avec toutes ses informations. Plus besoin d'ajouter les attributs un par un.
+
+## En pratique
+
+On peut donner des valeurs par défaut aux paramètres. Si l'utilisateur ne fournit rien, la valeur par défaut est utilisée.
+
+```python
+class Livre:
+    def __init__(self, titre, auteur, annee=2024):
+        self.titre = titre
+        self.auteur = auteur
+        self.annee = annee
+
+livre1 = Livre("Mon livre", "Moi")
+print(livre1.annee)
+# Sortie: 2024
+
+livre2 = Livre("Vieux livre", "Hugo", 1862)
+print(livre2.annee)
+# Sortie: 1862
+```
+
+Les paramètres avec une valeur par défaut doivent toujours venir après ceux sans valeur par défaut.
+
+<Aside type="tip">
+Pensez à `__init__` comme à la « fiche d'inscription » de l'objet. On remplit les informations obligatoires au moment de l'inscription, pas après.
+</Aside>
+
+## À retenir
+
+- `__init__` est appelé automatiquement à la création de l'objet.
+- Son rôle est de définir les attributs de départ.
+- Le premier paramètre est `self`, comme pour toute méthode.
+- On peut donner des valeurs par défaut aux paramètres.
+- Cela rend la création d'objets propre et rapide.

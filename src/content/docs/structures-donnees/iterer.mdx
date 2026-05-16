@@ -1,0 +1,87 @@
+---
+title: Itérer sur les collections
+description: Parcourir efficacement listes, dictionnaires et ensembles.
+---
+
+Vous savez déjà parcourir une collection avec une boucle `for`. Voici quelques outils pratiques pour aller plus loin.
+
+## Le concept
+
+Parfois, on veut connaître la position de chaque élément. Parfois, on veut parcourir deux listes en même temps. Python offre deux fonctions très utiles : `enumerate()` et `zip()`.
+
+Il existe aussi une syntaxe courte pour construire une nouvelle liste à partir d'une autre : la liste en compréhension.
+
+## Exemple
+
+La fonction `enumerate()` donne à la fois l'index et la valeur.
+
+```python
+fruits = ["pomme", "banane", "poire"]
+
+for index, fruit in enumerate(fruits):
+    print(f"{index}: {fruit}")
+# Sortie:
+# 0: pomme
+# 1: banane
+# 2: poire
+```
+
+La fonction `zip()` parcourt deux listes en parallèle, élément par élément.
+
+```python
+prenoms = ["Alice", "Bob", "Chloé"]
+notes = [15, 12, 18]
+
+for prenom, note in zip(prenoms, notes):
+    print(f"{prenom} a eu {note}")
+# Sortie:
+# Alice a eu 15
+# Bob a eu 12
+# Chloé a eu 18
+```
+
+Pour itérer sur un dictionnaire, on utilise `.items()`, déjà vu.
+
+```python
+contact = {"nom": "Dupont", "age": 30}
+
+for cle, valeur in contact.items():
+    print(f"{cle} = {valeur}")
+# Sortie:
+# nom = Dupont
+# age = 30
+```
+
+## En pratique
+
+Une liste en compréhension construit une nouvelle liste à partir d'une liste existante, en une seule ligne.
+
+```python
+nombres = [1, 2, 3, 4]
+doubles = [x * 2 for x in nombres]
+
+print(doubles)
+# Sortie: [2, 4, 6, 8]
+```
+
+C'est plus court que la version classique avec une boucle, mais cela fait exactement la même chose.
+
+```python
+nombres = [1, 2, 3, 4]
+doubles = []
+for x in nombres:
+    doubles.append(x * 2)
+
+print(doubles)
+# Sortie: [2, 4, 6, 8]
+```
+
+Gardez les listes en compréhension simples. Si la logique devient compliquée, préférez une boucle classique. Le code restera plus lisible.
+
+## À retenir
+
+- `enumerate()` donne l'index et la valeur en même temps.
+- `zip()` parcourt plusieurs collections en parallèle.
+- Sur un dictionnaire, `.items()` donne les paires clé, valeur.
+- Une liste en compréhension `[x * 2 for x in nombres]` construit une liste rapidement.
+- Préférez une boucle classique quand la logique devient complexe.

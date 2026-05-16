@@ -1,0 +1,160 @@
+---
+title: Le format CSV
+description: Lire et écrire des fichiers tableaux.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+CSV veut dire "Comma Separated Values", soit valeurs séparées par des virgules. C'est un format très simple pour stocker des tableaux, comme une liste de contacts ou une liste de courses avec prix.
+
+## Le concept
+
+Un fichier CSV ressemble à un tableau écrit en texte. Chaque ligne du fichier est une ligne du tableau. Les colonnes sont séparées par une virgule.
+
+Voici un exemple, `contacts.csv` :
+
+```
+nom,prenom,email
+Dupont,Marie,marie@exemple.fr
+Martin,Paul,paul@exemple.fr
+Durand,Sophie,sophie@exemple.fr
+```
+
+La première ligne contient les noms des colonnes. Les lignes suivantes contiennent les données.
+
+Python propose un module spécial pour ce format, le module `csv`. Il fait partie de la bibliothèque standard, donc rien à installer.
+
+```python
+import csv
+```
+
+<Aside type="tip">
+Quand vous ouvrez un fichier CSV, ajoutez toujours `newline=""`. Cela évite des problèmes avec les sauts de ligne sur Windows.
+</Aside>
+
+## Lire un CSV
+
+### Avec `csv.reader`
+
+`csv.reader` donne chaque ligne sous forme de liste.
+
+```python
+import csv
+
+with open("contacts.csv", "r", encoding="utf-8", newline="") as f:
+    lecteur = csv.reader(f)
+    for ligne in lecteur:
+        print(ligne)
+
+# Sortie:
+# ['nom', 'prenom', 'email']
+# ['Dupont', 'Marie', 'marie@exemple.fr']
+# ['Martin', 'Paul', 'paul@exemple.fr']
+# ['Durand', 'Sophie', 'sophie@exemple.fr']
+```
+
+### Avec `csv.DictReader`
+
+`csv.DictReader` est souvent plus pratique. Il donne chaque ligne sous forme de dictionnaire, en utilisant la première ligne comme clés.
+
+```python
+import csv
+
+with open("contacts.csv", "r", encoding="utf-8", newline="") as f:
+    lecteur = csv.DictReader(f)
+    for ligne in lecteur:
+        print(f"{ligne['prenom']} {ligne['nom']} : {ligne['email']}")
+
+# Sortie:
+# Marie Dupont : marie@exemple.fr
+# Paul Martin : paul@exemple.fr
+# Sophie Durand : sophie@exemple.fr
+```
+
+C'est plus lisible. On accède aux valeurs par leur nom de colonne.
+
+## Écrire un CSV
+
+### Avec `csv.writer`
+
+`csv.writer` accepte des listes.
+
+```python
+import csv
+
+contacts = [
+    ["nom", "prenom", "email"],
+    ["Dupont", "Marie", "marie@exemple.fr"],
+    ["Martin", "Paul", "paul@exemple.fr"],
+]
+
+with open("contacts.csv", "w", encoding="utf-8", newline="") as f:
+    redacteur = csv.writer(f)
+    redacteur.writerows(contacts)
+```
+
+`writerows` écrit toutes les lignes d'un coup. Pour écrire une seule ligne, utilisez `writerow`.
+
+### Avec `csv.DictWriter`
+
+`csv.DictWriter` accepte des dictionnaires. Il faut lui dire à l'avance quelles sont les colonnes.
+
+```python
+import csv
+
+contacts = [
+    {"nom": "Dupont", "prenom": "Marie", "email": "marie@exemple.fr"},
+    {"nom": "Martin", "prenom": "Paul", "email": "paul@exemple.fr"},
+]
+
+colonnes = ["nom", "prenom", "email"]
+
+with open("contacts.csv", "w", encoding="utf-8", newline="") as f:
+    redacteur = csv.DictWriter(f, fieldnames=colonnes)
+    redacteur.writeheader()
+    redacteur.writerows(contacts)
+```
+
+`writeheader` écrit la première ligne avec les noms de colonnes.
+
+## Exemple
+
+Voici un programme complet qui crée un fichier de contacts, puis le relit.
+
+```python
+import csv
+
+contacts = [
+    {"nom": "Dupont", "prenom": "Marie", "email": "marie@exemple.fr"},
+    {"nom": "Martin", "prenom": "Paul", "email": "paul@exemple.fr"},
+    {"nom": "Durand", "prenom": "Sophie", "email": "sophie@exemple.fr"},
+]
+
+colonnes = ["nom", "prenom", "email"]
+
+with open("contacts.csv", "w", encoding="utf-8", newline="") as f:
+    redacteur = csv.DictWriter(f, fieldnames=colonnes)
+    redacteur.writeheader()
+    redacteur.writerows(contacts)
+
+print("Fichier enregistré.")
+
+with open("contacts.csv", "r", encoding="utf-8", newline="") as f:
+    lecteur = csv.DictReader(f)
+    for ligne in lecteur:
+        print(f"{ligne['prenom']} {ligne['nom']} : {ligne['email']}")
+
+# Sortie:
+# Fichier enregistré.
+# Marie Dupont : marie@exemple.fr
+# Paul Martin : paul@exemple.fr
+# Sophie Durand : sophie@exemple.fr
+```
+
+## À retenir
+
+- Un CSV stocke un tableau, une ligne par ligne, des virgules entre les colonnes.
+- Importez le module avec `import csv`.
+- Ouvrez le fichier avec `newline=""` et `encoding="utf-8"`.
+- `csv.reader` et `csv.writer` travaillent avec des listes.
+- `csv.DictReader` et `csv.DictWriter` travaillent avec des dictionnaires, plus pratiques quand il y a beaucoup de colonnes.

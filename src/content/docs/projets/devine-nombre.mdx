@@ -1,0 +1,144 @@
+---
+title: Devine le nombre
+description: Un petit jeu en console où le joueur devine un nombre tiré au hasard.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Pour ce projet, on va construire un petit jeu de devinette. Court, amusant, et parfait pour mettre en pratique les boucles et le hasard.
+
+## L'objectif
+
+L'ordinateur choisit un nombre entre 1 et 100. Le joueur essaie de le deviner. À chaque essai, le programme indique si le nombre cible est plus grand ou plus petit. Quand le joueur trouve la bonne réponse, on affiche le nombre d'essais.
+
+## Le plan
+
+- Tirer un nombre au hasard avec `random.randint`.
+- Boucler jusqu'à ce que le joueur trouve.
+- Lire la réponse au clavier, et la convertir en nombre.
+- Gérer les saisies invalides avec `try / except`.
+- Compter les essais et féliciter le joueur à la fin.
+
+## Le code
+
+Commençons par le tirage. La fonction `random.randint(1, 100)` renvoie un entier entre 1 et 100, bornes incluses.
+
+```python
+import random
+
+cible = random.randint(1, 100)
+```
+
+<Aside type="note">
+À chaque exécution du programme, `random.randint` choisit un nombre différent. C'est exactement ce qu'il nous faut.
+</Aside>
+
+Ensuite, la boucle de jeu. On veut continuer tant que le joueur n'a pas trouvé. Une boucle `while True` avec un `break` quand la réponse est correcte fait très bien le travail.
+
+```python
+essais = 0
+while True:
+    reponse = input("Devine le nombre entre 1 et 100 : ")
+    try:
+        proposition = int(reponse)
+    except ValueError:
+        print("Ce n'est pas un nombre entier. Réessaie.")
+        continue
+
+    essais += 1
+
+    if proposition < cible:
+        print("Plus grand.")
+    elif proposition > cible:
+        print("Plus petit.")
+    else:
+        print(f"Bravo, trouvé en {essais} essais.")
+        break
+```
+
+<Aside type="tip">
+Le mot-clé `continue` saute directement à l'itération suivante de la boucle. C'est pratique pour ignorer une entrée invalide sans la compter comme un essai.
+</Aside>
+
+Voici le script complet, organisé avec une petite fonction principale.
+
+```python
+import random
+
+
+def jouer():
+    """Lance une partie de devinette.
+
+    L'ordinateur tire un nombre entre 1 et 100. Le joueur a un nombre
+    illimité d'essais. Le programme indique « plus grand » ou « plus petit »
+    après chaque tentative et compte les essais.
+    """
+    cible = random.randint(1, 100)
+    essais = 0
+
+    print("J'ai choisi un nombre entre 1 et 100. À toi.")
+
+    while True:
+        reponse = input("Ton essai : ")
+        try:
+            proposition = int(reponse)
+        except ValueError:
+            print("Ce n'est pas un nombre entier. Réessaie.")
+            continue
+
+        if proposition < 1 or proposition > 100:
+            print("Le nombre doit être entre 1 et 100.")
+            continue
+
+        essais += 1
+
+        if proposition < cible:
+            print("Plus grand.")
+        elif proposition > cible:
+            print("Plus petit.")
+        else:
+            print(f"Bravo, trouvé en {essais} essais.")
+            return essais
+
+
+def main():
+    """Boucle principale. Permet de rejouer plusieurs parties."""
+    while True:
+        jouer()
+        encore = input("\nUne autre partie ? (o/n) : ").strip().lower()
+        if encore != "o":
+            print("Merci d'avoir joué.")
+            break
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Exemple de partie :
+
+```
+J'ai choisi un nombre entre 1 et 100. À toi.
+Ton essai : 50
+Plus grand.
+Ton essai : 75
+Plus petit.
+Ton essai : 62
+Plus grand.
+Ton essai : 70
+Bravo, trouvé en 4 essais.
+```
+
+## Pour aller plus loin
+
+- Ajouter une difficulté. Facile entre 1 et 20, difficile entre 1 et 1000.
+- Limiter le nombre d'essais. Si le joueur dépasse, il perd.
+- Sauvegarder le meilleur score dans un fichier `record.txt`.
+
+## À retenir
+
+- `random.randint(a, b)` tire un entier entre `a` et `b`, inclus.
+- `while True` avec `break` est parfait quand on ne sait pas combien d'essais il faudra.
+- `try / except ValueError` protège contre les saisies qui ne sont pas des nombres.
+- `continue` saute à l'itération suivante sans exécuter le reste du bloc.
+- Compter les essais avec une simple variable `essais += 1` suffit.

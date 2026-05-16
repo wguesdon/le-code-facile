@@ -1,0 +1,101 @@
+---
+title: Documentation et docstrings
+description: Expliquer ce que fait une fonction directement dans le code.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Une fonction bien écrite mérite une petite notice. En Python, cette notice s'écrit directement à l'intérieur de la fonction. On l'appelle une **docstring**.
+
+## Le concept
+
+Quand vous écrivez une fonction aujourd'hui, vous savez exactement ce qu'elle fait. Mais dans six mois, ou pour quelqu'un d'autre qui lit votre code, ce sera moins évident. Une docstring sert à expliquer.
+
+Une docstring est une chaîne de caractères placée **juste sous la ligne** `def`. Elle est entourée de **triple guillemets**, ce qui permet d'écrire plusieurs lignes facilement.
+
+Python reconnaît cette chaîne comme la documentation officielle de la fonction. Les éditeurs comme VSCode l'affichent quand vous survolez le nom de la fonction avec la souris. La fonction `help()` la montre aussi.
+
+## Exemple
+
+Voici une fonction simple avec sa docstring.
+
+```python
+def saluer(prenom):
+    """Affiche un message de bienvenue pour la personne donnée."""
+    print("Bonjour", prenom)
+
+saluer("Alice")
+help(saluer)
+# Sortie: Bonjour Alice
+# Sortie: Help on function saluer in module __main__:
+# Sortie:
+# Sortie: saluer(prenom)
+# Sortie:     Affiche un message de bienvenue pour la personne donnée.
+```
+
+La docstring se lit comme une phrase courte. Elle décrit ce que fait la fonction, pas comment elle le fait.
+
+## Une docstring plus complète
+
+Pour une fonction un peu plus riche, on peut décrire les paramètres et la valeur de retour.
+
+```python
+def prix_ttc(prix_ht, taux_tva=20):
+    """Calcule le prix TTC à partir du prix HT.
+
+    Args:
+        prix_ht: Le prix hors taxes, en euros.
+        taux_tva: Le taux de TVA en pourcentage. 20 par défaut.
+
+    Returns:
+        Le prix TTC, en euros.
+    """
+    return prix_ht * (1 + taux_tva / 100)
+
+print(prix_ttc(100))
+print(prix_ttc(100, taux_tva=5.5))
+# Sortie: 120.0
+# Sortie: 105.5
+```
+
+La structure ici suit le **style Google**. Ce n'est pas une obligation. Plusieurs styles existent, comme NumPy ou reStructuredText. L'important est de rester cohérent à l'intérieur d'un même projet.
+
+<Aside type="note">
+En tant que débutant, ne vous laissez pas intimider par les styles. Une simple phrase claire suffit largement pour vos premières fonctions. La forme structurée devient utile quand la fonction grossit ou quand plusieurs personnes lisent le code.
+</Aside>
+
+## Voir la docstring depuis VSCode
+
+Dans VSCode, posez votre souris sur le nom de la fonction. Une petite bulle apparaît avec la docstring. Vous n'avez pas besoin de revenir au code de la fonction pour vous rappeler ce qu'elle fait.
+
+C'est très pratique quand on utilise des bibliothèques. Tapez `len(`, survolez `len`, et vous verrez immédiatement à quoi elle sert.
+
+## En pratique
+
+Quelques conseils pour écrire de bonnes docstrings.
+
+**Commencez par un verbe à l'infinitif.** « Calcule le prix », « Affiche un message », « Renvoie la moyenne ». La phrase décrit l'action de la fonction.
+
+**Restez court à la première ligne.** Une seule phrase qui résume. Si vous avez besoin de plus, sautez une ligne et continuez en dessous.
+
+**Décrivez l'intention, pas l'implémentation.** Dites ce que la fonction fait du point de vue de celui qui l'utilise. Pas la mécanique interne. Si vous changez la mécanique plus tard, la docstring restera juste.
+
+```python
+def moyenne(notes):
+    """Renvoie la moyenne d'une liste de notes."""
+    return sum(notes) / len(notes)
+```
+
+Pas besoin de plus pour une fonction aussi simple.
+
+<Aside type="tip">
+Prenez l'habitude d'écrire une docstring dès que vous créez une fonction. Une ligne suffit pour commencer. Votre futur vous, dans six mois, vous remerciera.
+</Aside>
+
+## À retenir
+
+- Une docstring s'écrit juste sous la ligne `def`, entre triple guillemets.
+- La première ligne est une phrase courte qui résume ce que fait la fonction.
+- Pour aller plus loin, décrivez les paramètres et la valeur de retour.
+- `help(ma_fonction)` affiche la docstring. VSCode la montre au survol.
+- Le style Google est une option parmi d'autres. Restez cohérent dans un projet.

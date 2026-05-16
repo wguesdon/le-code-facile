@@ -1,0 +1,132 @@
+---
+title: Nombres et opérations
+description: Faire des calculs simples en Python.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Python est une excellente calculatrice. Voyons comment réaliser des calculs simples.
+
+## Le concept
+
+Python distingue deux types de nombres :
+
+- `int` pour les nombres entiers, comme `3`, `42`, `1000`.
+- `float` pour les nombres à virgule, comme `1.65`, `12.50`, `3.14`.
+
+Attention, en Python on utilise le point et non la virgule pour séparer la partie décimale.
+
+```python
+prix = 12.50
+quantite = 3
+```
+
+## Les opérateurs
+
+Voici les opérateurs de base.
+
+| Opérateur | Rôle                    | Exemple   | Résultat |
+|-----------|-------------------------|-----------|----------|
+| `+`       | Addition                | `3 + 4`   | `7`      |
+| `-`       | Soustraction            | `10 - 6`  | `4`      |
+| `*`       | Multiplication          | `5 * 2`   | `10`     |
+| `/`       | Division                | `7 / 2`   | `3.5`    |
+| `//`      | Division entière        | `7 // 2`  | `3`      |
+| `%`       | Reste de la division    | `7 % 2`   | `1`      |
+| `**`      | Puissance               | `2 ** 3`  | `8`      |
+
+## Exemple
+
+Un panier de courses simple.
+
+```python
+prix_pomme = 0.80
+quantite_pommes = 6
+prix_total = prix_pomme * quantite_pommes
+
+print(prix_total)
+# Sortie: 4.8
+```
+
+Et un calcul un peu plus complet.
+
+```python
+prix_unitaire = 12.50
+quantite = 3
+remise = 5.00
+
+prix_final = prix_unitaire * quantite - remise
+
+print(prix_final)
+# Sortie: 32.5
+```
+
+## Ordre des opérations
+
+Python suit les règles habituelles. La multiplication et la division passent avant l'addition et la soustraction. Les parenthèses permettent de forcer l'ordre.
+
+```python
+resultat = 2 + 3 * 4
+print(resultat)
+# Sortie: 14
+
+resultat = (2 + 3) * 4
+print(resultat)
+# Sortie: 20
+```
+
+## Arrondir avec `round()`
+
+La fonction `round()` arrondit un nombre. On peut préciser le nombre de décimales.
+
+```python
+prix = 4.5678
+
+print(round(prix))
+# Sortie: 5
+
+print(round(prix, 2))
+# Sortie: 4.57
+```
+
+## En pratique
+
+Calculons une moyenne.
+
+```python
+note_1 = 14
+note_2 = 16
+note_3 = 12
+
+moyenne = (note_1 + note_2 + note_3) / 3
+
+print(moyenne)
+# Sortie: 14.0
+
+print(round(moyenne, 1))
+# Sortie: 14.0
+```
+
+Le reste avec `%` est utile pour savoir si un nombre est pair ou impair.
+
+```python
+nombre = 7
+reste = nombre % 2
+
+print(reste)
+# Sortie: 1
+```
+
+Si le reste est `0`, le nombre est pair. Sinon, il est impair.
+
+<Aside type="note">
+Python a une petite particularité avec les nombres à virgule. Par exemple, `0.1 + 0.2` ne donne pas exactement `0.3`, mais `0.30000000000000004`. C'est un comportement classique de tous les langages de programmation. Pour les besoins de tous les jours, on peut ignorer ce détail et utiliser `round()` quand l'affichage doit être propre.
+</Aside>
+
+## À retenir
+
+- Les entiers sont des `int`, les nombres à virgule sont des `float`.
+- Les opérateurs principaux sont `+`, `-`, `*`, `/`, `//`, `%`, `**`.
+- Les parenthèses permettent de contrôler l'ordre des calculs.
+- `round(nombre, n)` arrondit à `n` décimales.
+- Les `float` ont parfois de toutes petites imprécisions. C'est normal.

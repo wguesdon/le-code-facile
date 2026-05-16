@@ -1,0 +1,121 @@
+---
+title: Paramètres et arguments
+description: Faire varier le comportement d'une fonction selon ce qu'on lui donne.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Jusqu'ici nos fonctions faisaient toujours exactement la même chose. Nous allons maintenant leur passer des informations pour qu'elles s'adaptent.
+
+## Le concept
+
+Reprenons la recette du gâteau. Vous pouvez la suivre avec du yaourt nature, du yaourt à la vanille, ou du yaourt aux fruits. Le résultat final change. La recette, elle, reste la même. Le yaourt joue ici le rôle d'une variable.
+
+Une fonction en Python fonctionne pareil. Vous pouvez l'écrire de façon à accepter des informations différentes à chaque appel. Ces informations s'appellent des **paramètres** quand on les déclare, et des **arguments** quand on les donne au moment de l'appel.
+
+La distinction est simple.
+
+Un **paramètre** est le nom écrit entre parenthèses dans la définition. C'est une étiquette qui dit : « la fonction attend une information ici, je l'appellerai comme ça à l'intérieur ».
+
+Un **argument** est la valeur que vous fournissez quand vous appelez la fonction. C'est le yaourt à la vanille que vous mettez vraiment dans le saladier.
+
+## Exemple
+
+Voici une fonction qui salue une personne par son prénom.
+
+```python
+def saluer(prenom):
+    print("Bonjour", prenom)
+
+saluer("Alice")
+saluer("Bob")
+# Sortie: Bonjour Alice
+# Sortie: Bonjour Bob
+```
+
+Dans la définition, `prenom` est le paramètre. Dans les appels, `"Alice"` et `"Bob"` sont les arguments. La même fonction donne deux résultats différents selon ce qu'on lui passe.
+
+Une fonction peut accepter plusieurs paramètres. Il suffit de les séparer par des virgules.
+
+```python
+def saluer(prenom, ville):
+    print("Bonjour", prenom, "de", ville)
+
+saluer("Alice", "Paris")
+# Sortie: Bonjour Alice de Paris
+```
+
+## Arguments positionnels et nommés
+
+Par défaut, Python fait correspondre les arguments aux paramètres dans l'ordre. Le premier argument va au premier paramètre, le deuxième au deuxième, et ainsi de suite. On parle alors d'**arguments positionnels**.
+
+```python
+def presenter(prenom, age):
+    print(prenom, "a", age, "ans")
+
+presenter("Alice", 30)
+# Sortie: Alice a 30 ans
+```
+
+Si vous inversez l'ordre, le résultat n'a plus de sens.
+
+```python
+presenter(30, "Alice")
+# Sortie: 30 a Alice ans
+```
+
+Pour éviter ce piège, vous pouvez nommer les arguments au moment de l'appel. On parle alors d'**arguments nommés** ou par mot-clé.
+
+```python
+presenter(age=30, prenom="Alice")
+# Sortie: Alice a 30 ans
+```
+
+L'ordre n'a plus d'importance. Le code devient aussi plus lisible, surtout quand une fonction a beaucoup de paramètres.
+
+## Valeurs par défaut
+
+Vous pouvez donner une valeur par défaut à un paramètre. La fonction l'utilisera si l'appelant ne fournit pas d'argument à cette place.
+
+```python
+def saluer(prenom="ami"):
+    print("Bonjour", prenom)
+
+saluer("Alice")
+saluer()
+# Sortie: Bonjour Alice
+# Sortie: Bonjour ami
+```
+
+Quand on appelle `saluer()` sans argument, Python utilise la valeur par défaut `"ami"`.
+
+<Aside type="tip">
+Les paramètres avec une valeur par défaut doivent toujours venir **après** les paramètres sans valeur par défaut, dans la définition. Sinon Python signale une erreur.
+</Aside>
+
+## En pratique
+
+Voici un exemple un peu plus parlant, une fonction qui calcule le prix d'un produit avec une éventuelle remise.
+
+```python
+def prix_final(prix, remise=0):
+    montant_remise = prix * remise / 100
+    return prix - montant_remise
+
+print(prix_final(100))
+print(prix_final(100, 20))
+print(prix_final(prix=50, remise=10))
+# Sortie: 100.0
+# Sortie: 80.0
+# Sortie: 45.0
+```
+
+La fonction marche dans les trois cas. Sans remise, avec une remise positionnelle, et avec des arguments nommés.
+
+## À retenir
+
+- Un paramètre est déclaré dans la définition. Un argument est fourni à l'appel.
+- Les arguments positionnels suivent l'ordre des paramètres.
+- Les arguments nommés permettent d'écrire `nom=valeur` à l'appel.
+- Une valeur par défaut rend le paramètre facultatif.
+- Les paramètres avec valeur par défaut viennent à la fin de la liste.

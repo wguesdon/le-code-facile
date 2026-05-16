@@ -1,0 +1,88 @@
+---
+title: Définir une fonction
+description: Créer une mini-recette de code réutilisable.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Une fonction est une petite recette de code que vous écrivez une fois et que vous pouvez réutiliser autant de fois que vous voulez.
+
+## Le concept
+
+Imaginez un livre de cuisine. Vous y notez la recette du gâteau au yaourt. La recette porte un nom. Elle contient une liste d'étapes. Le jour où vous avez envie d'un gâteau, vous ouvrez le livre, vous suivez la recette. Vous n'avez pas besoin de tout réinventer.
+
+En Python, une fonction joue exactement ce rôle. Vous donnez un nom à une suite d'instructions. Ensuite, à chaque fois que vous voulez exécuter ces instructions, il vous suffit d'appeler la fonction par son nom.
+
+Les fonctions existent pour deux grandes raisons.
+
+D'abord, la **réutilisation**. Si vous devez saluer l'utilisateur à dix endroits différents dans votre programme, vous n'allez pas réécrire dix fois les mêmes lignes. Vous écrivez la recette une fois, puis vous l'appelez dix fois.
+
+Ensuite, la **lisibilité**. Un code découpé en fonctions se lit comme une table des matières. Au lieu de cinquante lignes mises bout à bout, vous voyez des noms parlants comme `saluer`, `calculer_total`, ou `afficher_resultat`. Vous comprenez beaucoup plus vite ce que fait le programme.
+
+## Exemple
+
+Voici notre toute première fonction. Elle affiche un message de bienvenue.
+
+```python
+def saluer():
+    print("Bonjour")
+    print("Bienvenue dans Python")
+
+saluer()
+# Sortie: Bonjour
+# Sortie: Bienvenue dans Python
+```
+
+Plusieurs choses se passent ici.
+
+Le mot `def` signale à Python que vous définissez une nouvelle fonction. Ensuite vient le nom de la fonction, ici `saluer`. Les parenthèses suivent le nom. Pour l'instant elles sont vides, nous y reviendrons plus tard. La ligne se termine par deux points.
+
+En dessous, on trouve le **corps** de la fonction. Ce sont les lignes qui décrivent ce que la fonction fait. Chaque ligne du corps est décalée vers la droite, avec quatre espaces. Ce décalage s'appelle l'indentation. Il indique à Python que ces lignes appartiennent à la fonction.
+
+Tant que vous n'avez pas écrit `saluer()`, rien ne s'affiche. Définir une recette ne la cuit pas. Il faut **appeler** la fonction pour qu'elle s'exécute. L'appel se fait en écrivant son nom suivi de parenthèses.
+
+## En pratique
+
+Vous pouvez appeler une fonction autant de fois que nécessaire.
+
+```python
+def encourager():
+    print("Tu fais du bon travail")
+
+encourager()
+encourager()
+encourager()
+# Sortie: Tu fais du bon travail
+# Sortie: Tu fais du bon travail
+# Sortie: Tu fais du bon travail
+```
+
+Trois lignes d'appel, trois affichages. La fonction n'a été écrite qu'une seule fois.
+
+<Aside type="tip">
+Choisissez des noms de fonctions qui décrivent ce qu'elles font. Un verbe à l'infinitif marche très bien : `saluer`, `calculer`, `afficher`, `envoyer`. Évitez les noms vagues comme `truc` ou `faire_des_choses`.
+</Aside>
+
+Une fonction doit être définie **avant** d'être appelée. Si vous écrivez l'appel en haut du fichier et la définition en bas, Python ne saura pas encore ce que veut dire ce nom.
+
+```python
+def dire_bonjour():
+    print("Bonjour")
+
+dire_bonjour()
+# Sortie: Bonjour
+```
+
+L'indentation est essentielle. Toutes les lignes du corps doivent être indentées de la même façon. Si vous mélangez des espaces et des tabulations, ou si vous oubliez d'indenter, Python signalera une erreur.
+
+<Aside type="note">
+VSCode indente automatiquement après les deux points. Vous n'avez en général pas à vous en occuper. Restez juste à quatre espaces, qui est la convention en Python.
+</Aside>
+
+## À retenir
+
+- Une fonction est une recette de code à laquelle on donne un nom.
+- On définit une fonction avec `def nom_de_la_fonction():`.
+- Le corps de la fonction est indenté de quatre espaces.
+- Définir la fonction ne l'exécute pas. Il faut l'appeler avec `nom_de_la_fonction()`.
+- Les fonctions servent à réutiliser du code et à rendre les programmes plus lisibles.

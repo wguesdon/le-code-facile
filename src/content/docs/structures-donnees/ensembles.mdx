@@ -1,0 +1,89 @@
+---
+title: Les ensembles
+description: Une collection sans doublons.
+---
+
+Un ensemble, ou `set` en Python, regroupe des valeurs uniques, sans ordre précis.
+
+## Le concept
+
+Un ensemble s'écrit entre accolades, comme un dictionnaire, mais sans deux points. On peut aussi le créer à partir d'une liste avec `set()`.
+
+Deux règles importantes : pas de doublons, pas d'ordre garanti.
+
+```python
+fruits = {"pomme", "banane", "poire"}
+print(fruits)
+# Sortie: {'pomme', 'banane', 'poire'}
+
+doublons = set(["pomme", "banane", "pomme", "poire"])
+print(doublons)
+# Sortie: {'pomme', 'banane', 'poire'}
+```
+
+## Exemple
+
+On ajoute ou on retire des éléments avec `.add()` et `.remove()`.
+
+```python
+fruits = {"pomme", "banane"}
+
+fruits.add("poire")
+print(fruits)
+# Sortie: {'pomme', 'banane', 'poire'}
+
+fruits.add("pomme")
+print(fruits)
+# Sortie: {'pomme', 'banane', 'poire'}
+
+fruits.remove("banane")
+print(fruits)
+# Sortie: {'pomme', 'poire'}
+```
+
+## En pratique
+
+Les ensembles permettent des opérations très utiles entre deux collections.
+
+```python
+panier_alice = {"pain", "lait", "oeufs"}
+panier_bob = {"lait", "fromage", "oeufs"}
+
+print(panier_alice | panier_bob)
+# Sortie: {'pain', 'lait', 'oeufs', 'fromage'}
+
+print(panier_alice & panier_bob)
+# Sortie: {'lait', 'oeufs'}
+
+print(panier_alice - panier_bob)
+# Sortie: {'pain'}
+```
+
+Les mêmes opérations s'écrivent aussi en toutes lettres.
+
+```python
+panier_alice = {"pain", "lait", "oeufs"}
+panier_bob = {"lait", "fromage", "oeufs"}
+
+print(panier_alice.union(panier_bob))
+print(panier_alice.intersection(panier_bob))
+print(panier_alice.difference(panier_bob))
+```
+
+Un cas typique : retirer les doublons d'une liste.
+
+```python
+notes = [12, 15, 12, 18, 15, 9]
+notes_uniques = list(set(notes))
+
+print(notes_uniques)
+# Sortie: [9, 12, 15, 18]
+```
+
+## À retenir
+
+- Un ensemble est une collection sans doublons et sans ordre.
+- On l'écrit `{1, 2, 3}` ou `set([1, 2, 2, 3])`.
+- `.add()` ajoute un élément, `.remove()` en retire un.
+- Les opérations `union`, `intersection`, `difference` comparent deux ensembles.
+- Pour obtenir les valeurs uniques d'une liste, on la convertit en ensemble.

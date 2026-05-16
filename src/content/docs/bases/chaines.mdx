@@ -1,0 +1,173 @@
+---
+title: Chaînes de caractères
+description: Manipuler du texte en Python.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Une chaîne de caractères, c'est du texte. C'est un type très utilisé en Python.
+
+## Le concept
+
+Pour écrire du texte, on entoure les caractères avec des guillemets. Python accepte trois formes.
+
+```python
+message_1 = 'Bonjour'
+message_2 = "Bonjour"
+message_3 = """Bonjour
+sur plusieurs
+lignes"""
+```
+
+Les guillemets simples et doubles donnent le même résultat. Les triples guillemets servent pour les textes sur plusieurs lignes.
+
+<Aside type="tip">
+Utiliser des guillemets doubles permet d'écrire facilement une apostrophe dans le texte, comme dans `"l'école"`.
+</Aside>
+
+## Concaténation et répétition
+
+On peut coller deux chaînes avec l'opérateur `+`. On parle de concaténation.
+
+```python
+prenom = "Alice"
+nom = "Martin"
+nom_complet = prenom + " " + nom
+
+print(nom_complet)
+# Sortie: Alice Martin
+```
+
+L'opérateur `*` répète une chaîne.
+
+```python
+ligne = "-" * 10
+print(ligne)
+# Sortie: ----------
+```
+
+## Les f-strings
+
+Pour insérer une variable dans une chaîne, le plus simple est d'utiliser une f-string. Il suffit de placer un `f` avant les guillemets.
+
+```python
+prenom = "Alice"
+age = 30
+
+message = f"Bonjour {prenom}, tu as {age} ans."
+
+print(message)
+# Sortie: Bonjour Alice, tu as 30 ans.
+```
+
+On peut aussi placer des calculs entre les accolades.
+
+```python
+prix = 12.50
+quantite = 3
+
+resume = f"Total: {prix * quantite} euros"
+
+print(resume)
+# Sortie: Total: 37.5 euros
+```
+
+## Exemple
+
+Un petit message de bienvenue.
+
+```python
+prenom = "Sophie"
+ville = "Lyon"
+
+bienvenue = f"Bonjour {prenom}, bienvenue à {ville}."
+
+print(bienvenue)
+# Sortie: Bonjour Sophie, bienvenue à Lyon.
+```
+
+## Méthodes utiles
+
+Une chaîne possède plein de petites fonctions appelées méthodes. On les utilise avec un point.
+
+```python
+texte = "  Bonjour Alice  "
+
+print(texte.upper())
+# Sortie:   BONJOUR ALICE  
+
+print(texte.lower())
+# Sortie:   bonjour alice  
+
+print(texte.strip())
+# Sortie: Bonjour Alice
+
+print(texte.replace("Alice", "Sophie"))
+# Sortie:   Bonjour Sophie  
+```
+
+La méthode `.split()` coupe la chaîne en morceaux.
+
+```python
+phrase = "pomme,poire,banane"
+fruits = phrase.split(",")
+
+print(fruits)
+# Sortie: ['pomme', 'poire', 'banane']
+```
+
+## Connaître la longueur avec `len()`
+
+La fonction `len()` donne le nombre de caractères.
+
+```python
+prenom = "Alice"
+print(len(prenom))
+# Sortie: 5
+```
+
+## Lire un caractère ou une partie
+
+Chaque caractère a un numéro de position, appelé index. Le premier caractère est à la position `0`.
+
+```python
+mot = "Bonjour"
+
+print(mot[0])
+# Sortie: B
+
+print(mot[1])
+# Sortie: o
+```
+
+Pour récupérer une partie, on utilise deux nombres séparés par `:`. Le premier est inclus, le second est exclu.
+
+```python
+mot = "Bonjour"
+
+print(mot[0:3])
+# Sortie: Bon
+
+print(mot[4:7])
+# Sortie: our
+```
+
+## En pratique
+
+Nettoyer un nom saisi par un utilisateur.
+
+```python
+saisie = "  alice MARTIN  "
+propre = saisie.strip().lower()
+
+print(propre)
+# Sortie: alice martin
+```
+
+## À retenir
+
+- Une chaîne s'écrit entre guillemets simples, doubles ou triples.
+- `+` colle deux chaînes, `*` les répète.
+- Les f-strings, comme `f"Bonjour {prenom}"`, insèrent des variables dans le texte.
+- Les méthodes `.upper()`, `.lower()`, `.strip()`, `.replace()` et `.split()` sont très utiles.
+- `len()` donne la longueur. Le premier caractère est à l'index `0`.

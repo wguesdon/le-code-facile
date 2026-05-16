@@ -1,0 +1,77 @@
+---
+title: Pourquoi des classes
+description: Regrouper des données et des comportements dans un même objet.
+---
+
+Jusqu'ici, nous avons utilisé des dictionnaires pour représenter des choses du quotidien. Les classes offrent une façon plus claire de faire la même chose.
+
+## Le concept
+
+Imaginez un contact dans votre téléphone. Il a un nom, un âge, une adresse email. Avec un dictionnaire, cela ressemble à ceci :
+
+```python
+contact = {"nom": "Alice", "age": 30, "email": "alice@exemple.fr"}
+```
+
+Cela fonctionne. Mais il y a un souci. Les actions liées au contact, comme afficher une carte de visite ou envoyer un message, vivent ailleurs dans le code. Les données sont d'un côté, les comportements de l'autre.
+
+Une classe permet de mettre tout au même endroit. Les données et les actions forment un seul ensemble. On parle alors d'objet.
+
+Une analogie simple : la classe est le moule à gâteau. L'objet est le gâteau. Avec un seul moule, vous pouvez préparer autant de gâteaux que vous voulez. Chaque gâteau est différent, mais ils suivent tous le même modèle.
+
+## Exemple
+
+Voici la version dictionnaire, puis la version classe. Ne vous inquiétez pas de la syntaxe pour l'instant. Nous la verrons dans les pages suivantes.
+
+```python
+# Version dictionnaire
+contact = {"nom": "Alice", "age": 30}
+
+def saluer(c):
+    return "Bonjour, je suis " + c["nom"]
+
+print(saluer(contact))
+# Sortie: Bonjour, je suis Alice
+```
+
+```python
+# Version classe
+class Contact:
+    def __init__(self, nom, age):
+        self.nom = nom
+        self.age = age
+
+    def saluer(self):
+        return "Bonjour, je suis " + self.nom
+
+alice = Contact("Alice", 30)
+print(alice.saluer())
+# Sortie: Bonjour, je suis Alice
+```
+
+Dans la version classe, la fonction `saluer` appartient au contact. On l'appelle directement sur l'objet avec `alice.saluer()`. Tout est rangé au même endroit.
+
+## En pratique
+
+Vous utilisez déjà des objets sans le savoir. Une chaîne de caractères est un objet. Une liste aussi.
+
+```python
+nom = "Alice"
+print(nom.upper())
+# Sortie: ALICE
+
+courses = ["pain", "lait"]
+courses.append("beurre")
+print(courses)
+# Sortie: ['pain', 'lait', 'beurre']
+```
+
+`upper` et `append` sont des actions attachées aux objets. C'est exactement le principe des classes.
+
+## À retenir
+
+- Une classe regroupe des données et des comportements.
+- Un objet est une instance créée à partir d'une classe.
+- La classe est le moule, l'objet est le gâteau.
+- Les listes et les chaînes sont déjà des objets en Python.
+- Cela rend le code plus organisé et plus facile à lire.

@@ -1,0 +1,83 @@
+---
+title: Définir une classe
+description: Créer son premier modèle d'objet.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Une classe se définit avec le mot-clé `class`. C'est la première étape pour créer vos propres objets.
+
+## Le concept
+
+Pour définir une classe, on écrit `class`, suivi du nom de la classe, puis deux points. Le nom commence par une majuscule. C'est une convention que tous les développeurs Python suivent.
+
+À l'intérieur, on met le contenu de la classe. Si on n'a rien à mettre pour le moment, on utilise `pass`. Ce mot-clé veut dire « rien à faire ici ».
+
+Pour créer un objet à partir de la classe, on appelle la classe comme une fonction. On dit qu'on instancie la classe.
+
+## Exemple
+
+Voici la classe la plus simple possible :
+
+```python
+class Contact:
+    pass
+
+c = Contact()
+print(c)
+# Sortie: <__main__.Contact object at 0x7f8b1c0d4e50>
+```
+
+On a créé un objet `c` de type `Contact`. Il est vide pour l'instant. L'affichage par défaut n'est pas très joli. Nous verrons plus tard comment l'améliorer.
+
+On peut ajouter des informations à l'objet en cours de route :
+
+```python
+class Contact:
+    pass
+
+c = Contact()
+c.nom = "Alice"
+c.age = 30
+
+print(c.nom)
+# Sortie: Alice
+print(c.age)
+# Sortie: 30
+```
+
+Cela fonctionne. Mais ce n'est pas la bonne méthode. Imaginez que vous créiez dix contacts. Vous devriez écrire les attributs à la main pour chacun. C'est long et source d'erreurs.
+
+<Aside type="tip">
+La bonne façon est d'utiliser une méthode spéciale appelée `__init__`. Elle initialise l'objet à sa création. Nous la verrons dans une prochaine page.
+</Aside>
+
+## En pratique
+
+Vous pouvez créer plusieurs objets à partir de la même classe. Chacun est indépendant.
+
+```python
+class Contact:
+    pass
+
+alice = Contact()
+alice.nom = "Alice"
+
+bob = Contact()
+bob.nom = "Bob"
+
+print(alice.nom)
+# Sortie: Alice
+print(bob.nom)
+# Sortie: Bob
+```
+
+`alice` et `bob` sont deux objets séparés. Modifier l'un ne change pas l'autre.
+
+## À retenir
+
+- Une classe se définit avec `class NomDeLaClasse:`.
+- Le nom commence par une majuscule.
+- `pass` signifie « classe vide pour l'instant ».
+- On crée un objet en appelant la classe : `c = Contact()`.
+- Chaque objet est indépendant des autres.

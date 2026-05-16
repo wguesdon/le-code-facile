@@ -1,0 +1,125 @@
+---
+title: Lire un fichier texte
+description: Ouvrir un fichier et lire son contenu.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Un fichier texte sert à conserver des informations sur votre ordinateur. Python sait l'ouvrir et lire ce qui s'y trouve.
+
+## Le concept
+
+Pour lire un fichier, on utilise la fonction `open`. La meilleure façon de faire passe par le mot clé `with`.
+
+```python
+with open("notes.txt", "r", encoding="utf-8") as f:
+    contenu = f.read()
+```
+
+Trois choses à comprendre dans cette ligne :
+
+- `"notes.txt"` est le nom du fichier.
+- `"r"` veut dire "read", soit lire.
+- `encoding="utf-8"` indique comment décoder les caractères, par exemple les accents.
+
+<Aside type="tip">
+Utilisez toujours `encoding="utf-8"`. C'est l'encodage standard, compatible avec le français et la plupart des langues.
+</Aside>
+
+Le bloc `with` est recommandé. Il ferme le fichier tout seul à la fin, même si une erreur se produit. Vous n'avez rien à faire de plus.
+
+## Le dossier de travail
+
+Quand vous écrivez `"notes.txt"`, Python cherche ce fichier dans le dossier où vous lancez votre programme. C'est ce que l'on appelle un chemin relatif. Si le fichier est ailleurs, vous pouvez donner un chemin complet, par exemple `"/home/marie/documents/notes.txt"`.
+
+## Trois façons de lire
+
+Imaginons un fichier `noms.txt` qui contient une liste de prénoms, un par ligne :
+
+```
+Alice
+Bruno
+Camille
+Diego
+```
+
+### Tout lire d'un coup avec `.read()`
+
+```python
+with open("noms.txt", "r", encoding="utf-8") as f:
+    contenu = f.read()
+
+print(contenu)
+# Sortie:
+# Alice
+# Bruno
+# Camille
+# Diego
+```
+
+`.read()` renvoie tout le texte du fichier sous forme d'une seule chaîne.
+
+### Obtenir une liste de lignes avec `.readlines()`
+
+```python
+with open("noms.txt", "r", encoding="utf-8") as f:
+    lignes = f.readlines()
+
+print(lignes)
+# Sortie:
+# ['Alice\n', 'Bruno\n', 'Camille\n', 'Diego\n']
+```
+
+Chaque élément de la liste contient une ligne. Le `\n` final est le saut de ligne. Pour le retirer, utilisez `.strip()`.
+
+```python
+with open("noms.txt", "r", encoding="utf-8") as f:
+    lignes = [ligne.strip() for ligne in f.readlines()]
+
+print(lignes)
+# Sortie:
+# ['Alice', 'Bruno', 'Camille', 'Diego']
+```
+
+### Parcourir ligne par ligne
+
+C'est souvent la méthode la plus simple. On peut boucler directement sur le fichier.
+
+## Exemple
+
+Voici un programme complet qui lit un fichier de prénoms et affiche chaque nom.
+
+```python
+with open("noms.txt", "r", encoding="utf-8") as f:
+    for ligne in f:
+        prenom = ligne.strip()
+        print(f"Bonjour, {prenom} !")
+
+# Sortie:
+# Bonjour, Alice !
+# Bonjour, Bruno !
+# Bonjour, Camille !
+# Bonjour, Diego !
+```
+
+Cette méthode est très pratique pour les gros fichiers. Python lit une ligne à la fois, donc il n'a pas besoin de garder tout le contenu en mémoire.
+
+## En pratique
+
+Si le fichier n'existe pas, Python lève une erreur `FileNotFoundError`. Vous pouvez vérifier le nom du fichier et le dossier dans lequel vous travaillez.
+
+```python
+import os
+print(os.getcwd())
+# Sortie: /home/marie/projets
+```
+
+Cette commande affiche le dossier de travail actuel. Placez votre fichier à cet endroit, ou donnez le chemin complet.
+
+## À retenir
+
+- Ouvrez toujours vos fichiers avec `with open(...) as f:`.
+- Utilisez le mode `"r"` pour lire.
+- Précisez `encoding="utf-8"` pour bien gérer les accents.
+- `.read()` lit tout, `.readlines()` renvoie une liste, boucler ligne par ligne est souvent le plus simple.
+- Le chemin est relatif au dossier de travail.

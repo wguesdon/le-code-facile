@@ -1,0 +1,116 @@
+---
+title: try, except, finally
+description: Réagir proprement quand une erreur se produit.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Plutôt que de laisser le programme s'arrêter, vous pouvez attraper une erreur et décider quoi faire.
+
+## Le concept
+
+Le bloc `try / except` permet de **tenter** une action et de **réagir** si elle échoue.
+
+```python
+try:
+    # code qui peut échouer
+except TypeDErreur:
+    # code exécuté en cas d'erreur
+```
+
+Python lit le bloc `try`. Si tout va bien, il saute le `except`. Si une exception apparaît, il quitte le `try` et exécute le `except` correspondant.
+
+<Aside type="caution">
+Évitez le `except` sans précision. Il attrape tout, y compris des erreurs que vous n'aviez pas prévues. Indiquez toujours le type d'exception attendu.
+</Aside>
+
+Deux clauses optionnelles complètent la structure.
+
+- `else` s'exécute si **aucune** exception n'a été levée.
+- `finally` s'exécute **toujours**, qu'il y ait eu une erreur ou non.
+
+## Exemple
+
+Demandons un âge à l'utilisateur. Tant qu'il ne saisit pas un nombre valide, on recommence.
+
+```python
+while True:
+    reponse = input("Quel âge avez-vous ? ")
+    try:
+        age = int(reponse)
+    except ValueError:
+        print("Ce n'est pas un nombre, réessayez.")
+    else:
+        print(f"Merci, vous avez {age} ans.")
+        break
+    finally:
+        print("Tentative terminée.")
+```
+
+Première exécution, avec une saisie incorrecte puis correcte.
+
+```text
+Quel âge avez-vous ? trente
+Ce n'est pas un nombre, réessayez.
+Tentative terminée.
+Quel âge avez-vous ? 30
+Merci, vous avez 30 ans.
+Tentative terminée.
+```
+
+Observons ce qui se passe.
+
+1. `int(reponse)` échoue sur `"trente"`. Python saute dans le `except`.
+2. Le `else` est ignoré, car il y a eu une erreur.
+3. Le `finally` s'exécute quand même.
+4. La boucle recommence.
+5. À la deuxième tentative, `int("30")` réussit. Le `else` s'exécute et `break` sort de la boucle.
+6. Le `finally` s'exécute encore une fois.
+
+## En pratique
+
+Voici une règle simple. Attrapez **seulement** les exceptions que vous savez gérer.
+
+```python
+try:
+    fichier = open("notes.txt")
+    contenu = fichier.read()
+except FileNotFoundError:
+    print("Le fichier n'existe pas, on part d'une liste vide.")
+    contenu = ""
+```
+
+Ici, on sait quoi faire si le fichier manque. On utilise une chaîne vide par défaut.
+
+À l'inverse, ce code est dangereux.
+
+```python
+try:
+    valeur = int(input("Nombre ? "))
+except:
+    print("Erreur.")
+```
+
+Le `except` nu masque tout, même un `KeyboardInterrupt` quand l'utilisateur appuie sur `Ctrl+C`. On ne sait plus ce qui s'est vraiment passé.
+
+Vous pouvez aussi attraper plusieurs exceptions distinctes.
+
+```python
+try:
+    nombre = int(input("Nombre ? "))
+    resultat = 100 / nombre
+except ValueError:
+    print("Saisie invalide.")
+except ZeroDivisionError:
+    print("Le nombre ne peut pas être zéro.")
+```
+
+Chaque type d'erreur reçoit son propre message, clair pour l'utilisateur.
+
+## À retenir
+
+- `try` contient le code à risque, `except` contient la réaction.
+- Précisez toujours le type d'exception attrapé.
+- `else` s'exécute si aucune erreur n'est apparue.
+- `finally` s'exécute dans tous les cas, parfait pour le nettoyage.
+- Associé à une boucle `while`, ce mécanisme permet de redemander une saisie correcte.

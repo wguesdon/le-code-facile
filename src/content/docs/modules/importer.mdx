@@ -1,0 +1,88 @@
+---
+title: Importer un module
+description: Utiliser du code écrit par d'autres.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Python est livré avec beaucoup d'outils déjà prêts. Pour les utiliser, il suffit de les importer.
+
+## Le concept
+
+Un module, c'est un fichier qui contient des fonctions et des variables prêtes à l'emploi. Par exemple, le module `math` contient des outils mathématiques. Pour y accéder, on utilise le mot clé `import` au début du script.
+
+Une fois le module importé, on appelle ses fonctions en écrivant le nom du module, un point, puis le nom de la fonction.
+
+## Exemple
+
+```python
+import math
+
+resultat = math.sqrt(16)
+print(resultat)
+```
+
+Sortie attendue :
+
+```
+4.0
+```
+
+Ici, `math.sqrt` calcule la racine carrée. On lit cela ainsi : "dans le module math, prends la fonction sqrt".
+
+On peut aussi importer une seule fonction. C'est plus court à écrire ensuite.
+
+```python
+from math import sqrt
+
+print(sqrt(25))
+```
+
+Sortie attendue :
+
+```
+5.0
+```
+
+On peut également donner un surnom au module avec `as`. C'est utile quand le nom est long.
+
+```python
+import math as m
+
+print(m.pi)
+print(m.sqrt(9))
+```
+
+Sortie attendue :
+
+```
+3.141592653589793
+3.0
+```
+
+## En pratique
+
+Évitez la forme `from math import *`. Elle importe tout d'un coup et rend le code difficile à lire. On ne sait plus d'où viennent les fonctions, et certains noms peuvent entrer en conflit avec vos propres variables.
+
+```python
+# À éviter
+from math import *
+
+# À préférer
+import math
+from math import sqrt, pi
+```
+
+<Aside type="tip" title="Où vivent les modules ?">
+Les modules standards comme `math` sont installés avec Python. Vous n'avez rien à faire pour les utiliser. D'autres modules, comme `requests` ou `pandas`, doivent être installés séparément. Nous verrons cela bientôt.
+</Aside>
+
+Pour savoir ce qu'un module contient, vous pouvez taper son nom dans une cellule Jupyter, puis ajouter un point et appuyer sur Tab. VSCode propose alors la liste des fonctions disponibles.
+
+## À retenir
+
+- `import math` charge un module entier, on l'utilise avec `math.fonction()`.
+- `from math import sqrt` charge une seule fonction, on l'appelle directement.
+- `import math as m` donne un surnom au module.
+- Évitez `from module import *`, c'est source de confusion.
+- Les modules standards sont déjà disponibles, d'autres devront être installés.

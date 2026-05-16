@@ -1,0 +1,135 @@
+---
+title: Vérifier votre installation
+description: Quelques commandes simples pour confirmer que tout fonctionne.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Dans cette leçon, vous allez faire trois petits tests pour vérifier que Python, Anaconda et VSCode sont bien installés et qu'ils communiquent ensemble.
+
+## Vue d'ensemble
+
+Nous allons procéder en trois temps. D'abord, vérifier Python et Anaconda dans Anaconda Prompt. Ensuite, créer un dossier de travail. Enfin, écrire et exécuter un mini programme dans VSCode.
+
+Si une étape échoue, ne vous découragez pas. La section **Problèmes courants** à la fin couvre les cas les plus fréquents.
+
+## Étapes
+
+### Vérifier Python et Anaconda
+
+<Steps>
+
+1. Ouvrez le menu Démarrer, tapez `Anaconda Prompt` et cliquez sur le résultat.
+
+2. Dans la fenêtre noire, tapez la commande suivante et appuyez sur Entrée.
+
+   ```powershell
+   python --version
+   ```
+
+   La sortie doit ressembler à ceci.
+
+   ```
+   # Sortie:
+   Python 3.11.7
+   ```
+
+3. Tapez maintenant cette deuxième commande.
+
+   ```powershell
+   conda --version
+   ```
+
+   La sortie doit ressembler à ceci.
+
+   ```
+   # Sortie:
+   conda 24.5.0
+   ```
+
+</Steps>
+
+Les numéros exacts ne sont pas importants. Ce qui compte, c'est que les deux commandes répondent sans erreur.
+
+### Créer un dossier de travail
+
+Avant d'écrire du code, créons un dossier propre pour ranger vos fichiers Python.
+
+<Steps>
+
+1. Ouvrez l'Explorateur de fichiers Windows.
+
+2. Allez dans votre dossier personnel, c'est à dire `C:\Users\VotreNom\`. Remplacez `VotreNom` par votre vrai nom d'utilisateur.
+
+3. Faites un clic droit dans un espace vide, puis **Nouveau**, puis **Dossier**.
+
+4. Nommez le dossier `code-facile`. Le chemin complet sera donc `C:\Users\VotreNom\code-facile\`.
+
+5. Faites un clic droit sur ce nouveau dossier et choisissez **Ouvrir avec Code**. VSCode s'ouvre directement sur ce dossier.
+
+</Steps>
+
+<Aside type="tip">
+Garder tous vos exercices dans un même dossier facilite la vie. Vous savez toujours où chercher vos fichiers.
+</Aside>
+
+### Écrire et exécuter un premier fichier
+
+<Steps>
+
+1. Dans VSCode, regardez le panneau **Explorateur** à gauche. Vous voyez le nom de votre dossier `CODE-FACILE` en haut.
+
+2. Survolez ce nom, puis cliquez sur l'icône **Nouveau fichier**. Elle ressemble à une feuille avec un plus.
+
+3. Tapez le nom du fichier, `test.py`, puis appuyez sur Entrée. L'extension `.py` indique à VSCode que c'est un fichier Python.
+
+4. Le fichier s'ouvre dans l'éditeur. Si VSCode propose d'installer ou de recommander l'extension Python, acceptez. Sinon, c'est qu'elle est déjà installée.
+
+5. Dans l'éditeur, tapez la ligne suivante.
+
+   ```python
+   print("Tout fonctionne")
+   ```
+
+6. Enregistrez le fichier avec Ctrl plus S.
+
+7. Ouvrez le terminal intégré de VSCode. Menu **Terminal**, puis **Nouveau terminal**. Une zone apparaît en bas de la fenêtre.
+
+8. Dans ce terminal, tapez la commande suivante et appuyez sur Entrée.
+
+   ```powershell
+   python test.py
+   ```
+
+</Steps>
+
+## Exemple
+
+La sortie attendue dans le terminal de VSCode est la suivante.
+
+```
+# Sortie:
+Tout fonctionne
+```
+
+Si vous voyez cette phrase, bravo. Votre installation est complète et fonctionnelle. Vous avez écrit votre premier programme Python et vous l'avez exécuté.
+
+## Problèmes courants
+
+- **`python n'est pas reconnu` dans le terminal VSCode.** Cela arrive si Anaconda n'a pas été ajouté au PATH, ce qui est notre cas. Plusieurs solutions.
+  - Utilisez **Anaconda Prompt** plutôt que le terminal VSCode pour lancer vos scripts, en vous plaçant dans votre dossier avec la commande `cd C:\Users\VotreNom\code-facile`.
+  - Ou, dans VSCode, choisissez l'interpréteur Anaconda comme expliqué dans la leçon précédente. VSCode active alors automatiquement l'environnement Anaconda dans son terminal intégré.
+
+- **Le terminal VSCode utilise PowerShell, pas Anaconda Prompt.** Ce n'est pas grave si l'interpréteur Anaconda est sélectionné. VSCode active automatiquement l'environnement `base` dans le terminal. Vous verrez `(base)` au début de la ligne de commande.
+
+- **`python test.py` répond `Aucun fichier de ce type`.** Vous n'êtes pas dans le bon dossier. Tapez `cd C:\Users\VotreNom\code-facile` dans le terminal pour vous y placer, puis relancez la commande.
+
+- **Le terminal montre un autre message que `Tout fonctionne`.** Relisez votre code. Une faute de frappe dans `print` ou des guillemets manquants suffisent à faire échouer le programme.
+
+## À retenir
+
+- `python --version` et `conda --version` confirment qu'Anaconda est en place.
+- Un dossier dédié, par exemple `C:\Users\VotreNom\code-facile`, garde votre travail rangé.
+- Le terminal intégré à VSCode lance vos scripts sans changer de fenêtre.
+- Si `python` n'est pas reconnu, repassez par Anaconda Prompt ou vérifiez votre interpréteur dans VSCode.
+- Voir « Tout fonctionne » s'afficher, c'est le signal que vous êtes prêt à coder.

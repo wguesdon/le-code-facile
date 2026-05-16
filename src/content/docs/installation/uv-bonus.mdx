@@ -1,0 +1,136 @@
+---
+title: "Bonus : installer uv"
+description: Une alternative moderne et rapide à Anaconda, pour plus tard.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Dans cette leçon bonus, vous allez découvrir **uv**, une alternative moderne à Anaconda. Vous pouvez la sauter en première lecture.
+
+## Vue d'ensemble
+
+uv est un outil récent, écrit en Rust, qui sert à installer Python et à gérer les paquets. Il a deux qualités principales. Il est très rapide. Il est très simple à utiliser pour des projets multiples.
+
+<Aside type="note">
+Cette leçon est optionnelle. Si Anaconda vous suffit, n'installez pas uv tout de suite. Vous pourrez toujours y revenir plus tard. Avoir Anaconda **et** uv sur la même machine ne pose pas de problème.
+</Aside>
+
+## Quand préférer uv
+
+Anaconda est parfait pour démarrer. Mais à mesure que vous progressez, vous pourriez avoir envie de uv pour plusieurs raisons.
+
+- **La vitesse.** uv installe les paquets bien plus vite qu'Anaconda. Sur de gros projets, la différence est spectaculaire.
+- **Les projets multiples.** uv crée pour chaque projet un environnement isolé, automatiquement. Pas besoin d'y penser. Avec Anaconda, il faut gérer les environnements à la main.
+- **Le côté moderne.** uv suit les standards actuels de Python, comme le fichier `pyproject.toml`. C'est ce que vous croiserez de plus en plus.
+
+## Étapes
+
+### Installer uv
+
+<Steps>
+
+1. Ouvrez **PowerShell**. Menu Démarrer, tapez `PowerShell`, cliquez sur le résultat.
+
+2. Copiez la commande suivante. Collez la dans la fenêtre PowerShell avec un clic droit, puis appuyez sur Entrée.
+
+   ```powershell
+   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
+
+3. L'installation se lance. Elle prend quelques secondes. À la fin, un message vous indique que `uv` est installé.
+
+4. Fermez la fenêtre PowerShell, puis rouvrez en une nouvelle. C'est important pour que les changements de PATH soient pris en compte.
+
+5. Vérifiez l'installation avec la commande suivante.
+
+   ```powershell
+   uv --version
+   ```
+
+   Vous devriez voir quelque chose comme ceci.
+
+   ```
+   # Sortie:
+   uv 0.5.7
+   ```
+
+</Steps>
+
+### Créer un mini projet avec uv
+
+uv brille quand on crée un projet. Essayons.
+
+<Steps>
+
+1. Toujours dans PowerShell, placez vous dans votre dossier `code-facile`.
+
+   ```powershell
+   cd C:\Users\VotreNom\code-facile
+   ```
+
+2. Créez un nouveau projet avec la commande suivante.
+
+   ```powershell
+   uv init mon-projet
+   ```
+
+   uv crée un dossier `mon-projet` avec quelques fichiers dedans. Vous y trouverez un fichier `pyproject.toml`, un fichier `README.md`, et un fichier `main.py`. Pas de panique, vous n'avez rien à toucher pour ce test.
+
+3. Entrez dans le dossier du projet.
+
+   ```powershell
+   cd mon-projet
+   ```
+
+4. Lancez votre premier programme Python via uv.
+
+   ```powershell
+   uv run python -c "print('Bonjour uv')"
+   ```
+
+</Steps>
+
+## Exemple
+
+Sortie attendue après la dernière commande.
+
+```
+# Sortie:
+Bonjour uv
+```
+
+Au premier appel, uv télécharge automatiquement la version de Python adaptée au projet, puis exécute votre code. Les appels suivants seront instantanés.
+
+## Comparaison rapide avec Anaconda
+
+Voici les mêmes idées exprimées dans les deux outils, pour vous donner un repère.
+
+- Lancer du Python.
+  - Anaconda, dans Anaconda Prompt, `python` ou `python mon_fichier.py`.
+  - uv, dans PowerShell, `uv run python` ou `uv run python mon_fichier.py`.
+
+- Ajouter un paquet, par exemple `requests`.
+  - Anaconda, `conda install requests` dans Anaconda Prompt.
+  - uv, `uv add requests` dans le dossier du projet.
+
+- Isoler un projet.
+  - Anaconda, créer un environnement avec `conda create -n nom_env python=3.11`, puis `conda activate nom_env`.
+  - uv, le projet est isolé tout seul, dès `uv init`.
+
+<Aside type="tip">
+Si vous démarrez un nouveau projet et que vous voulez essayer uv, la commande `uv init` est votre point de départ. Pour les exercices simples du site, Anaconda et `python fichier.py` suffisent largement.
+</Aside>
+
+## Problèmes courants
+
+- **`uv n'est pas reconnu` après installation.** Fermez et rouvrez PowerShell. Le PATH est mis à jour à l'ouverture d'une nouvelle fenêtre.
+- **L'installation est bloquée par la stratégie d'exécution.** La commande utilise `-ExecutionPolicy ByPass`, ce qui devrait éviter le problème. Si vous voyez tout de même une erreur, ouvrez PowerShell en mode administrateur, puis relancez la commande.
+- **Vous avez peur de casser Anaconda.** Rassurez vous, uv n'écrase pas Anaconda. Les deux cohabitent sans conflit.
+
+## À retenir
+
+- uv est une alternative moderne et rapide à Anaconda, écrite en Rust.
+- L'installation se fait avec une seule commande PowerShell.
+- `uv init` crée un projet isolé prêt à l'emploi.
+- `uv run python` lance Python dans le contexte du projet.
+- Anaconda reste un excellent choix pour débuter. uv est un outil à découvrir quand vous en aurez envie.

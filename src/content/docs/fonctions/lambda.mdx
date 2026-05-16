@@ -1,0 +1,122 @@
+---
+title: Fonctions lambda
+description: Une fonction courte écrite sur une seule ligne.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Python permet d'écrire une toute petite fonction sur une seule ligne, sans `def`. On l'appelle une fonction **lambda**.
+
+## Le concept
+
+Parfois vous avez besoin d'une fonction très simple, juste pour un usage ponctuel. Lui donner un nom, ouvrir un bloc avec `def`, écrire un `return`, tout cela peut sembler lourd. La fonction lambda est une forme condensée pour ces cas.
+
+Une lambda tient sur une seule ligne. Elle n'a pas de nom obligatoire. Elle est faite pour être passée tout de suite à une autre fonction.
+
+Voici sa forme.
+
+```python
+lambda parametres: expression
+```
+
+L'expression à droite des deux points est ce que la lambda renvoie. Il n'y a pas besoin d'écrire `return`.
+
+## Exemple
+
+Voici une lambda qui additionne deux nombres.
+
+```python
+additionner = lambda x, y: x + y
+
+print(additionner(3, 5))
+# Sortie: 8
+```
+
+C'est strictement équivalent à cette version avec `def`.
+
+```python
+def additionner(x, y):
+    return x + y
+
+print(additionner(3, 5))
+# Sortie: 8
+```
+
+Pour cet usage seul, écrire `def` est en général plus clair. Les lambdas brillent surtout quand on les passe à une autre fonction.
+
+## Quand utiliser une lambda
+
+Les lambdas sont très utilisées avec des fonctions comme `sorted`, `map` ou `filter`. Ces fonctions attendent qu'on leur indique « comment » faire quelque chose, et la réponse tient souvent en une ligne.
+
+Voici un exemple parlant. Vous avez une liste de contacts et vous voulez les trier par âge.
+
+```python
+contacts = [
+    {"nom": "Alice", "age": 30},
+    {"nom": "Bob", "age": 25},
+    {"nom": "Chloé", "age": 35},
+]
+
+tries = sorted(contacts, key=lambda c: c["age"])
+for c in tries:
+    print(c["nom"], c["age"])
+# Sortie: Bob 25
+# Sortie: Alice 30
+# Sortie: Chloé 35
+```
+
+La fonction `sorted` a besoin de savoir sur quoi trier. On le lui dit avec `key=lambda c: c["age"]`. Cette lambda prend un contact `c` et renvoie son âge. Python s'en sert pour comparer les contacts entre eux.
+
+Sans lambda, il faudrait écrire une mini-fonction à part juste pour ça.
+
+```python
+def age_de(c):
+    return c["age"]
+
+tries = sorted(contacts, key=age_de)
+```
+
+Les deux versions marchent. La lambda est juste plus compacte quand la logique tient en une ligne.
+
+## Un autre exemple avec map
+
+`map` applique une fonction à tous les éléments d'une liste.
+
+```python
+nombres = [1, 2, 3, 4, 5]
+carres = list(map(lambda n: n * n, nombres))
+print(carres)
+# Sortie: [1, 4, 9, 16, 25]
+```
+
+La lambda `lambda n: n * n` calcule le carré. `map` l'applique à chaque élément.
+
+<Aside type="note">
+Le même résultat peut s'écrire avec une compréhension de liste : `[n * n for n in nombres]`. Beaucoup de pythonistes préfèrent cette forme. Les deux sont valides.
+</Aside>
+
+## Les limites
+
+Une lambda ne peut contenir qu'**une seule expression**. Pas de boucle, pas de `if/else` complet, pas plusieurs lignes. Dès que la logique se complique, repassez à une fonction normale avec `def`.
+
+```python
+def est_majeur(personne):
+    if personne["age"] >= 18:
+        return "majeur"
+    else:
+        return "mineur"
+```
+
+Cette logique ne tient pas bien dans une lambda. La forme `def` la rend lisible.
+
+<Aside type="tip">
+En tant que débutant, vous n'avez pas besoin de maîtriser les lambdas. Il suffit de les reconnaître quand vous les croisez dans du code écrit par d'autres. Vous pouvez très bien programmer en Python en n'utilisant que `def`.
+</Aside>
+
+## À retenir
+
+- Une lambda est une mini-fonction sur une ligne, sans nom obligatoire.
+- Sa forme est `lambda parametres: expression`.
+- Elle est utile quand on passe une petite fonction à `sorted`, `map`, ou `filter`.
+- Elle ne contient qu'une seule expression. Pas de bloc complet.
+- En cas de doute, restez sur `def`. Une lambda n'est jamais obligatoire.

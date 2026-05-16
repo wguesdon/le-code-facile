@@ -1,0 +1,94 @@
+---
+title: Configurer VSCode pour Python
+description: Installer l'extension Python et choisir le bon interpréteur.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Dans cette leçon, vous allez apprendre à VSCode à parler Python. Deux choses à faire. Installer une extension, et choisir un interpréteur.
+
+## Vue d'ensemble
+
+VSCode tout seul ne sait pas grand chose de Python. Pour qu'il devienne un vrai atelier Python, il faut lui ajouter l'extension officielle de Microsoft. Cette extension apporte la coloration du code, l'autocomplétion, le débogueur, et bien d'autres choses.
+
+Ensuite, il faut indiquer à VSCode quel Python utiliser. C'est ce qu'on appelle choisir un **interpréteur**.
+
+## Qu'est ce qu'un interpréteur ?
+
+Un interpréteur, c'est le petit programme qui lit votre fichier Python et l'exécute, ligne par ligne. Quand vous avez installé Anaconda, vous avez installé un interpréteur Python.
+
+Sur votre machine, il peut y avoir plusieurs interpréteurs en même temps. Par exemple, un Python livré avec Anaconda, et peut être un autre installé par un logiciel tiers. Pour éviter toute confusion, on dit à VSCode lequel utiliser. C'est rapide à faire.
+
+## Étapes
+
+### Installer l'extension Python
+
+<Steps>
+
+1. Ouvrez VSCode.
+
+2. Cliquez sur l'icône **Extensions** dans la barre d'activités à gauche. Elle ressemble à quatre petits carrés, dont un détaché. Vous pouvez aussi appuyer sur Ctrl plus Maj plus X.
+
+3. Dans la barre de recherche en haut du panneau, tapez `Python`.
+
+4. Le premier résultat s'appelle **Python**, édité par **Microsoft**. Vérifiez bien le nom de l'éditeur, c'est important.
+
+5. Cliquez sur le bouton **Install** à droite du nom.
+
+6. L'installation prend quelques secondes. Une notification en bas à droite vous indique que c'est terminé. Au passage, VSCode installe aussi l'extension **Pylance**, qui apporte l'autocomplétion intelligente. C'est normal et souhaitable.
+
+</Steps>
+
+### Choisir l'interpréteur Anaconda
+
+<Steps>
+
+1. Ouvrez la palette de commandes. C'est une petite barre de recherche magique qui donne accès à toutes les commandes de VSCode. Raccourci, Ctrl plus Maj plus P.
+
+2. Dans la palette, tapez `Python: Select Interpreter`. Cliquez sur la commande quand elle apparaît dans la liste.
+
+3. VSCode affiche les interpréteurs Python qu'il a trouvés sur votre machine. Cherchez celui qui contient `anaconda3` dans son chemin. Il ressemble à `Python 3.11.7 ('base': conda) C:\Users\VotreNom\anaconda3\python.exe`.
+
+4. Cliquez dessus pour le sélectionner.
+
+5. Tout en bas de la fenêtre VSCode, dans la barre d'état, vous voyez maintenant le nom de l'interpréteur sélectionné. C'est l'endroit où vérifier en un coup d'œil quel Python est actif.
+
+</Steps>
+
+<Aside type="tip">
+Si vous ne voyez aucun interpréteur Anaconda dans la liste, fermez VSCode et rouvrez le depuis Anaconda Navigator. Cela force VSCode à hériter de l'environnement Anaconda.
+</Aside>
+
+## Exemple
+
+Faisons un test très simple pour confirmer que tout est branché.
+
+<Steps>
+
+1. Dans VSCode, cliquez sur **Fichier**, puis **Nouveau fichier texte**.
+
+2. Cliquez sur **Sélectionner un langage** en bas à droite, ou utilisez Ctrl plus K, M. Choisissez **Python**.
+
+3. Tapez la ligne suivante.
+
+</Steps>
+
+```python
+print("VSCode parle Python")
+```
+
+Vous devriez voir le mot `print` coloré, et une petite info bulle apparaître si vous survolez le mot. Cela veut dire que l'extension Python fonctionne. Pas besoin d'exécuter ce code maintenant. Nous le ferons dans la leçon suivante.
+
+## Problèmes courants
+
+- **Aucun interpréteur n'apparaît dans la liste.** Vérifiez d'abord qu'Anaconda est bien installé en ouvrant Anaconda Prompt. Puis fermez et rouvrez VSCode. Si rien ne change, lancez VSCode depuis Anaconda Navigator.
+- **L'extension Python ne s'installe pas.** Vérifiez votre connexion internet. Certains réseaux d'entreprise bloquent l'installation d'extensions VSCode.
+- **La barre d'état n'affiche pas d'interpréteur.** Ouvrez un fichier Python, c'est à dire un fichier avec l'extension `.py`. La barre d'état n'affiche l'interpréteur que pour les fichiers Python.
+
+## À retenir
+
+- L'extension officielle Python est éditée par Microsoft.
+- Un interpréteur est le programme qui exécute votre code Python.
+- La commande `Python: Select Interpreter` permet de choisir lequel utiliser.
+- Sélectionnez l'interpréteur dont le chemin contient `anaconda3`.
+- L'interpréteur actif est affiché en bas de la fenêtre VSCode.

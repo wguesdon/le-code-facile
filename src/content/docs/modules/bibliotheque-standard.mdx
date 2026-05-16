@@ -1,0 +1,142 @@
+---
+title: La bibliothèque standard utile
+description: Tour rapide de modules livrés avec Python.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Python arrive avec une grande boîte à outils. Voici les modules les plus utiles au quotidien.
+
+## Le concept
+
+La bibliothèque standard, c'est l'ensemble des modules installés en même temps que Python. Vous pouvez les utiliser tout de suite, sans rien télécharger. Ils couvrent les mathématiques, le hasard, les dates, les fichiers, et bien d'autres choses.
+
+## Exemple
+
+Voici sept modules courants, avec un petit exemple pour chacun.
+
+Le module `math` pour les calculs.
+
+```python
+import math
+
+print(math.sqrt(81))
+print(math.pi)
+```
+
+Sortie attendue :
+
+```
+9.0
+3.141592653589793
+```
+
+Le module `random` pour le hasard. Ici, on mélange une liste de prénoms.
+
+```python
+import random
+
+prenoms = ["Alice", "Bob", "Chloé", "David"]
+random.shuffle(prenoms)
+print(prenoms)
+```
+
+Sortie possible :
+
+```
+['Chloé', 'Alice', 'David', 'Bob']
+```
+
+Le module `datetime` pour les dates. Ici, on récupère la date du jour.
+
+```python
+from datetime import date
+
+aujourd_hui = date.today()
+print(aujourd_hui)
+```
+
+Sortie possible :
+
+```
+2026-05-16
+```
+
+Le module `os` pour parler au système d'exploitation.
+
+```python
+import os
+
+print(os.getcwd())
+```
+
+Sortie possible :
+
+```
+C:\Users\Alice\Documents
+```
+
+`getcwd` veut dire "get current working directory", soit le dossier courant.
+
+Le module `pathlib` pour manipuler les chemins de fichiers. Ici, on liste les fichiers d'un dossier.
+
+```python
+from pathlib import Path
+
+dossier = Path(".")
+for fichier in dossier.iterdir():
+    print(fichier.name)
+```
+
+Sortie possible :
+
+```
+mon_script.py
+notes.txt
+images
+```
+
+Le module `json` pour lire et écrire des données structurées.
+
+```python
+import json
+
+donnees = {"nom": "Alice", "age": 30}
+texte = json.dumps(donnees)
+print(texte)
+```
+
+Sortie attendue :
+
+```
+{"nom": "Alice", "age": 30}
+```
+
+Le module `csv` pour les fichiers tableurs.
+
+```python
+import csv
+
+lignes = [["prenom", "age"], ["Alice", 30], ["Bob", 25]]
+with open("personnes.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(lignes)
+```
+
+Ce script crée un fichier `personnes.csv` dans le dossier courant.
+
+## En pratique
+
+<Aside type="note" title="Pas besoin d'installation">
+Tous les modules ci-dessus sont déjà présents dans Anaconda. Vous pouvez les utiliser immédiatement.
+</Aside>
+
+Pour découvrir un module, ouvrez sa page sur la documentation officielle de Python. Tapez par exemple "python random" dans votre moteur de recherche. La documentation est claire et propose des exemples.
+
+## À retenir
+
+- `math` pour les calculs, `random` pour le hasard.
+- `datetime` pour les dates, `os` et `pathlib` pour les fichiers et dossiers.
+- `json` et `csv` pour échanger des données.
+- Ces modules sont déjà installés avec Python.
+- En cas de doute, consultez la documentation officielle.

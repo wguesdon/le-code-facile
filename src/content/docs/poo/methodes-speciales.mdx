@@ -1,0 +1,105 @@
+---
+title: Méthodes spéciales
+description: Personnaliser ce que fait print, len, et la comparaison.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Python possède des méthodes spéciales reconnaissables à leurs doubles soulignements. On les appelle « dunder methods ». Elles permettent de personnaliser le comportement de vos objets avec les fonctions de base de Python.
+
+## Le concept
+
+Quand vous écrivez `print(objet)`, Python cherche une méthode `__str__` sur l'objet. Quand vous écrivez `len(objet)`, il cherche `__len__`. Quand vous comparez deux objets avec `==`, il cherche `__eq__`.
+
+Si la méthode est définie, Python l'utilise. Sinon, il prend un comportement par défaut, souvent peu lisible.
+
+Les plus utiles à connaître pour commencer sont :
+
+- `__str__` : ce que `print` affiche.
+- `__repr__` : la représentation technique de l'objet.
+- `__len__` : ce que `len` retourne.
+- `__eq__` : comment comparer deux objets avec `==`.
+
+## Exemple
+
+Sans `__str__`, l'affichage est cryptique :
+
+```python
+class Contact:
+    def __init__(self, nom, email):
+        self.nom = nom
+        self.email = email
+
+c = Contact("Alice", "alice@exemple.fr")
+print(c)
+# Sortie: <__main__.Contact object at 0x7f8b1c0d4e50>
+```
+
+Ce n'est pas très parlant. Ajoutons `__str__` :
+
+```python
+class Contact:
+    def __init__(self, nom, email):
+        self.nom = nom
+        self.email = email
+
+    def __str__(self):
+        return self.nom + " <" + self.email + ">"
+
+c = Contact("Alice", "alice@exemple.fr")
+print(c)
+# Sortie: Alice <alice@exemple.fr>
+```
+
+Beaucoup mieux. `print(c)` appelle automatiquement `__str__`.
+
+## En pratique
+
+Voici un exemple qui combine plusieurs méthodes spéciales sur une classe `Carnet` :
+
+```python
+class Carnet:
+    def __init__(self, nom):
+        self.nom = nom
+        self.contacts = []
+
+    def ajouter(self, contact):
+        self.contacts.append(contact)
+
+    def __str__(self):
+        return "Carnet " + self.nom + " (" + str(len(self.contacts)) + " contacts)"
+
+    def __len__(self):
+        return len(self.contacts)
+
+    def __eq__(self, autre):
+        return self.nom == autre.nom
+
+perso = Carnet("Personnel")
+perso.ajouter("Alice")
+perso.ajouter("Bob")
+
+print(perso)
+# Sortie: Carnet Personnel (2 contacts)
+
+print(len(perso))
+# Sortie: 2
+
+pro = Carnet("Personnel")
+print(perso == pro)
+# Sortie: True
+```
+
+Avec quelques méthodes spéciales, l'objet `Carnet` se comporte comme un objet Python naturel.
+
+<Aside type="caution">
+N'abusez pas des méthodes spéciales. Ajoutez seulement celles qui rendent votre code plus clair. `__str__` est presque toujours utile. Les autres sont à ajouter au cas par cas.
+</Aside>
+
+## À retenir
+
+- Les méthodes spéciales commencent et finissent par deux soulignements.
+- `__str__` contrôle ce que `print` affiche.
+- `__len__` permet d'utiliser `len(objet)`.
+- `__eq__` définit le comportement de `==`.
+- Sans elles, Python utilise un affichage technique par défaut.

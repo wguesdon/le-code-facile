@@ -1,0 +1,103 @@
+---
+title: L'héritage
+description: Réutiliser une classe existante pour en créer une nouvelle.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Quand deux classes se ressemblent beaucoup, l'héritage permet d'éviter de réécrire le même code. Une classe peut hériter d'une autre et récupérer ses attributs et méthodes.
+
+## Le concept
+
+Imaginez deux classes : `Personne` et `Etudiant`. Un étudiant est une personne, mais avec une école en plus. Plutôt que de tout réécrire, on dit que `Etudiant` hérite de `Personne`.
+
+La syntaxe est simple. Entre parenthèses après le nom de la nouvelle classe, on met la classe parente.
+
+```python
+class Etudiant(Personne):
+    pass
+```
+
+`Etudiant` reçoit automatiquement tout ce que `Personne` possède.
+
+Pour appeler le constructeur du parent, on utilise `super().__init__(...)`. Cela évite de répéter le code d'initialisation.
+
+## Exemple
+
+Voici une classe `Personne` simple :
+
+```python
+class Personne:
+    def __init__(self, nom, age):
+        self.nom = nom
+        self.age = age
+
+    def se_presenter(self):
+        return "Je m'appelle " + self.nom + " et j'ai " + str(self.age) + " ans."
+
+p = Personne("Alice", 30)
+print(p.se_presenter())
+# Sortie: Je m'appelle Alice et j'ai 30 ans.
+```
+
+Maintenant, créons `Etudiant` qui ajoute une école :
+
+```python
+class Etudiant(Personne):
+    def __init__(self, nom, age, ecole):
+        super().__init__(nom, age)
+        self.ecole = ecole
+
+e = Etudiant("Bob", 20, "Sorbonne")
+print(e.se_presenter())
+# Sortie: Je m'appelle Bob et j'ai 20 ans.
+print(e.ecole)
+# Sortie: Sorbonne
+```
+
+Que s'est-il passé ?
+
+1. `Etudiant` hérite de `Personne`.
+2. Le `__init__` de `Etudiant` appelle d'abord `super().__init__(nom, age)`. Cela exécute le constructeur de `Personne` pour gérer `nom` et `age`.
+3. Ensuite, `Etudiant` ajoute son propre attribut `ecole`.
+4. La méthode `se_presenter` est héritée. Pas besoin de la réécrire.
+
+## En pratique
+
+On peut aussi redéfinir une méthode du parent dans l'enfant. On parle de surcharge.
+
+```python
+class Personne:
+    def __init__(self, nom, age):
+        self.nom = nom
+        self.age = age
+
+    def se_presenter(self):
+        return "Je m'appelle " + self.nom + "."
+
+class Etudiant(Personne):
+    def __init__(self, nom, age, ecole):
+        super().__init__(nom, age)
+        self.ecole = ecole
+
+    def se_presenter(self):
+        return "Je m'appelle " + self.nom + " et j'étudie à " + self.ecole + "."
+
+e = Etudiant("Bob", 20, "Sorbonne")
+print(e.se_presenter())
+# Sortie: Je m'appelle Bob et j'étudie à Sorbonne.
+```
+
+La méthode `se_presenter` de `Etudiant` remplace celle de `Personne`. C'est utile quand l'enfant a un comportement légèrement différent.
+
+<Aside type="tip">
+L'héritage évite la duplication, mais il a un coût. Trop d'héritage rend le code difficile à suivre. Utilisez-le quand la relation « est un » est claire : un étudiant est une personne, un chat est un animal.
+</Aside>
+
+## À retenir
+
+- L'héritage permet de réutiliser une classe existante.
+- Syntaxe : `class Enfant(Parent):`.
+- `super().__init__(...)` appelle le constructeur du parent.
+- L'enfant hérite des attributs et des méthodes du parent.
+- On peut redéfinir une méthode pour changer son comportement.

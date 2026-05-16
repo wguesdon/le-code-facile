@@ -1,0 +1,117 @@
+---
+title: Lever ses propres erreurs
+description: Indiquer qu'une situation est invalide avec raise.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Parfois, votre code détecte une situation impossible. Le mot clé `raise` vous permet de signaler clairement le problème.
+
+## Le concept
+
+`raise` déclenche volontairement une exception. La syntaxe est simple.
+
+```python
+raise ValueError("L'âge doit être positif")
+```
+
+On choisit un type d'exception adapté à la situation, puis un message qui explique ce qui ne va pas.
+
+Quelques types fréquents.
+
+- `ValueError`, quand la valeur reçue n'a pas de sens.
+- `TypeError`, quand le type reçu est incorrect.
+- `FileNotFoundError`, quand un fichier attendu manque.
+
+<Aside type="tip">
+Levez une exception le plus tôt possible. Plus l'erreur est proche de sa cause, plus elle est facile à corriger.
+</Aside>
+
+## Exemple
+
+Écrivons une fonction qui calcule le prix d'un billet selon l'âge.
+
+```python
+def prix_billet(age):
+    if not isinstance(age, int):
+        raise TypeError("L'âge doit être un nombre entier")
+    if age < 0:
+        raise ValueError("L'âge doit être positif")
+    if age < 12:
+        return 5
+    if age < 65:
+        return 12
+    return 8
+```
+
+Trois usages possibles.
+
+```python
+print(prix_billet(30))
+print(prix_billet(-5))
+```
+
+```text
+12
+Traceback (most recent call last):
+  File "exemple.py", line 2, in <module>
+    print(prix_billet(-5))
+  File "exemple.py", line 5, in prix_billet
+    raise ValueError("L'âge doit être positif")
+ValueError: L'âge doit être positif
+```
+
+Le traceback indique exactement la ligne et la raison. C'est précieux pour qui doit déboguer.
+
+On peut bien sûr attraper l'erreur depuis l'appelant.
+
+```python
+try:
+    tarif = prix_billet(-5)
+except ValueError as e:
+    print(f"Saisie refusée : {e}")
+```
+
+```text
+Saisie refusée : L'âge doit être positif
+```
+
+Le `as e` récupère l'exception dans une variable. On peut alors lire son message.
+
+## En pratique
+
+Quand faut-il `raise`, et quand faut-il simplement `return` une valeur ?
+
+Levez une exception quand la situation **empêche** la fonction de faire son travail.
+
+```python
+def diviser(a, b):
+    if b == 0:
+        raise ValueError("Le diviseur ne peut pas être zéro")
+    return a / b
+```
+
+Retournez une valeur normale quand le cas, même rare, fait partie du fonctionnement attendu.
+
+```python
+def premiere_lettre(mot):
+    if mot == "":
+        return ""
+    return mot[0]
+```
+
+Ici, un mot vide est un cas légitime. Pas besoin d'exception.
+
+En résumé, `raise` sert à dire : « cette situation est anormale, je refuse de continuer ».
+
+### Vos propres types d'exceptions
+
+Pour des projets plus avancés, vous pourrez créer vos propres classes d'exceptions, par exemple `AgeInvalideError`. Ce sujet relève de la programmation orientée objet et sera couvert plus tard.
+
+## À retenir
+
+- `raise` déclenche volontairement une exception.
+- Choisissez un type d'exception adapté, comme `ValueError` ou `TypeError`.
+- Un message clair aide la personne qui lira l'erreur.
+- Levez une exception quand la fonction ne peut pas faire son travail.
+- Retournez une valeur normale pour les cas attendus, même rares.

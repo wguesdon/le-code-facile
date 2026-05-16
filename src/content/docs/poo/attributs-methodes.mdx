@@ -1,0 +1,93 @@
+---
+title: Attributs et méthodes
+description: Donner des propriétés et des actions à vos objets.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Un objet possède deux sortes d'éléments : des attributs et des méthodes. Les attributs décrivent l'objet, les méthodes décrivent ce qu'il sait faire.
+
+## Le concept
+
+Un attribut est une variable attachée à l'objet. Par exemple, le nom d'un contact, l'âge d'une personne, le titre d'un livre.
+
+Une méthode est une fonction définie à l'intérieur de la classe. Elle peut utiliser les attributs de l'objet pour agir.
+
+Le premier paramètre d'une méthode s'appelle toujours `self`. Ce mot représente l'objet lui-même. Quand on écrit `self.nom`, cela veut dire « le nom de cet objet ».
+
+<Aside>
+`self` n'est pas un mot-clé Python. C'est juste une convention. Tout le monde l'utilise, donc gardez ce nom.
+</Aside>
+
+## Exemple
+
+Créons une classe `Contact` avec un attribut et une méthode :
+
+```python
+class Contact:
+    def saluer(self):
+        return "Bonjour, je suis " + self.nom
+
+alice = Contact()
+alice.nom = "Alice"
+
+message = alice.saluer()
+print(message)
+# Sortie: Bonjour, je suis Alice
+```
+
+Que se passe-t-il ici ?
+
+1. On définit la classe avec une méthode `saluer`.
+2. On crée un objet `alice`.
+3. On lui donne un attribut `nom`.
+4. On appelle la méthode `saluer` avec `alice.saluer()`.
+
+Remarquez qu'on n'écrit pas `self` quand on appelle la méthode. Python s'en occupe automatiquement. Il passe l'objet `alice` à la place de `self`.
+
+Voici un autre exemple avec deux contacts :
+
+```python
+class Contact:
+    def saluer(self):
+        return "Bonjour, je suis " + self.nom
+
+alice = Contact()
+alice.nom = "Alice"
+
+bob = Contact()
+bob.nom = "Bob"
+
+print(alice.saluer())
+# Sortie: Bonjour, je suis Alice
+print(bob.saluer())
+# Sortie: Bonjour, je suis Bob
+```
+
+La même méthode donne un résultat différent selon l'objet. C'est la magie de `self`.
+
+## En pratique
+
+Une méthode peut aussi prendre d'autres paramètres en plus de `self` :
+
+```python
+class Contact:
+    def saluer(self, autre_nom):
+        return "Bonjour " + autre_nom + ", je suis " + self.nom
+
+alice = Contact()
+alice.nom = "Alice"
+
+print(alice.saluer("Bob"))
+# Sortie: Bonjour Bob, je suis Alice
+```
+
+Ici, `saluer` reçoit deux choses : `self` (l'objet) et `autre_nom` (le paramètre).
+
+## À retenir
+
+- Un attribut est une variable attachée à l'objet.
+- Une méthode est une fonction définie dans la classe.
+- Le premier paramètre d'une méthode est toujours `self`.
+- `self` représente l'objet courant.
+- On appelle une méthode avec `objet.methode()`.

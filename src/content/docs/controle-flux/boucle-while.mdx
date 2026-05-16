@@ -1,0 +1,97 @@
+---
+title: Boucle while
+description: Répéter tant qu'une condition est vraie.
+---
+
+La boucle `while` répète du code tant qu'une condition reste vraie.
+
+## Le concept
+
+`while` veut dire « tant que ». Python vérifie la condition avant chaque tour. Si elle est vraie, il exécute le bloc. Si elle devient fausse, il sort de la boucle.
+
+```python
+while condition:
+    # code à répéter
+```
+
+La différence avec `for` est importante. `for` parcourt une collection connue. `while` continue tant qu'une condition est vraie, sans savoir combien de tours il faudra.
+
+## Exemple
+
+Voici un compteur qui va de 1 à 5.
+
+```python
+compteur = 1
+
+while compteur <= 5:
+    print(compteur)
+    compteur = compteur + 1
+
+# Sortie:
+# 1
+# 2
+# 3
+# 4
+# 5
+```
+
+À chaque tour, on augmente le compteur. Quand il dépasse 5, la condition devient fausse et la boucle s'arrête.
+
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="caution">
+Si la condition ne devient jamais fausse, votre boucle tourne à l'infini. Le programme se bloque. Pensez toujours à modifier la variable testée à l'intérieur de la boucle.
+</Aside>
+
+Voici un exemple de boucle infinie à éviter.
+
+```python
+# Ne faites pas cela !
+compteur = 1
+while compteur <= 5:
+    print(compteur)
+    # On a oublié d'augmenter compteur.
+    # La boucle ne s'arrête jamais.
+```
+
+## En pratique
+
+`while` est très utile quand on attend une action de l'utilisateur. Voici un exemple. On demande un mot de passe jusqu'à ce qu'il soit correct.
+
+```python
+mot_de_passe = ""
+
+while mot_de_passe != "soleil":
+    mot_de_passe = input("Entrez le mot de passe : ")
+
+print("Bienvenue !")
+```
+
+La boucle continue tant que le mot de passe est différent de « soleil ». Dès que l'utilisateur tape le bon mot, la condition devient fausse et le programme sort de la boucle.
+
+Autre exemple. Vous comptez les pièces dans une tirelire jusqu'à atteindre 10 euros.
+
+```python
+total = 0
+pieces = 0
+
+while total < 10:
+    total = total + 0.5
+    pieces = pieces + 1
+
+print("Il faut", pieces, "pièces de 50 centimes.")
+
+# Sortie: Il faut 20 pièces de 50 centimes.
+```
+
+<Aside type="tip">
+Utilisez `for` quand vous connaissez le nombre de répétitions. Utilisez `while` quand vous attendez qu'une condition change.
+</Aside>
+
+## À retenir
+
+- `while condition:` répète tant que la condition est vraie.
+- Pensez à modifier la variable testée pour éviter les boucles infinies.
+- `while` est utile pour attendre une saisie utilisateur.
+- La condition est vérifiée avant chaque tour, pas après.
+- Le code à l'intérieur doit être indenté de 4 espaces.

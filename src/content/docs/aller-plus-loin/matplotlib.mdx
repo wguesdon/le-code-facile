@@ -1,0 +1,85 @@
+---
+title: Découvrir matplotlib
+description: La bibliothèque pour faire des graphiques.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+matplotlib est la bibliothèque la plus utilisée pour créer des graphiques en Python.
+
+## Le concept
+
+Un graphique vaut souvent mieux qu'un long tableau. matplotlib te permet de transformer des listes de chiffres en courbes, en barres, en camemberts. Tu peux ensuite afficher le graphique à l'écran ou l'enregistrer dans une image.
+
+<Aside type="tip">
+matplotlib est inclus dans Anaconda. Sinon, installe la bibliothèque avec `pip install matplotlib`.
+</Aside>
+
+## Exemple
+
+Voici un premier graphique en courbe. On suit la température sur une semaine.
+
+```python
+import matplotlib.pyplot as plt
+
+jours = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
+temperatures = [18, 20, 22, 19, 21, 24, 23]
+
+plt.plot(jours, temperatures)
+plt.title("Températures de la semaine")
+plt.xlabel("Jour")
+plt.ylabel("Température en °C")
+plt.show()
+```
+
+Maintenant un diagramme en barres. On compare les ventes de fruits.
+
+```python
+import matplotlib.pyplot as plt
+
+fruits = ["pomme", "banane", "orange"]
+ventes = [12, 8, 6]
+
+plt.bar(fruits, ventes)
+plt.title("Ventes par fruit")
+plt.ylabel("Nombre d'unités")
+plt.show()
+```
+
+Pour enregistrer le graphique dans un fichier image, remplace `plt.show()` par cette ligne.
+
+```python
+plt.savefig("graphe.png")
+```
+
+Tu obtiens alors un fichier `graphe.png` dans le dossier de ton script.
+
+## Pour explorer plus
+
+matplotlib fonctionne très bien avec pandas. Si tu as un DataFrame, tu peux tracer directement.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("ventes.csv")
+df.plot(x="produit", y="prix", kind="bar")
+plt.show()
+```
+
+Tu peux aussi.
+
+- Changer la couleur : `plt.bar(fruits, ventes, color="orange")`.
+- Mettre plusieurs courbes sur le même graphique en appelant `plt.plot` plusieurs fois.
+- Ajouter une légende avec `plt.legend()`.
+- Choisir la taille de la figure avec `plt.figure(figsize=(8, 5))`.
+
+Pour des graphiques plus élégants, regarde aussi la bibliothèque **seaborn**. Elle s'appuie sur matplotlib mais propose des styles plus modernes.
+
+## À retenir
+
+- matplotlib transforme des données en graphiques.
+- `plt.plot` pour une courbe, `plt.bar` pour des barres.
+- `plt.show()` affiche le graphique, `plt.savefig("nom.png")` l'enregistre.
+- Les DataFrames pandas ont une méthode `.plot()` qui utilise matplotlib.
+- matplotlib est inclus dans Anaconda. Sinon, `pip install matplotlib`.

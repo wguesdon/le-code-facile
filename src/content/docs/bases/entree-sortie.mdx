@@ -1,0 +1,153 @@
+---
+title: Entrée et sortie
+description: Afficher du texte et lire ce que l'utilisateur tape.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Un programme communique avec l'utilisateur. Il affiche du texte et il lit ce qui est tapé au clavier.
+
+## Le concept
+
+Deux fonctions de base suffisent pour commencer :
+
+- `print()` affiche quelque chose à l'écran.
+- `input()` attend que l'utilisateur tape une réponse.
+
+## Afficher avec `print()`
+
+La fonction `print()` accepte plusieurs valeurs séparées par des virgules. Elle ajoute un espace entre chaque valeur.
+
+```python
+prenom = "Alice"
+age = 30
+
+print("Bonjour", prenom, "tu as", age, "ans.")
+# Sortie: Bonjour Alice tu as 30 ans.
+```
+
+### Changer le séparateur avec `sep`
+
+Le paramètre `sep` remplace l'espace par autre chose.
+
+```python
+print("pomme", "poire", "banane", sep=", ")
+# Sortie: pomme, poire, banane
+```
+
+### Changer la fin avec `end`
+
+Par défaut, `print()` passe à la ligne. Le paramètre `end` change ce comportement.
+
+```python
+print("Bonjour", end=" ")
+print("Alice")
+# Sortie: Bonjour Alice
+```
+
+## Lire avec `input()`
+
+La fonction `input()` affiche un message et attend une réponse. Elle renvoie toujours une chaîne de caractères.
+
+```python
+prenom = input("Quel est ton prénom ? ")
+print("Bonjour", prenom)
+```
+
+Si l'utilisateur tape `Alice`, la sortie sera :
+
+```
+Quel est ton prénom ? Alice
+Bonjour Alice
+```
+
+## Convertir une saisie
+
+`input()` renvoie toujours du texte, même si l'utilisateur tape un nombre. Pour obtenir un nombre, il faut convertir avec `int()` ou `float()`.
+
+```python
+age_texte = input("Quel est ton âge ? ")
+age = int(age_texte)
+
+print("L'an prochain tu auras", age + 1, "ans.")
+```
+
+Si l'utilisateur tape `30`, la sortie sera :
+
+```
+Quel est ton âge ? 30
+L'an prochain tu auras 31 ans.
+```
+
+Pour un nombre à virgule, on utilise `float()`.
+
+```python
+taille_texte = input("Quelle est ta taille en mètres ? ")
+taille = float(taille_texte)
+
+print("Tu mesures", taille, "mètres.")
+```
+
+<Aside type="caution">
+Si l'utilisateur tape autre chose qu'un nombre, la conversion va échouer et le programme va s'arrêter avec une erreur. Pour le moment, ce n'est pas grave. Nous verrons plus tard comment gérer ces erreurs proprement.
+</Aside>
+
+## Exemple complet
+
+Un petit programme qui demande des informations et répond.
+
+```python
+prenom = input("Quel est ton prénom ? ")
+age_texte = input("Quel est ton âge ? ")
+age = int(age_texte)
+
+annee_naissance = 2026 - age
+
+print(f"Bonjour {prenom}.")
+print(f"Tu es né ou née en {annee_naissance}.")
+```
+
+Exemple d'exécution :
+
+```
+Quel est ton prénom ? Sophie
+Quel est ton âge ? 28
+Bonjour Sophie.
+Tu es né ou née en 1998.
+```
+
+## En pratique
+
+Calculons le prix total d'un achat.
+
+```python
+prix_texte = input("Prix unitaire en euros ? ")
+quantite_texte = input("Quantité ? ")
+
+prix = float(prix_texte)
+quantite = int(quantite_texte)
+
+total = prix * quantite
+
+print(f"Total à payer : {total} euros.")
+```
+
+Exemple d'exécution :
+
+```
+Prix unitaire en euros ? 12.50
+Quantité ? 3
+Total à payer : 37.5 euros.
+```
+
+<Aside type="tip">
+On peut convertir directement la saisie en une seule ligne. Par exemple : `age = int(input("Ton âge ? "))`. C'est plus court, mais un peu plus dense à lire au début.
+</Aside>
+
+## À retenir
+
+- `print()` affiche du texte. Les paramètres `sep` et `end` contrôlent l'affichage.
+- `input()` lit ce que tape l'utilisateur. Elle renvoie toujours une chaîne.
+- Pour obtenir un nombre, on convertit avec `int()` ou `float()`.
+- Une conversion peut échouer. Nous verrons plus tard comment gérer les erreurs.
+- Les f-strings rendent les messages plus lisibles.

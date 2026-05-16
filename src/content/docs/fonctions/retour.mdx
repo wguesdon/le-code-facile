@@ -1,0 +1,120 @@
+---
+title: Valeurs de retour
+description: Faire qu'une fonction renvoie un résultat.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Une fonction peut faire mieux qu'afficher un message. Elle peut renvoyer un résultat que le reste du programme va pouvoir utiliser.
+
+## Le concept
+
+Reprenons l'image de la recette. Vous suivez les étapes, et à la fin vous sortez un gâteau du four. Ce gâteau, vous pouvez le poser sur la table, le découper, le partager. La recette vous a produit quelque chose de tangible.
+
+En Python, on dit qu'une fonction **renvoie** une valeur. Le mot-clé pour cela est `return`. Quand Python rencontre `return`, il quitte la fonction et fait sortir la valeur indiquée.
+
+Attention à ne pas confondre deux choses très différentes.
+
+`print` **affiche** une valeur à l'écran. Une fois affichée, la valeur est partie. Vous ne pouvez plus rien en faire.
+
+`return` **donne** une valeur. Vous pouvez la stocker dans une variable, la passer à une autre fonction, la comparer à autre chose. La valeur reste utilisable.
+
+## Exemple
+
+Voici une fonction qui additionne deux nombres et renvoie le résultat.
+
+```python
+def additionner(a, b):
+    return a + b
+
+resultat = additionner(3, 5)
+print(resultat)
+# Sortie: 8
+```
+
+À l'appel, `additionner(3, 5)` est remplacé par sa valeur de retour, ici `8`. Cette valeur est rangée dans la variable `resultat`. On peut ensuite l'afficher, la réutiliser ailleurs, ou la passer à une autre fonction.
+
+Comparez avec une version qui utilise seulement `print`.
+
+```python
+def additionner_affichage(a, b):
+    print(a + b)
+
+resultat = additionner_affichage(3, 5)
+print(resultat)
+# Sortie: 8
+# Sortie: None
+```
+
+L'affichage a bien lieu, mais la fonction ne renvoie rien d'utile. La variable `resultat` vaut `None`, qui signifie « pas de valeur ». Vous ne pourrez pas additionner ce résultat à autre chose.
+
+<Aside type="tip">
+En général, une fonction qui calcule quelque chose devrait utiliser `return`. Une fonction dont le seul but est de montrer un message à l'utilisateur peut utiliser `print`.
+</Aside>
+
+## Renvoyer plusieurs valeurs
+
+Une fonction peut renvoyer plusieurs valeurs à la fois. Il suffit de les séparer par des virgules après `return`. Python les regroupe alors dans un tuple.
+
+```python
+def diviser(a, b):
+    quotient = a // b
+    reste = a % b
+    return quotient, reste
+
+q, r = diviser(17, 5)
+print("Quotient:", q)
+print("Reste:", r)
+# Sortie: Quotient: 3
+# Sortie: Reste: 2
+```
+
+À l'appel, on peut déballer les deux valeurs dans deux variables d'un coup. C'est très pratique.
+
+## En pratique
+
+Voici une fonction qui calcule le total d'une liste de courses. Chaque article a un prix unitaire et une quantité.
+
+```python
+def total_courses(articles):
+    total = 0
+    for article in articles:
+        total = total + article["prix"] * article["quantite"]
+    return total
+
+panier = [
+    {"nom": "pain", "prix": 1.20, "quantite": 2},
+    {"nom": "lait", "prix": 1.00, "quantite": 3},
+    {"nom": "pomme", "prix": 0.50, "quantite": 6},
+]
+
+montant = total_courses(panier)
+print("Total à payer:", montant, "euros")
+# Sortie: Total à payer: 8.4 euros
+```
+
+La fonction `total_courses` ne sait pas, et n'a pas besoin de savoir, ce qui sera fait du résultat. Elle se contente de le calculer et de le renvoyer. Le reste du programme décide quoi en faire.
+
+<Aside type="note">
+Dès que Python rencontre un `return`, la fonction s'arrête immédiatement. Les lignes en dessous ne sont pas exécutées. C'est utile pour sortir tôt d'une fonction quand un cas particulier se présente.
+</Aside>
+
+```python
+def diviser_securise(a, b):
+    if b == 0:
+        return None
+    return a / b
+
+print(diviser_securise(10, 2))
+print(diviser_securise(10, 0))
+# Sortie: 5.0
+# Sortie: None
+```
+
+## À retenir
+
+- `return` fait sortir une valeur de la fonction.
+- `print` affiche. `return` donne.
+- Une fonction sans `return` renvoie automatiquement `None`.
+- Une fonction peut renvoyer plusieurs valeurs sous forme de tuple.
+- Dès qu'un `return` est exécuté, la fonction s'arrête.

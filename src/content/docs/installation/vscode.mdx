@@ -1,0 +1,75 @@
+---
+title: Installer VSCode
+description: Téléchargement et installation de Visual Studio Code sous Windows.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Dans cette leçon, vous allez installer Visual Studio Code, l'éditeur où vous écrirez votre code Python.
+
+## Vue d'ensemble
+
+VSCode est gratuit, édité par Microsoft. Il s'installe en quelques minutes. L'installateur pose deux ou trois questions, puis vous laisse tranquille.
+
+## Étapes
+
+<Steps>
+
+1. Ouvrez votre navigateur et allez sur le site officiel : [https://code.visualstudio.com/](https://code.visualstudio.com/).
+
+2. Cliquez sur le gros bouton bleu **Download for Windows**. Le téléchargement démarre tout seul.
+
+3. Quand le fichier est téléchargé, double cliquez dessus. Il s'appelle quelque chose comme `VSCodeUserSetup-x64-1.xx.exe`.
+
+4. Acceptez l'accord de licence, puis cliquez sur **Suivant**.
+
+5. Gardez le dossier d'installation par défaut. Cliquez sur **Suivant**.
+
+6. Gardez le dossier du menu Démarrer par défaut. Cliquez sur **Suivant**.
+
+7. Vous arrivez sur l'écran « Tâches supplémentaires ». C'est l'écran important. Cochez les cases suivantes.
+
+   - **Ajouter « Ouvrir avec Code » à l'action du menu contextuel des fichiers de l'Explorateur Windows.**
+   - **Ajouter « Ouvrir avec Code » à l'action du menu contextuel des répertoires de l'Explorateur Windows.**
+   - **Ajouter à PATH (disponible après le redémarrage).**
+
+   Les deux premières permettent de faire un clic droit sur un fichier ou un dossier pour l'ouvrir dans VSCode. La troisième permet d'appeler VSCode depuis n'importe quelle ligne de commande. Les autres cases peuvent rester telles quelles.
+
+8. Cliquez sur **Suivant**, puis sur **Installer**. L'installation prend une ou deux minutes.
+
+9. Quand c'est terminé, laissez la case « Lancer Visual Studio Code » cochée, puis cliquez sur **Terminer**.
+
+</Steps>
+
+## Premier lancement
+
+Au premier démarrage, VSCode affiche un écran de bienvenue. Vous pouvez choisir un thème de couleurs. Si vous n'avez pas de préférence, le thème sombre par défaut convient très bien.
+
+Prenez un instant pour repérer les zones principales de la fenêtre.
+
+- **La barre d'activités** est la colonne d'icônes à gauche. Elle donne accès à l'explorateur de fichiers, à la recherche, au contrôle de version, au panneau des extensions, et au débogueur.
+- **L'éditeur** est la grande zone au centre. C'est là que votre code apparaîtra.
+- **Le panneau du terminal** est la zone en bas, masquée par défaut. Vous pouvez l'afficher avec le menu **Terminal**, puis **Nouveau terminal**. Ou plus rapidement, avec le raccourci Ctrl plus accent grave.
+
+Le terminal intégré à VSCode est très pratique. Il vous évite de jongler entre plusieurs fenêtres. Vous pourrez y taper vos commandes Python sans quitter l'éditeur.
+
+<Aside type="tip">
+Si vous trouvez l'interface en anglais, sachez qu'il existe un pack de langue français. Ouvrez le panneau des extensions, recherchez « French Language Pack », installez le, puis redémarrez VSCode. Mais ce n'est pas obligatoire pour suivre nos leçons.
+</Aside>
+
+## Exemple
+
+Vérifions que tout fonctionne. Fermez VSCode. Puis ouvrez le menu Démarrer, tapez `Visual Studio Code`, et cliquez. La fenêtre doit s'ouvrir sans erreur. C'est tout pour cette leçon.
+
+## Problèmes courants
+
+- **L'installateur est bloqué par Windows Defender SmartScreen.** Cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ». Le fichier provient bien de Microsoft.
+- **Vous avez oublié de cocher les cases « Ouvrir avec Code ».** Ce n'est pas grave. Vous pouvez relancer l'installateur, il proposera les mêmes options.
+- **VSCode est lent au premier démarrage.** C'est normal. Les démarrages suivants seront plus rapides.
+
+## À retenir
+
+- VSCode se télécharge depuis [code.visualstudio.com](https://code.visualstudio.com/).
+- Pendant l'installation, cochez « Ajouter à PATH » et les deux options « Ouvrir avec Code ».
+- L'interface se compose d'une barre d'activités, d'un éditeur, et d'un panneau de terminal.
+- VSCode est prêt à l'emploi, mais il faut encore lui apprendre à parler Python.

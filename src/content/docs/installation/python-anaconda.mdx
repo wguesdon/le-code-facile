@@ -1,0 +1,98 @@
+---
+title: Installer Python avec Anaconda
+description: Téléchargement et installation pas à pas d'Anaconda sous Windows.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Dans cette leçon, vous allez télécharger et installer Anaconda sous Windows. À la fin, Python sera prêt à l'emploi sur votre ordinateur.
+
+## Vue d'ensemble
+
+Anaconda Distribution est un installateur unique qui dépose sur votre machine Python, des centaines de paquets utiles, et deux petits programmes compagnons. Vous n'avez rien à configurer, il suffit de suivre les écrans de l'installateur.
+
+L'installation prend entre dix et vingt minutes, selon votre connexion.
+
+<Aside type="tip">
+Fermez vos autres logiciels avant de lancer l'installation. Cela évite tout conflit avec l'installateur.
+</Aside>
+
+## Étapes
+
+<Steps>
+
+1. Ouvrez votre navigateur et allez sur la page officielle : [https://www.anaconda.com/download](https://www.anaconda.com/download).
+
+2. Sur la page, cliquez sur le bouton de téléchargement pour Windows. Le site détecte normalement votre système. Si on vous demande un email, vous pouvez utiliser le lien « Skip registration » en bas du formulaire.
+
+3. Le fichier téléchargé s'appelle quelque chose comme `Anaconda3-2024.xx-Windows-x86_64.exe`. Double cliquez dessus pour lancer l'installateur.
+
+4. Sur le premier écran, cliquez sur **Next**.
+
+5. Acceptez la licence en cliquant sur **I Agree**.
+
+6. À l'écran « Select Installation Type », choisissez **Just Me (recommended)**. Cette option installe Anaconda uniquement pour votre compte utilisateur. C'est plus simple et plus sûr.
+
+7. À l'écran suivant, gardez le chemin d'installation par défaut. Il ressemble à `C:\Users\VotreNom\anaconda3`. Cliquez sur **Next**.
+
+8. À l'écran « Advanced Installation Options », laissez les options par défaut. **Ne cochez pas** la case « Add Anaconda3 to my PATH environment variable ». C'est la recommandation officielle d'Anaconda. La case « Register Anaconda3 as my default Python » peut rester cochée.
+
+9. Cliquez sur **Install**. L'installation prend plusieurs minutes. Vous pouvez aller vous chercher un café.
+
+10. Quand l'installation se termine, cliquez sur **Next**, puis sur **Next** à nouveau, et enfin sur **Finish**. Vous pouvez décocher les cases qui proposent d'ouvrir des pages web.
+
+</Steps>
+
+## Anaconda Navigator et Anaconda Prompt
+
+Une fois Anaconda installé, deux nouveaux programmes apparaissent dans votre menu Démarrer.
+
+- **Anaconda Navigator** est une interface graphique. Elle permet de lancer des outils comme Jupyter Notebook ou Spyder en quelques clics. Nous ne nous en servirons pas tout de suite, mais c'est bon de savoir qu'elle existe.
+- **Anaconda Prompt** est une fenêtre noire qui ressemble à l'invite de commandes Windows. Mais elle est préconfigurée pour Python et Anaconda. C'est elle que nous allons utiliser pour vérifier l'installation.
+
+<Aside type="caution">
+Sous Windows, ouvrez toujours **Anaconda Prompt** plutôt que l'invite de commandes classique pour les commandes Python. Comme nous n'avons pas ajouté Anaconda au PATH, Python ne sera reconnu que dans Anaconda Prompt.
+</Aside>
+
+## Exemple
+
+Pour vérifier que Python est bien installé, faisons un test rapide.
+
+<Steps>
+
+1. Ouvrez le menu Démarrer.
+
+2. Tapez `Anaconda Prompt` et cliquez sur le résultat.
+
+3. Une fenêtre noire s'ouvre. Au début de la ligne, vous voyez `(base)`. Cela veut dire que l'environnement Anaconda par défaut est actif.
+
+4. Tapez la commande suivante et appuyez sur Entrée.
+
+</Steps>
+
+```powershell
+python --version
+```
+
+Vous devriez voir quelque chose comme :
+
+```
+# Sortie:
+Python 3.11.7
+```
+
+Le numéro exact peut varier. L'important, c'est que la commande renvoie une version de Python sans erreur.
+
+## Problèmes courants
+
+- **L'installateur est bloqué par Windows Defender SmartScreen.** Cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ». Le fichier provient bien d'Anaconda Inc.
+- **L'installation est très lente.** C'est normal, Anaconda copie beaucoup de fichiers. Soyez patient.
+- **Vous obtenez `python n'est pas reconnu`.** Vous avez ouvert l'invite de commandes Windows au lieu d'Anaconda Prompt. Fermez la fenêtre et rouvrez Anaconda Prompt.
+
+## À retenir
+
+- Anaconda s'installe en suivant un installateur classique, sans piège.
+- Choisissez « Just Me » et gardez le chemin par défaut.
+- Ne cochez pas la case qui ajoute Anaconda au PATH.
+- Utilisez Anaconda Prompt pour vos commandes Python.
+- La commande `python --version` confirme que tout est en place.

@@ -1,0 +1,170 @@
+---
+title: Carnet d'adresses
+description: Un mini-carnet d'adresses en ligne de commande, sauvegardé en JSON.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Dans ce projet, nous allons construire un petit carnet d'adresses qui fonctionne dans la console et qui retient les contacts d'une session à l'autre.
+
+## L'objectif
+
+Imaginez un répertoire de poche, mais sur votre ordinateur. Le programme propose un menu. Vous pouvez ajouter un contact, voir la liste, rechercher quelqu'un par son nom, ou supprimer une fiche. Tout est sauvegardé dans un fichier `contacts.json`, donc rien ne se perd quand vous fermez le programme.
+
+## Le plan
+
+- Charger les contacts depuis `contacts.json` au démarrage.
+- Afficher un menu avec cinq choix.
+- Écrire une fonction par action : ajouter, lister, rechercher, supprimer.
+- Sauvegarder le fichier après chaque modification.
+- Boucler jusqu'à ce que l'utilisateur choisisse de quitter.
+
+## Le code
+
+Commençons par les imports et la fonction de chargement. Si le fichier n'existe pas encore, on renvoie une liste vide grâce à un `try / except`.
+
+```python
+import json
+from pathlib import Path
+
+FICHIER = Path("contacts.json")
+
+
+def charger():
+    """Lit la liste des contacts depuis le fichier JSON.
+
+    Returns:
+        list: La liste des contacts, ou une liste vide si le fichier n'existe pas.
+    """
+    try:
+        with FICHIER.open("r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+```
+
+Ensuite, une fonction pour sauvegarder. Elle écrit la liste complète dans le fichier.
+
+```python
+def sauvegarder(contacts):
+    """Écrit la liste des contacts dans le fichier JSON.
+
+    Args:
+        contacts (list): La liste des contacts à sauvegarder.
+    """
+    with FICHIER.open("w", encoding="utf-8") as f:
+        json.dump(contacts, f, indent=2, ensure_ascii=False)
+```
+
+<Aside type="tip">
+L'option `ensure_ascii=False` permet de garder les accents dans le fichier, ce qui le rend bien plus lisible.
+</Aside>
+
+Voici maintenant les quatre actions du menu. Chacune est une petite fonction.
+
+```python
+def ajouter(contacts):
+    """Demande les informations d'un nouveau contact et l'ajoute."""
+    print("\nNouveau contact")
+    prenom = input("Prénom : ").strip()
+    nom = input("Nom : ").strip()
+    telephone = input("Téléphone : ").strip()
+    email = input("Email : ").strip()
+    contacts.append({
+        "prenom": prenom,
+        "nom": nom,
+        "telephone": telephone,
+        "email": email,
+    })
+    sauvegarder(contacts)
+    print("Contact ajouté.")
+
+
+def lister(contacts):
+    """Affiche tous les contacts du carnet."""
+    if not contacts:
+        print("\nLe carnet est vide.")
+        return
+    print("\nListe des contacts :")
+    for i, c in enumerate(contacts, start=1):
+        print(f"{i}. {c['prenom']} {c['nom']}, {c['telephone']}, {c['email']}")
+
+
+def rechercher(contacts):
+    """Cherche un contact par son nom ou son prénom."""
+    terme = input("\nNom ou prénom à chercher : ").strip().lower()
+    trouves = [
+        c for c in contacts
+        if terme in c["nom"].lower() or terme in c["prenom"].lower()
+    ]
+    if not trouves:
+        print("Aucun contact trouvé.")
+        return
+    for c in trouves:
+        print(f"{c['prenom']} {c['nom']}, {c['telephone']}, {c['email']}")
+
+
+def supprimer(contacts):
+    """Supprime un contact à partir de son numéro dans la liste."""
+    lister(contacts)
+    if not contacts:
+        return
+    choix = input("\nNuméro à supprimer : ").strip()
+    try:
+        index = int(choix) - 1
+        contact = contacts.pop(index)
+        sauvegarder(contacts)
+        print(f"Contact supprimé : {contact['prenom']} {contact['nom']}.")
+    except (ValueError, IndexError):
+        print("Numéro invalide.")
+```
+
+Enfin, la boucle principale qui assemble le tout.
+
+```python
+def main():
+    """Boucle du menu principal."""
+    contacts = charger()
+    while True:
+        print("\n=== Carnet d'adresses ===")
+        print("1. Ajouter un contact")
+        print("2. Lister les contacts")
+        print("3. Rechercher")
+        print("4. Supprimer")
+        print("5. Quitter")
+        choix = input("Votre choix : ").strip()
+
+        if choix == "1":
+            ajouter(contacts)
+        elif choix == "2":
+            lister(contacts)
+        elif choix == "3":
+            rechercher(contacts)
+        elif choix == "4":
+            supprimer(contacts)
+        elif choix == "5":
+            print("À bientôt.")
+            break
+        else:
+            print("Choix invalide.")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Lancez le script avec `python carnet_adresses.py`. À la première exécution, le fichier `contacts.json` se crée tout seul dès que vous ajoutez un contact.
+
+## Pour aller plus loin
+
+- Ajouter un champ « date de naissance » et trier la liste par mois.
+- Permettre de modifier un contact existant, pas seulement de le supprimer.
+- Exporter le carnet vers un fichier CSV pour l'ouvrir dans un tableur.
+
+## À retenir
+
+- Le format JSON est parfait pour sauvegarder des listes de dictionnaires.
+- `try / except FileNotFoundError` permet de gérer proprement la première exécution.
+- Découper un programme en petites fonctions rend le code beaucoup plus clair.
+- Une boucle `while True` avec un `break` est un grand classique pour un menu.
+- Sauvegarder après chaque modification évite de perdre des données.

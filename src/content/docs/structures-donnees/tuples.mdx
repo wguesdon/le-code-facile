@@ -1,0 +1,82 @@
+---
+title: Les tuples
+description: Une liste figée, idéale pour des données qui ne changent pas.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Un tuple ressemble à une liste, mais il ne peut plus être modifié après sa création.
+
+## Le concept
+
+Un tuple s'écrit avec des parenthèses. Les valeurs sont séparées par des virgules. Une fois créé, on ne peut ni ajouter, ni retirer, ni changer un élément.
+
+Les parenthèses sont en fait optionnelles, mais elles rendent le code plus clair.
+
+```python
+point = (3, 4)
+autre_point = 5, 6
+
+print(point)
+# Sortie: (3, 4)
+print(autre_point)
+# Sortie: (5, 6)
+```
+
+## Exemple
+
+On accède aux éléments d'un tuple comme dans une liste, avec un index.
+
+```python
+coordonnees = (48.8566, 2.3522)
+
+print(coordonnees[0])
+# Sortie: 48.8566
+
+print(coordonnees[1])
+# Sortie: 2.3522
+```
+
+Mais toute tentative de modification provoque une erreur.
+
+```python
+coordonnees = (48.8566, 2.3522)
+coordonnees[0] = 50.0
+# Erreur: 'tuple' object does not support item assignment
+```
+
+## En pratique
+
+Une technique très pratique est le dépaquetage, ou unpacking. On affecte chaque valeur du tuple à une variable en une seule ligne.
+
+```python
+point = (3, 4)
+x, y = point
+
+print(x)
+# Sortie: 3
+print(y)
+# Sortie: 4
+```
+
+C'est très utile pour des données structurées, comme une date.
+
+```python
+date_anniversaire = (15, 7, 1990)
+jour, mois, annee = date_anniversaire
+
+print(f"Jour: {jour}, mois: {mois}, année: {annee}")
+# Sortie: Jour: 15, mois: 7, année: 1990
+```
+
+<Aside title="Quand utiliser un tuple ?">
+Choisissez un tuple quand les valeurs forment un tout cohérent qui ne doit pas changer. Par exemple, des coordonnées GPS, une date, ou les dimensions d'une image. Choisissez une liste quand vous voulez pouvoir ajouter ou retirer des éléments, comme une liste de courses.
+</Aside>
+
+## À retenir
+
+- Un tuple est une collection ordonnée et immuable.
+- On l'écrit entre parenthèses, par exemple `(3, 4)`.
+- On accède aux éléments avec un index, comme dans une liste.
+- Le dépaquetage `x, y = point` est une syntaxe très pratique.
+- Utilisez un tuple pour des données fixes, une liste pour des données qui changent.

@@ -1,0 +1,107 @@
+---
+title: Les dictionnaires
+description: Associer des clés à des valeurs.
+---
+
+Un dictionnaire associe une clé à une valeur, comme un carnet d'adresses où chaque nom mène à un numéro de téléphone.
+
+## Le concept
+
+Un dictionnaire s'écrit entre accolades. Chaque entrée associe une clé à une valeur avec deux points. Les entrées sont séparées par des virgules.
+
+Les clés sont uniques. La valeur, elle, peut être de n'importe quel type.
+
+```python
+contact = {"nom": "Dupont", "age": 30, "ville": "Paris"}
+
+print(contact)
+# Sortie: {'nom': 'Dupont', 'age': 30, 'ville': 'Paris'}
+```
+
+## Exemple
+
+On accède à une valeur en mettant la clé entre crochets.
+
+```python
+contact = {"nom": "Dupont", "age": 30}
+
+print(contact["nom"])
+# Sortie: Dupont
+
+print(contact["age"])
+# Sortie: 30
+```
+
+On peut ajouter une nouvelle clé ou modifier une valeur existante.
+
+```python
+contact = {"nom": "Dupont", "age": 30}
+
+contact["email"] = "dupont@exemple.fr"
+contact["age"] = 31
+
+print(contact)
+# Sortie: {'nom': 'Dupont', 'age': 31, 'email': 'dupont@exemple.fr'}
+```
+
+## En pratique
+
+Si on cherche une clé qui n'existe pas avec les crochets, on obtient une erreur. La méthode `.get()` est plus sûre car elle renvoie `None`, ou une valeur par défaut.
+
+```python
+contact = {"nom": "Dupont", "age": 30}
+
+print(contact.get("ville"))
+# Sortie: None
+
+print(contact.get("ville", "Inconnue"))
+# Sortie: Inconnue
+```
+
+Trois méthodes permettent d'explorer un dictionnaire.
+
+```python
+contact = {"nom": "Dupont", "age": 30, "ville": "Paris"}
+
+print(list(contact.keys()))
+# Sortie: ['nom', 'age', 'ville']
+
+print(list(contact.values()))
+# Sortie: ['Dupont', 30, 'Paris']
+
+print(list(contact.items()))
+# Sortie: [('nom', 'Dupont'), ('age', 30), ('ville', 'Paris')]
+```
+
+Le mot clé `in` vérifie la présence d'une clé.
+
+```python
+contact = {"nom": "Dupont", "age": 30}
+
+print("nom" in contact)
+# Sortie: True
+
+print("Dupont" in contact)
+# Sortie: False
+```
+
+Pour parcourir un dictionnaire, la forme la plus pratique utilise `.items()`.
+
+```python
+contact = {"nom": "Dupont", "age": 30, "ville": "Paris"}
+
+for cle, valeur in contact.items():
+    print(f"{cle}: {valeur}")
+# Sortie:
+# nom: Dupont
+# age: 30
+# ville: Paris
+```
+
+## À retenir
+
+- Un dictionnaire associe des clés à des valeurs entre accolades.
+- On accède à une valeur avec `dico["cle"]`.
+- `.get("cle", defaut)` évite les erreurs si la clé n'existe pas.
+- `.keys()`, `.values()` et `.items()` listent respectivement les clés, les valeurs et les paires.
+- Le mot clé `in` teste la présence d'une clé, pas d'une valeur.

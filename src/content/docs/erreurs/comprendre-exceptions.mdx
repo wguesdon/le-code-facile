@@ -1,0 +1,166 @@
+---
+title: Comprendre les exceptions
+description: Lire et décoder un message d'erreur Python.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Une erreur en Python n'est pas un échec, c'est un message qui vous explique ce qui s'est passé.
+
+## Le concept
+
+Quand Python rencontre un problème, il s'arrête et affiche une **exception**. Une exception, c'est juste un message structuré. Il vous indique trois choses importantes.
+
+D'abord, le **fichier** concerné. Ensuite, le **numéro de ligne** où le problème est apparu. Enfin, le **type d'exception** et un message court qui décrit le souci.
+
+L'ensemble s'appelle un **traceback**. On le lit du haut vers le bas. La dernière ligne est souvent la plus utile, car elle donne le type d'erreur.
+
+<Aside type="tip">
+Lire le traceback est une compétence clé. Avec un peu d'habitude, vous repérez la cause en quelques secondes.
+</Aside>
+
+## Exemple
+
+Voici les exceptions les plus courantes, avec leur traceback.
+
+### NameError
+
+Vous utilisez un nom qui n'existe pas.
+
+```python
+print(prenom)
+```
+
+```text
+Traceback (most recent call last):
+  File "exemple.py", line 1, in <module>
+    print(prenom)
+NameError: name 'prenom' is not defined
+```
+
+La variable `prenom` n'a jamais été créée.
+
+### TypeError
+
+Vous mélangez des types incompatibles.
+
+```python
+age = 30
+message = "J'ai " + age + " ans"
+```
+
+```text
+Traceback (most recent call last):
+  File "exemple.py", line 2, in <module>
+    message = "J'ai " + age + " ans"
+TypeError: can only concatenate str (not "int") to str
+```
+
+On ne peut pas coller un nombre à un texte sans le convertir avec `str(age)`.
+
+### ValueError
+
+Le type est correct, mais la valeur ne convient pas.
+
+```python
+nombre = int("bonjour")
+```
+
+```text
+Traceback (most recent call last):
+  File "exemple.py", line 1, in <module>
+    nombre = int("bonjour")
+ValueError: invalid literal for int() with base 10: 'bonjour'
+```
+
+`int()` accepte une chaîne, mais pas n'importe laquelle.
+
+### ZeroDivisionError
+
+Vous divisez par zéro.
+
+```python
+resultat = 10 / 0
+```
+
+```text
+Traceback (most recent call last):
+  File "exemple.py", line 1, in <module>
+    resultat = 10 / 0
+ZeroDivisionError: division by zero
+```
+
+Mathématiquement impossible, Python refuse.
+
+### FileNotFoundError
+
+Le fichier demandé n'existe pas.
+
+```python
+with open("liste_courses.txt") as f:
+    contenu = f.read()
+```
+
+```text
+Traceback (most recent call last):
+  File "exemple.py", line 1, in <module>
+    with open("liste_courses.txt") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'liste_courses.txt'
+```
+
+Vérifiez le nom et l'emplacement du fichier.
+
+### IndexError
+
+Vous demandez un élément qui n'existe pas dans une liste.
+
+```python
+fruits = ["pomme", "banane"]
+print(fruits[5])
+```
+
+```text
+Traceback (most recent call last):
+  File "exemple.py", line 2, in <module>
+    print(fruits[5])
+IndexError: list index out of range
+```
+
+La liste a deux éléments, l'index 5 est hors limites.
+
+### KeyError
+
+Vous cherchez une clé absente d'un dictionnaire.
+
+```python
+contact = {"nom": "Dupont", "ville": "Lyon"}
+print(contact["telephone"])
+```
+
+```text
+Traceback (most recent call last):
+  File "exemple.py", line 2, in <module>
+    print(contact["telephone"])
+KeyError: 'telephone'
+```
+
+La clé `telephone` n'a pas été ajoutée.
+
+## En pratique
+
+Quand une erreur apparaît, prenez le temps de la lire calmement.
+
+1. Regardez la dernière ligne du traceback, elle donne le type.
+2. Notez le numéro de ligne, c'est votre point de départ.
+3. Cherchez le nom du fichier, surtout dans un projet à plusieurs fichiers.
+4. Si le message reste flou, copiez le type d'exception dans un moteur de recherche.
+
+Chaque erreur rencontrée vous apprend quelque chose. Les développeurs les plus expérimentés en lisent tous les jours.
+
+## À retenir
+
+- Une exception est un message qui décrit un problème, pas un échec personnel.
+- Le traceback contient le fichier, la ligne, le type et le message.
+- La dernière ligne du traceback est souvent la plus parlante.
+- Chaque type d'exception correspond à une catégorie précise de problème.
+- Apprendre à lire un traceback fait gagner énormément de temps.

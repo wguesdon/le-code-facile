@@ -1,0 +1,120 @@
+---
+title: Écrire dans un fichier
+description: Créer ou modifier un fichier texte.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Python peut aussi créer ou modifier des fichiers texte. C'est très pratique pour sauvegarder une liste, un compte rendu ou des notes.
+
+## Le concept
+
+Pour écrire dans un fichier, on utilise toujours `open`, mais avec un autre mode.
+
+```python
+with open("liste.txt", "w", encoding="utf-8") as f:
+    f.write("Pommes\n")
+```
+
+Le mode `"w"` veut dire "write", soit écrire.
+
+<Aside type="caution">
+Le mode `"w"` efface tout le contenu existant du fichier. Si le fichier n'existe pas, Python le crée. Si vous voulez conserver le contenu, utilisez plutôt le mode `"a"`.
+</Aside>
+
+## Les deux modes principaux
+
+- `"w"` : remplace tout. Le fichier devient vierge avant l'écriture.
+- `"a"` : ajoute à la fin. Le contenu existant reste en place.
+
+```python
+with open("journal.txt", "a", encoding="utf-8") as f:
+    f.write("Aujourd'hui, j'ai appris Python.\n")
+```
+
+À chaque exécution, une nouvelle ligne sera ajoutée à la fin du fichier.
+
+## Deux méthodes pour écrire
+
+### `.write()` pour une chaîne
+
+`.write()` écrit une seule chaîne de caractères. Python n'ajoute pas de saut de ligne tout seul. Vous devez l'ajouter avec `\n`.
+
+```python
+with open("liste.txt", "w", encoding="utf-8") as f:
+    f.write("Pommes\n")
+    f.write("Bananes\n")
+    f.write("Carottes\n")
+```
+
+Sans le `\n`, tout serait collé sur une seule ligne.
+
+### `.writelines()` pour une liste
+
+`.writelines()` accepte une liste de chaînes. Attention, elle non plus n'ajoute pas de sauts de ligne. Il faut les inclure dans chaque chaîne.
+
+```python
+courses = ["Pommes\n", "Bananes\n", "Carottes\n"]
+with open("liste.txt", "w", encoding="utf-8") as f:
+    f.writelines(courses)
+```
+
+## Exemple
+
+Voici un programme qui demande à l'utilisateur sa liste de courses et l'enregistre dans un fichier.
+
+```python
+courses = []
+print("Tapez vos articles, un par ligne. Tapez 'fin' pour terminer.")
+
+while True:
+    article = input("Article : ")
+    if article == "fin":
+        break
+    courses.append(article)
+
+with open("courses.txt", "w", encoding="utf-8") as f:
+    for article in courses:
+        f.write(f"{article}\n")
+
+print("Liste enregistrée dans courses.txt.")
+```
+
+Après avoir entré `Pommes`, `Bananes`, `Pain` puis `fin`, le fichier `courses.txt` contient :
+
+```
+Pommes
+Bananes
+Pain
+```
+
+## En pratique
+
+Pour ajouter un article plus tard sans tout effacer, on utilise le mode `"a"`.
+
+```python
+nouvel_article = input("Quel article ajouter ? ")
+with open("courses.txt", "a", encoding="utf-8") as f:
+    f.write(f"{nouvel_article}\n")
+```
+
+Si vous lancez ce programme et tapez `Lait`, le fichier devient :
+
+```
+Pommes
+Bananes
+Pain
+Lait
+```
+
+<Aside type="tip">
+Pensez toujours au saut de ligne `\n`. Sans lui, vos articles seront collés bout à bout sur une seule ligne, ce qui rendra le fichier difficile à lire.
+</Aside>
+
+## À retenir
+
+- Mode `"w"` pour écrire, mode `"a"` pour ajouter à la fin.
+- `"w"` efface tout l'ancien contenu, soyez prudent.
+- `.write()` accepte une chaîne, `.writelines()` accepte une liste.
+- Ajoutez `\n` à la fin de chaque ligne.
+- Utilisez `with` et `encoding="utf-8"` comme pour la lecture.

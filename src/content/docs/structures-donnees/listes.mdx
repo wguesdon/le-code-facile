@@ -1,0 +1,114 @@
+---
+title: Les listes
+description: Stocker plusieurs valeurs dans un ordre précis.
+---
+
+Une liste permet de regrouper plusieurs valeurs dans une seule variable, comme une liste de courses sur un bout de papier.
+
+## Le concept
+
+Une liste s'écrit entre crochets. Les valeurs sont séparées par des virgules. L'ordre des éléments est conservé.
+
+Chaque élément possède une position, appelée index. En Python, on compte à partir de 0. Le premier élément est donc à l'index 0, le deuxième à l'index 1, et ainsi de suite.
+
+## Exemple
+
+```python
+courses = ["pain", "lait", "oeufs"]
+
+print(courses[0])
+# Sortie: pain
+
+print(courses[2])
+# Sortie: oeufs
+
+print(len(courses))
+# Sortie: 3
+```
+
+On peut aussi compter à partir de la fin avec un index négatif. L'index -1 désigne le dernier élément.
+
+```python
+courses = ["pain", "lait", "oeufs"]
+
+print(courses[-1])
+# Sortie: oeufs
+
+print(courses[-2])
+# Sortie: lait
+```
+
+## En pratique
+
+Une liste peut être modifiée. Voici les méthodes les plus utiles.
+
+```python
+courses = ["pain", "lait", "oeufs"]
+
+courses.append("beurre")
+print(courses)
+# Sortie: ['pain', 'lait', 'oeufs', 'beurre']
+
+courses.insert(1, "fromage")
+print(courses)
+# Sortie: ['pain', 'fromage', 'lait', 'oeufs', 'beurre']
+
+courses.remove("lait")
+print(courses)
+# Sortie: ['pain', 'fromage', 'oeufs', 'beurre']
+
+dernier = courses.pop()
+print(dernier)
+# Sortie: beurre
+print(courses)
+# Sortie: ['pain', 'fromage', 'oeufs']
+```
+
+On peut trier ou inverser une liste.
+
+```python
+notes = [12, 18, 9, 15]
+
+notes.sort()
+print(notes)
+# Sortie: [9, 12, 15, 18]
+
+notes.reverse()
+print(notes)
+# Sortie: [18, 15, 12, 9]
+```
+
+Le découpage, ou slicing, permet d'extraire une portion de la liste.
+
+```python
+courses = ["pain", "lait", "oeufs", "beurre", "pommes"]
+
+print(courses[1:3])
+# Sortie: ['lait', 'oeufs']
+
+print(courses[:2])
+# Sortie: ['pain', 'lait']
+
+print(courses[2:])
+# Sortie: ['oeufs', 'beurre', 'pommes']
+```
+
+Pour vérifier si une valeur se trouve dans la liste, on utilise le mot clé `in`.
+
+```python
+courses = ["pain", "lait", "oeufs"]
+
+print("lait" in courses)
+# Sortie: True
+
+print("chocolat" in courses)
+# Sortie: False
+```
+
+## À retenir
+
+- Une liste regroupe plusieurs valeurs ordonnées entre crochets.
+- L'index commence à 0, et on peut utiliser des index négatifs pour partir de la fin.
+- `len()` donne la taille de la liste.
+- `.append()`, `.insert()`, `.remove()`, `.pop()`, `.sort()`, `.reverse()` modifient la liste.
+- Le slicing `liste[a:b]` extrait une portion, et `in` vérifie la présence d'une valeur.

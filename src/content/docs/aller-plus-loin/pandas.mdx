@@ -1,0 +1,77 @@
+---
+title: Découvrir pandas
+description: La bibliothèque pour manipuler des tableaux de données.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+pandas est l'outil de référence pour travailler avec des tableaux de données en Python.
+
+## Le concept
+
+Imagine un tableur comme Excel ou Google Sheets. Tu y mets des colonnes, des lignes, des valeurs. pandas fait la même chose, mais en Python. Tu peux lire un fichier, filtrer des lignes, calculer des totaux, regrouper par catégorie. Tout cela en quelques lignes.
+
+L'objet central de pandas s'appelle un **DataFrame**. C'est simplement un tableau avec des colonnes nommées.
+
+<Aside type="tip">
+Si tu as installé Anaconda, pandas est déjà présent. Tu n'as rien à faire de plus. Sinon, tape `pip install pandas` dans ton terminal.
+</Aside>
+
+## Exemple
+
+Imagine un fichier `ventes.csv` qui ressemble à cela.
+
+```
+produit,prix,quantite
+pomme,1.20,5
+banane,0.80,3
+pomme,1.20,2
+orange,1.50,4
+banane,0.80,6
+```
+
+Voici comment l'explorer avec pandas.
+
+```python
+import pandas as pd
+
+# Charger le fichier dans un DataFrame
+df = pd.read_csv("ventes.csv")
+
+# Afficher les premières lignes
+print(df.head())
+
+# Connaître la taille du tableau
+print(df.shape)
+
+# Lister les noms de colonnes
+print(df.columns)
+
+# Compter les occurrences de chaque produit
+print(df["produit"].value_counts())
+
+# Faire la somme des prix par produit
+print(df.groupby("produit")["prix"].sum())
+```
+
+Chaque ligne fait beaucoup de travail. `read_csv` lit le fichier. `head` montre les cinq premières lignes. `shape` donne le nombre de lignes et de colonnes. `value_counts` compte combien de fois chaque produit apparaît. `groupby` regroupe par produit puis calcule la somme.
+
+## Pour explorer plus
+
+Tu peux aussi.
+
+- Filtrer les lignes : `df[df["prix"] > 1]` garde seulement les produits chers.
+- Trier : `df.sort_values("prix")` classe par prix croissant.
+- Ajouter une colonne : `df["total"] = df["prix"] * df["quantite"]`.
+- Lire un fichier Excel : `pd.read_excel("ventes.xlsx")`.
+- Sauvegarder le résultat : `df.to_csv("resultat.csv", index=False)`.
+
+pandas est une bibliothèque très riche. Tu n'as pas besoin de tout connaître pour commencer. Explore au fur et à mesure de tes besoins.
+
+## À retenir
+
+- pandas sert à manipuler des tableaux de données comme dans un tableur.
+- On charge un fichier CSV avec `pd.read_csv("nom.csv")`.
+- `head`, `shape` et `columns` donnent un aperçu rapide.
+- `value_counts` et `groupby` permettent de regrouper et compter.
+- pandas est inclus dans Anaconda. Sinon, `pip install pandas`.

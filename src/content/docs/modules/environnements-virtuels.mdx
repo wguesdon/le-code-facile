@@ -1,0 +1,86 @@
+---
+title: Les environnements virtuels
+description: Isoler les paquets de chaque projet.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Quand vous avez plusieurs projets, mieux vaut leur donner à chacun sa propre boîte à outils.
+
+## Le concept
+
+Un environnement virtuel, c'est une installation Python séparée, avec ses propres paquets. Chaque projet peut ainsi avoir ses versions à lui, sans gêner les autres.
+
+Pourquoi isoler ? Imaginez deux projets. Le premier a besoin de la version 1.0 d'une bibliothèque. Le second a besoin de la version 2.0. Sans environnements virtuels, vous devez choisir. Avec eux, chaque projet a sa propre version, et tout fonctionne.
+
+Avec Anaconda, l'outil principal s'appelle `conda`.
+
+## Exemple
+
+Ouvrez l'Anaconda Prompt depuis le menu Démarrer. Tapez la commande suivante pour créer un nouvel environnement nommé `mon-projet`.
+
+```bash
+conda create -n mon-projet python=3.12
+```
+
+Conda affiche la liste des paquets à installer. Tapez `y` puis Entrée. Quelques secondes plus tard, l'environnement est prêt.
+
+Pour l'activer, tapez :
+
+```bash
+conda activate mon-projet
+```
+
+Le début de la ligne change. Vous voyez maintenant le nom de l'environnement entre parenthèses.
+
+```
+(mon-projet) C:\Users\Alice>
+```
+
+C'est le signe que tout ce que vous installez ira dans cet environnement, pas ailleurs.
+
+Pour installer un paquet dans cet environnement :
+
+```bash
+conda install pandas
+```
+
+Pour revenir à l'environnement par défaut :
+
+```bash
+conda deactivate
+```
+
+## En pratique
+
+Quelques commandes utiles au quotidien.
+
+```bash
+# Lister tous les environnements
+conda env list
+
+# Supprimer un environnement
+conda remove -n mon-projet --all
+```
+
+<Aside type="tip" title="Un environnement par projet">
+La règle simple : un nouvel environnement par projet sérieux. Donnez lui le même nom que le projet. Vous éviterez ainsi les surprises quand vous installez des paquets.
+</Aside>
+
+Il existe d'autres outils que conda pour gérer les environnements.
+
+`python -m venv` est livré avec Python. Il crée un environnement léger dans un dossier de votre projet. C'est utile quand vous n'avez pas Anaconda.
+
+`uv` est un outil moderne et très rapide. Il combine la gestion des environnements et l'installation des paquets. De plus en plus de projets Python l'utilisent.
+
+<Aside type="note" title="Pas besoin de tout connaître">
+Pour démarrer, restez avec conda. Vous découvrirez `venv` et `uv` plus tard si vos projets en ont besoin.
+</Aside>
+
+## À retenir
+
+- Un environnement virtuel isole les paquets d'un projet.
+- Avec conda : `conda create -n nom python=3.12`, puis `conda activate nom`.
+- L'Anaconda Prompt affiche le nom de l'environnement actif.
+- `conda env list` montre tous vos environnements.
+- `python -m venv` et `uv` sont des alternatives à explorer plus tard.
