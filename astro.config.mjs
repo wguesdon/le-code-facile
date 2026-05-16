@@ -13,6 +13,14 @@ export default defineConfig({
       defaultLocale: 'fr',
       head: [
         {
+          tag: 'link',
+          attrs: {
+            rel: 'icon',
+            type: 'image/svg+xml',
+            href: '/le-code-facile/favicon.svg',
+          },
+        },
+        {
           tag: 'meta',
           attrs: {
             name: 'robots',
