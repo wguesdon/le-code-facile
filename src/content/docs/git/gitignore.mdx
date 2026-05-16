@@ -1,0 +1,140 @@
+---
+title: Le fichier .gitignore
+description: Empêcher Git de suivre les fichiers temporaires, les secrets et les dossiers inutiles.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Tout ce qui se trouve dans votre dossier de projet n'a pas vocation à rejoindre GitHub. Le fichier `.gitignore` indique à Git quoi laisser de côté.
+
+## Le concept
+
+Quand vous codez en Python, votre dossier se remplit vite de fichiers techniques. Python génère un dossier `__pycache__/`. Votre éditeur crée parfois un dossier `.vscode/`. Windows dépose des `Thumbs.db`. Un environnement virtuel pèse plusieurs centaines de mégaoctets.
+
+Tous ces éléments sont locaux. Ils n'apportent rien aux autres et alourdissent le dépôt. Pire, certains fichiers peuvent contenir des secrets, comme un mot de passe ou une clé d'API.
+
+Le fichier `.gitignore` est une liste de motifs. Git ignore les fichiers qui correspondent à ces motifs. Ils n'apparaissent plus dans `git status`, et ne peuvent pas être ajoutés par mégarde.
+
+<Aside type="danger">
+Ne commitez jamais de secrets. Une fois qu'un mot de passe ou une clé d'API atteint GitHub, considérez le comme compromis. Même si vous supprimez le fichier ensuite, l'historique Git garde la trace. Configurez `.gitignore` avant de coder, pas après.
+</Aside>
+
+## Étapes
+
+<Steps>
+
+1. Ouvrez Anaconda Prompt et placez vous dans votre projet.
+
+   ```powershell
+   cd %USERPROFILE%\mon-premier-projet
+   ```
+
+2. Créez un fichier nommé `.gitignore` à la racine du projet. Vous pouvez le faire depuis VSCode, ou en ligne de commande.
+
+   ```powershell
+   echo. > .gitignore
+   ```
+
+3. Ouvrez `.gitignore` dans VSCode et collez la liste fournie dans la section suivante.
+
+4. Enregistrez le fichier.
+
+5. Vérifiez que `git status` reconnaît le fichier.
+
+   ```bash
+   git status
+   ```
+
+6. Faites un commit qui ajoute `.gitignore`.
+
+   ```bash
+   git add .gitignore
+   git commit -m "Ajoute le fichier .gitignore"
+   git push
+   ```
+
+</Steps>
+
+## Exemple
+
+Voici un `.gitignore` adapté à un projet Python débutant sous Windows.
+
+```gitignore
+# Environnements virtuels
+.venv/
+env/
+venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Secrets et configuration locale
+.env
+.env.local
+
+# Fichiers de l'éditeur
+.vscode/
+.idea/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+```
+
+Quelques explications.
+
+- Les lignes qui commencent par `#` sont des commentaires. Elles aident à organiser le fichier.
+- Un nom suivi de `/` désigne un dossier, par exemple `.venv/`.
+- Une étoile `*` est un joker. `*.pyc` cible tous les fichiers qui finissent par `.pyc`.
+
+Maintenant, créez par exemple un dossier `.venv` dans votre projet, puis lancez :
+
+```bash
+git status
+```
+
+Sortie attendue :
+
+```
+# Sortie:
+On branch main
+nothing to commit, working tree clean
+```
+
+Git ne signale plus `.venv`. Le motif fonctionne.
+
+## Si un fichier est déjà suivi
+
+`.gitignore` ne retire pas les fichiers déjà sous suivi Git. Il bloque seulement les nouveaux. Si vous avez commité par erreur un fichier que vous voulez maintenant ignorer, il faut le sortir du suivi.
+
+```bash
+git rm --cached chemin/vers/le-fichier
+git commit -m "Sort le fichier du suivi Git"
+```
+
+L'option `--cached` retire le fichier de l'index sans le supprimer de votre disque. Le motif dans `.gitignore` empêchera ensuite Git de le reprendre.
+
+## Un générateur de templates
+
+Écrire un `.gitignore` complet à la main est fastidieux. Le site [gitignore.io](https://www.toptal.com/developers/gitignore) génère des templates prêts à l'emploi.
+
+Tapez par exemple `Python`, `Windows` et `VisualStudioCode` dans le champ de recherche, puis cliquez sur **Create**. Vous obtenez un `.gitignore` qui couvre toutes les situations courantes. Copiez le tel quel dans votre projet.
+
+<Aside type="tip">
+Quand vous commencez un projet sérieux, créez le `.gitignore` avant le premier commit. Cela évite d'avoir à nettoyer l'historique plus tard.
+</Aside>
+
+## Problèmes courants
+
+- **`.gitignore` ne semble rien ignorer.** Vérifiez que le fichier est bien à la racine du projet et qu'il s'appelle exactement `.gitignore`, point inclus.
+- **Le fichier était déjà commité.** Utilisez `git rm --cached` comme indiqué plus haut.
+- **Windows masque l'extension.** Si vous voyez `.gitignore.txt` dans VSCode, renommez le. Le suffixe `.txt` empêche Git de reconnaître le fichier.
+
+## À retenir
+
+- `.gitignore` exclut du suivi les fichiers temporaires, les secrets et les dossiers inutiles.
+- Placez le à la racine du projet, et committez le.
+- Les motifs acceptent les jokers comme `*.pyc` et les noms de dossiers comme `.venv/`.
+- Pour un fichier déjà suivi, utilisez `git rm --cached`.
+- Le site gitignore.io génère des templates complets pour vos projets.

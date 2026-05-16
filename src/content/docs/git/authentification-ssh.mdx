@@ -1,0 +1,128 @@
+---
+title: Authentification SSH (pour plus tard)
+description: Une alternative plus élégante au Personal Access Token, à mettre en place quand vous serez à l'aise.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Cette leçon est facultative. HTTPS avec un Personal Access Token fonctionne très bien. SSH est juste plus élégant et plus pratique quand vous travaillez sur plusieurs machines.
+
+## Vue d'ensemble
+
+L'authentification SSH repose sur deux fichiers qui forment une **paire de clés**. Une clé privée reste sur votre machine. Une clé publique part sur GitHub. Quand vous communiquez avec GitHub, votre Git local prouve son identité en signant un message avec la clé privée. GitHub vérifie cette signature avec la clé publique.
+
+Vous ne tapez plus rien. Pas de mot de passe, pas de PAT à recoller. La paire de clés s'en charge à votre place.
+
+<Aside type="note">
+Attendez d'être à l'aise avec le cycle `add` `commit` `push` avant de passer à SSH. La courbe d'apprentissage en vaut la peine, mais pas du premier jour.
+</Aside>
+
+## Étapes
+
+<Steps>
+
+1. Ouvrez PowerShell. Générez une paire de clés avec l'algorithme moderne Ed25519. Remplacez l'email par celui que vous utilisez pour GitHub.
+
+   ```bash
+   ssh-keygen -t ed25519 -C "vous@exemple.com"
+   ```
+
+   Quand on vous demande où enregistrer la clé, appuyez simplement sur Entrée pour accepter le chemin par défaut. Quand on vous demande une **passphrase**, vous pouvez en saisir une. Elle protège la clé privée si quelqu'un accède à votre disque. C'est recommandé.
+
+2. Démarrez le service ssh-agent de Windows. L'agent garde votre passphrase en mémoire pour éviter de la retaper à chaque commande.
+
+   ```powershell
+   Get-Service ssh-agent | Set-Service -StartupType Manual
+   Start-Service ssh-agent
+   ssh-add ~/.ssh/id_ed25519
+   ```
+
+3. Affichez le contenu de votre clé publique. C'est cette chaîne que vous donnerez à GitHub.
+
+   En invite de commandes classique :
+
+   ```bash
+   type %USERPROFILE%\.ssh\id_ed25519.pub
+   ```
+
+   En PowerShell :
+
+   ```powershell
+   Get-Content $env:USERPROFILE\.ssh\id_ed25519.pub
+   ```
+
+   Sélectionnez toute la ligne affichée, du premier caractère `ssh-ed25519` jusqu'à votre email à la fin. Copiez la avec `Ctrl+C`.
+
+4. Allez sur GitHub. Cliquez sur votre photo de profil en haut à droite, puis sur **Settings**. Dans la barre latérale, ouvrez **SSH and GPG keys**. Cliquez sur **New SSH key**.
+
+   - Dans **Title**, donnez un nom évocateur, par exemple `Mon PC Windows`.
+   - Laissez **Key type** sur **Authentication Key**.
+   - Collez votre clé publique dans le champ **Key**.
+   - Cliquez sur **Add SSH key**.
+
+5. Testez la connexion depuis PowerShell.
+
+   ```bash
+   ssh -T git@github.com
+   ```
+
+   À la première utilisation, on vous demande si vous faites confiance au serveur. Tapez `yes` et appuyez sur Entrée. Sortie attendue :
+
+   ```
+   # Sortie:
+   Hi votre-username! You've successfully authenticated, but GitHub does not provide shell access.
+   ```
+
+6. Mettez à jour vos dépôts existants pour passer de HTTPS à SSH. Placez vous dans le projet et changez l'URL du dépôt distant.
+
+   ```bash
+   cd %USERPROFILE%\mon-premier-projet
+   git remote set-url origin git@github.com:votre-username/mon-premier-projet.git
+   ```
+
+   Vérifiez le résultat avec :
+
+   ```bash
+   git remote -v
+   ```
+
+   Les deux lignes doivent maintenant commencer par `git@github.com:`.
+
+</Steps>
+
+## Exemple d'utilisation
+
+Faites un petit changement dans votre projet, puis enchaînez les commandes habituelles.
+
+```bash
+git add bonjour.py
+git commit -m "Test du push en SSH"
+git push
+```
+
+Le `push` se déroule sans la moindre invite. Plus de fenêtre d'authentification, plus de PAT à coller.
+
+## La règle d'or des clés
+
+<Aside type="caution">
+Ne partagez jamais votre **clé privée**. C'est le fichier `id_ed25519`, sans extension. Quiconque possède ce fichier peut se faire passer pour vous sur GitHub. Seul le fichier `.pub` est destiné à être copié et partagé. Si vous pensez que votre clé privée a fuité, supprimez la clé publique sur GitHub puis générez une nouvelle paire.
+</Aside>
+
+Petit récapitulatif des deux fichiers, qui se trouvent tous les deux dans `%USERPROFILE%\.ssh\` :
+
+- `id_ed25519` est la **clé privée**. Elle reste sur votre machine. Personne d'autre ne doit la voir.
+- `id_ed25519.pub` est la **clé publique**. Elle peut être copiée sur GitHub, sur d'autres serveurs, ou partagée sans risque.
+
+## Problèmes courants
+
+- **`Permission denied (publickey)`.** La clé publique n'est pas correctement enregistrée sur GitHub. Vérifiez qu'elle est complète et sans saut de ligne au milieu.
+- **`Could not open a connection to your authentication agent`.** Le service ssh-agent n'est pas démarré. Relancez `Start-Service ssh-agent` dans PowerShell.
+- **L'URL du dépôt commence toujours par https.** Vous avez oublié `git remote set-url`. Refaites la commande dans chaque dépôt concerné.
+
+## À retenir
+
+- SSH remplace le mot de passe par une paire de clés.
+- La clé privée reste sur votre machine. La clé publique part sur GitHub.
+- `ssh-keygen -t ed25519` génère la paire. `ssh -T git@github.com` valide la configuration.
+- `git remote set-url origin git@github.com:...` bascule un dépôt existant de HTTPS vers SSH.
+- Une fois en place, les `push` et `pull` se font sans aucune invite.

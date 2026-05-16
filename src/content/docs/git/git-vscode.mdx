@@ -1,0 +1,119 @@
+---
+title: Git dans VSCode
+description: Utiliser l'intégration graphique de VSCode pour stager, commiter et pousser.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+VSCode intègre Git directement. Vous pouvez réaliser tout le cycle de travail à la souris, sans quitter l'éditeur.
+
+## Vue d'ensemble
+
+Tout ce que vous avez appris en ligne de commande fonctionne aussi dans une interface graphique. VSCode détecte qu'un dossier est un dépôt Git dès qu'il contient un sous dossier `.git`. À partir de là, il vous montre en couleur les fichiers modifiés et vous propose des boutons pour commiter et pousser.
+
+L'interface est pratique pour le travail quotidien. La ligne de commande reste utile pour comprendre ce qui se passe et pour les commandes plus rares. Apprenez les deux.
+
+## Ouvrir le panneau Source Control
+
+<Steps>
+
+1. Ouvrez VSCode.
+
+2. Allez dans **File** puis **Open Folder** et choisissez votre dossier `mon-premier-projet`.
+
+3. Dans la barre verticale d'icônes à gauche, cliquez sur l'icône **Source Control**. Elle ressemble à trois cercles reliés par des traits. Cette colonne s'appelle la barre d'activité.
+
+4. Le raccourci clavier `Ctrl+Shift+G` ouvre directement ce panneau.
+
+</Steps>
+
+Le panneau affiche la liste des fichiers modifiés depuis le dernier commit. En haut, un champ de texte attend votre message de commit.
+
+## Les indicateurs de couleur
+
+Dans l'explorateur de fichiers à gauche, VSCode ajoute une lettre à droite des noms de fichiers pour signaler leur état.
+
+- **M** signifie *Modified*. Le fichier était suivi et vous l'avez modifié.
+- **U** signifie *Untracked*. Le fichier est nouveau et Git ne le suit pas encore.
+- **A** signifie *Added*. Le fichier est dans la zone d'index, prêt à être commité.
+- **D** signifie *Deleted*. Le fichier a été supprimé.
+
+Les fichiers modifiés apparaissent aussi en jaune ou en vert. Les fichiers ignorés par `.gitignore` n'apparaissent pas du tout. C'est un excellent contrôle visuel.
+
+## Stager, commiter, pousser à la souris
+
+<Steps>
+
+1. Ouvrez un fichier de votre projet, par exemple `bonjour.py`. Modifiez le et enregistrez.
+
+2. Retournez dans le panneau **Source Control**. Le fichier apparaît dans la section **Changes**.
+
+3. Cliquez sur le fichier pour voir le diff. La partie gauche montre l'ancienne version, la partie droite votre version actuelle.
+
+4. Pour stager le fichier, passez la souris dessus et cliquez sur le petit `+` à droite de son nom. Le fichier passe dans la section **Staged Changes**.
+
+5. Pour stager tous les fichiers en une fois, cliquez sur le `+` situé à droite du titre **Changes**.
+
+6. Tapez votre message de commit dans le champ en haut, par exemple « Change le message d'accueil ».
+
+7. Cliquez sur la grande coche **Commit**. Le commit est enregistré.
+
+8. Pour envoyer sur GitHub, ouvrez le menu **...** en haut du panneau, puis cliquez sur **Push**. Vous pouvez aussi cliquer sur l'icône de synchronisation dans la barre d'état en bas de la fenêtre.
+
+</Steps>
+
+## Le terminal intégré
+
+VSCode contient un terminal complet. Ouvrez le avec `Ctrl+ù` sur un clavier français, ou via **Terminal** puis **New Terminal**. Vous y retrouvez Anaconda Prompt ou PowerShell selon votre configuration.
+
+Toutes les commandes Git que vous connaissez fonctionnent ici exactement comme dans Anaconda Prompt. Par exemple :
+
+```bash
+git status
+git log --oneline
+git push
+```
+
+Sortie attendue après un commit récent :
+
+```
+# Sortie:
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+```
+
+Vous pouvez parfaitement mélanger les deux approches. Stager dans le panneau graphique. Pousser depuis le terminal. Faites comme cela vous arrange.
+
+## L'extension GitLens
+
+<Aside type="tip">
+L'extension **GitLens** ajoute des informations très utiles dans VSCode. Elle affiche l'auteur et la date de chaque ligne directement dans le code. Elle propose aussi une vue riche de l'historique des commits. Pour l'installer, ouvrez le panneau **Extensions** avec `Ctrl+Shift+X`, cherchez `GitLens` et cliquez sur **Install**. C'est optionnel, mais beaucoup de développeurs ne s'en passent plus.
+</Aside>
+
+## Quand préférer le terminal
+
+L'interface graphique gère très bien le quotidien. Pour certaines situations, le terminal reste plus clair.
+
+- Pour cloner un dépôt avec une URL précise.
+- Pour utiliser une commande rare comme `git rm --cached`.
+- Pour copier coller des commandes d'un tutoriel.
+- Pour comprendre exactement ce que Git fait sous le capot.
+
+L'habitude qui fonctionne bien chez beaucoup de débutants : la souris pour les actions répétitives, le terminal quand il faut creuser.
+
+## Problèmes courants
+
+- **Le panneau Source Control est vide.** VSCode n'a pas détecté de dépôt Git. Vérifiez que vous avez bien ouvert le dossier `mon-premier-projet` et qu'il contient un sous dossier `.git`.
+- **Le bouton Push est grisé.** Aucun dépôt distant n'est configuré. Faites `git remote add origin ...` dans le terminal, puis revenez à l'interface.
+- **VSCode demande de choisir Git.** Indiquez le chemin de l'exécutable Git, par exemple `C:\Program Files\Git\bin\git.exe`.
+
+## À retenir
+
+- VSCode détecte automatiquement les dépôts Git et affiche un panneau dédié.
+- Le raccourci `Ctrl+Shift+G` ouvre le panneau Source Control.
+- Les lettres M, U, A et D signalent l'état des fichiers.
+- Le terminal intégré reste disponible et complète l'interface.
+- GitLens est une extension optionnelle qui enrichit l'expérience.

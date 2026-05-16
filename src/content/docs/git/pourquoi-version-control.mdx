@@ -1,0 +1,68 @@
+---
+title: Pourquoi le contrôle de version
+description: Comprendre l'intérêt de Git avant de l'utiliser.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Avant d'installer Git, prenons le temps de comprendre à quoi sert le contrôle de version. Vous verrez vite que c'est un outil indispensable.
+
+## Le concept
+
+Imaginez la scène suivante. Vous écrivez votre premier vrai projet Python. Vous l'enregistrez dans un dossier que vous appelez `mon-projet`. Tout va bien.
+
+Le lendemain, vous voulez essayer une nouvelle idée. Vous avez peur de tout casser. Alors vous copiez le dossier et vous l'appelez `mon-projet-v2`. Vous travaillez dedans.
+
+La semaine suivante, vous corrigez un bug. Nouvelle copie. Cette fois c'est `mon-projet-final`. Quelques jours plus tard, encore un changement, et vous créez `mon-projet-final-vraiment`. Vous riez, mais c'est ce que tout le monde fait sans Git.
+
+Ce système de copies pose plusieurs problèmes. Vous ne savez plus quelle version est la bonne. Vous oubliez ce qui a changé entre deux dossiers. Vous prenez de la place sur le disque. Et si votre ordinateur tombe en panne, tout disparaît.
+
+## Ce que résout le contrôle de version
+
+Le contrôle de version est une catégorie d'outils faite pour résoudre exactement ce problème. Git en est l'exemple le plus connu. Il vous offre quatre choses précieuses.
+
+D'abord, un **historique** complet. Chaque modification importante est enregistrée avec une description. Vous pouvez relire tout le passé du projet, ligne par ligne.
+
+Ensuite, la possibilité de **revenir en arrière**. Si vous cassez quelque chose, vous pouvez retrouver l'état du projet d'hier, de la semaine dernière, ou même du premier jour.
+
+Troisième chose, une **sauvegarde** distante. Quand vous envoyez votre projet sur un site comme GitHub, vous en avez une copie en sécurité dans le cloud. Votre ordinateur peut prendre feu, votre code est intact.
+
+Enfin, la **collaboration**. Plusieurs personnes peuvent travailler sur le même projet sans s'écraser les unes les autres. Git sait fusionner les modifications de chacun.
+
+## Une analogie familière
+
+Si vous avez déjà utilisé Word avec le suivi des modifications, vous connaissez l'idée. Vous voyez qui a écrit quoi, quand, et vous pouvez accepter ou refuser chaque changement.
+
+Git fait la même chose, mais pour des projets entiers. Pas un seul document, mais des dizaines de fichiers en même temps. Et il est bien plus puissant. Il garde toutes les versions, pas seulement la dernière. Il permet de tester une idée dans une branche séparée, puis de la jeter si elle ne marche pas. Tout ça en gardant le projet principal propre.
+
+## Git n'est pas GitHub
+
+Une confusion revient souvent. Git et GitHub ne sont pas la même chose.
+
+**Git** est un logiciel que vous installez sur votre ordinateur. Il s'occupe de l'historique de vos fichiers. Il fonctionne sans connexion internet. C'est l'outil.
+
+**GitHub** est un site web. C'est un endroit où vous pouvez héberger gratuitement vos projets Git, les partager, et collaborer avec d'autres. C'est le lieu de stockage en ligne.
+
+Il existe d'autres sites du même genre, comme GitLab ou Bitbucket. Mais GitHub est le plus utilisé, et c'est celui que nous allons découvrir.
+
+<Aside type="tip">
+Retenez la formule. Git est l'outil, GitHub est le lieu. On utilise Git tous les jours, et on envoie de temps en temps son travail vers GitHub.
+</Aside>
+
+## Pourquoi commencer maintenant
+
+Vous venez d'écrire votre premier programme Python. C'est exactement le bon moment pour adopter Git. Votre projet est encore petit. Vous allez apprendre les bonnes habitudes dès le début. Plus tard, quand vos projets grossiront, vous serez déjà à l'aise.
+
+Beaucoup de débutants repoussent Git à plus tard, parce qu'ils trouvent ça intimidant. C'est une erreur. Git n'est pas réservé aux experts. Quelques commandes suffisent pour démarrer, et vous les apprendrez dans les leçons suivantes.
+
+<Aside type="note">
+N'ayez pas peur. Nous allons avancer petit à petit. À la fin de cette section, vous aurez un projet versionné, sauvegardé sur GitHub, et vous saurez l'utiliser au quotidien.
+</Aside>
+
+## À retenir
+
+- Sans contrôle de version, on finit avec des dossiers `projet-v2`, `projet-final`, `projet-final-vraiment`.
+- Git apporte un historique complet, la possibilité de revenir en arrière, une sauvegarde, et la collaboration.
+- Git est l'outil installé sur votre ordinateur. GitHub est le site web qui héberge vos projets en ligne.
+- C'est le bon moment de commencer, même avec un tout petit projet.
+- Nous allons avancer pas à pas, sans précipitation.

@@ -1,0 +1,237 @@
+---
+title: Votre premier dépôt Git
+description: Créer un dépôt local, ajouter des fichiers, et faire votre premier commit.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+C'est l'heure de la pratique. Nous allons créer un petit projet, le placer sous contrôle de version Git, et enregistrer notre premier commit.
+
+## Le concept
+
+Un **dépôt Git**, aussi appelé **repository**, est simplement un dossier dans lequel Git suit les modifications. Pour transformer un dossier ordinaire en dépôt Git, on tape une commande spéciale. Ensuite, à chaque fois qu'on veut enregistrer une étape importante, on fait un **commit**.
+
+Pour bien comprendre, imaginez que vous préparez un colis. La logique est la même.
+
+D'abord, vous écrivez votre lettre. C'est le **répertoire de travail**, l'endroit où vous modifiez vos fichiers librement.
+
+Ensuite, vous glissez la lettre dans une enveloppe. Vous décidez ce que vous mettez dedans. C'est la **zone de préparation**, qu'on appelle aussi l'**index** ou le **staging**.
+
+Enfin, vous postez le colis. Une fois envoyé, vous ne pouvez plus le rouvrir. C'est le **commit**, l'enregistrement définitif dans le dépôt.
+
+Ces trois zones, répertoire de travail, zone de préparation, dépôt, sont au cœur de Git. Vous allez les voir en action tout de suite.
+
+## Étapes
+
+<Steps>
+
+1. Ouvrez Anaconda Prompt.
+
+2. Placez vous dans votre dossier de travail habituel, par exemple `code-facile`. Adaptez le chemin si besoin.
+
+   ```bash
+   cd C:\Users\VotreNom\code-facile
+   ```
+
+3. Créez un nouveau dossier pour ce projet et entrez dedans.
+
+   ```bash
+   mkdir mon-premier-projet
+   cd mon-premier-projet
+   ```
+
+4. Créez un petit fichier Python avec VSCode, ou directement depuis le terminal. Si vous utilisez VSCode, ouvrez le dossier, créez un fichier `bonjour.py`, et écrivez la ligne suivante dedans.
+
+   ```python
+   print("Bonjour")
+   ```
+
+5. Enregistrez le fichier. Revenez ensuite dans Anaconda Prompt.
+
+6. Initialisez le dépôt Git dans ce dossier.
+
+   ```bash
+   git init
+   ```
+
+   Git crée un sous dossier caché `.git`. C'est lui qui contient tout l'historique. Vous n'avez pas besoin d'y toucher.
+
+7. Demandez à Git l'état du dossier.
+
+   ```bash
+   git status
+   ```
+
+   Git vous dit que `bonjour.py` n'est pas suivi.
+
+8. Ajoutez le fichier à la zone de préparation.
+
+   ```bash
+   git add bonjour.py
+   ```
+
+9. Redemandez l'état pour voir la différence.
+
+   ```bash
+   git status
+   ```
+
+10. Enregistrez le commit avec un message clair.
+
+    ```bash
+    git commit -m "feat: premier programme"
+    ```
+
+11. Affichez l'historique des commits.
+
+    ```bash
+    git log
+    ```
+
+</Steps>
+
+Vous venez de faire votre premier commit. Bravo. Reprenons en détail ce que chaque commande a fait.
+
+## Exemple
+
+Voici un déroulé complet, avec les sorties attendues.
+
+```bash
+git init
+```
+
+```
+# Sortie:
+Initialized empty Git repository in C:/Users/VotreNom/code-facile/mon-premier-projet/.git/
+```
+
+```bash
+git status
+```
+
+```
+# Sortie:
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        bonjour.py
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
+
+Le mot **untracked** veut dire que Git voit le fichier, mais ne le suit pas encore. C'est à vous de lui dire de le faire.
+
+```bash
+git add bonjour.py
+```
+
+Pas de sortie. Git ajoute le fichier en silence à la zone de préparation.
+
+```bash
+git status
+```
+
+```
+# Sortie:
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   bonjour.py
+```
+
+Cette fois, `bonjour.py` est dans la zone **Changes to be committed**. Il est prêt à partir dans le prochain commit.
+
+```bash
+git commit -m "feat: premier programme"
+```
+
+```
+# Sortie:
+[main (root-commit) 4a1b2c3] feat: premier programme
+ 1 file changed, 1 insertion(+)
+ create mode 100644 bonjour.py
+```
+
+Le code `4a1b2c3` est l'identifiant unique du commit. Le vôtre sera différent. Git en attribue un automatiquement à chaque commit.
+
+```bash
+git log
+```
+
+```
+# Sortie:
+commit 4a1b2c3d5e6f7g8h9i0j (HEAD -> main)
+Author: Alice Martin <alice.martin@exemple.fr>
+Date:   Sat May 16 14:32:00 2026 +0200
+
+    feat: premier programme
+```
+
+Vous voyez votre commit, avec son identifiant, votre nom, votre email, la date, et le message. Si la sortie s'affiche dans un mode interactif avec un curseur, appuyez sur la touche `q` pour quitter.
+
+Pour une vue plus compacte, utilisez l'option `--oneline`.
+
+```bash
+git log --oneline
+```
+
+```
+# Sortie:
+4a1b2c3 (HEAD -> main) feat: premier programme
+```
+
+C'est très pratique quand vous aurez beaucoup de commits.
+
+## Le style des messages de commit
+
+Le message de commit décrit ce que vous avez changé. Pour qu'il soit utile plus tard, gardez le court et précis. Une ligne suffit la plupart du temps.
+
+Une convention populaire s'appelle **Conventional Commits**. Elle préfixe le message avec un mot clé qui dit la nature du changement.
+
+- `feat:` pour une nouvelle fonctionnalité.
+- `fix:` pour la correction d'un bug.
+- `docs:` pour la documentation.
+- `refactor:` pour réorganiser le code sans changer son comportement.
+- `test:` pour ajouter ou corriger des tests.
+- `chore:` pour des tâches de maintenance.
+
+Exemple.
+
+```bash
+git commit -m "fix: corriger l'orthographe dans bonjour.py"
+```
+
+<Aside type="note">
+Ce style est une convention, pas une obligation. Ce qui compte vraiment, c'est d'avoir des messages clairs et compréhensibles. « ajout du fichier de configuration » est largement mieux que « màj ».
+</Aside>
+
+## Pour récapituler les trois zones
+
+Pour bien fixer les idées, voici ce qui s'est passé étape par étape.
+
+1. Vous avez modifié `bonjour.py` dans le **répertoire de travail**.
+2. Avec `git add`, vous l'avez déplacé dans la **zone de préparation**.
+3. Avec `git commit`, vous l'avez enregistré définitivement dans le **dépôt**.
+
+Cette séparation peut paraître étrange au début. Mais elle est très utile. Elle permet de choisir précisément ce qui entre dans chaque commit, même si vous avez modifié plusieurs fichiers en même temps.
+
+## Problèmes courants
+
+- **`fatal: not a git repository`.** Vous avez oublié `git init`, ou vous êtes dans un autre dossier. Vérifiez avec `cd` que vous êtes bien dans `mon-premier-projet`.
+- **Le `git log` ne se ferme pas.** Git ouvre la sortie dans un afficheur interactif. Appuyez sur `q` pour sortir.
+- **Vous avez fait un commit avec un mauvais message.** Tapez `git commit --amend -m "nouveau message"` juste après. Cela remplace le message du dernier commit.
+- **Vous avez ajouté un fichier par erreur avec `git add`.** Tapez `git restore --staged nom-du-fichier` pour le retirer de la zone de préparation. Le fichier lui même n'est pas supprimé.
+
+## À retenir
+
+- `git init` transforme un dossier en dépôt Git.
+- Trois zones à connaître. Répertoire de travail, zone de préparation, dépôt.
+- `git add` envoie un fichier dans la zone de préparation. `git commit` l'enregistre dans le dépôt.
+- Chaque commit a un message. Gardez le clair et court. Conventional Commits est une convention pratique.
+- `git status` et `git log --oneline` sont vos deux outils de tous les jours pour suivre où vous en êtes.

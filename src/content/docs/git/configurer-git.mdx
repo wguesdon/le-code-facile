@@ -1,0 +1,107 @@
+---
+title: Configurer Git pour la première fois
+description: Définir votre nom, votre email et la branche par défaut.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Avant d'utiliser Git, il faut lui dire qui vous êtes. Cette configuration ne se fait qu'une seule fois sur votre ordinateur.
+
+## Le concept
+
+Chaque fois que vous enregistrez une modification avec Git, l'outil colle une petite étiquette dessus. Cette étiquette contient votre nom, votre email, et la date. C'est ce qu'on appelle les **métadonnées** d'un enregistrement.
+
+Pourquoi un nom et un email. Parce que Git est conçu pour la collaboration. Quand plusieurs personnes travaillent sur un projet, on doit pouvoir distinguer leurs contributions. Même si vous travaillez seul, Git insiste pour avoir cette information. C'est un peu comme une signature au bas d'une lettre.
+
+L'email a une seconde utilité. C'est lui que GitHub utilise pour relier vos enregistrements à votre compte. Choisissez donc l'email que vous comptez utiliser sur GitHub.
+
+<Aside type="caution">
+L'email associé à vos enregistrements est visible publiquement quand vous envoyez votre projet sur GitHub. Si vous préférez le cacher, GitHub propose un email anonyme du type `12345+pseudo@users.noreply.github.com`. Vous pourrez l'activer plus tard dans les paramètres de votre compte.
+</Aside>
+
+## Étapes
+
+Ouvrez une fenêtre d'Anaconda Prompt ou de PowerShell, et tapez les trois commandes suivantes une par une. Remplacez les valeurs entre guillemets par les vôtres.
+
+```bash
+git config --global user.name "Prénom Nom"
+git config --global user.email "vous@exemple.com"
+git config --global init.defaultBranch main
+```
+
+Aucune sortie ne s'affiche après ces commandes. C'est normal. Git enregistre la valeur en silence et rend la main au terminal.
+
+## Que veut dire `--global`
+
+L'option `--global` veut dire que cette configuration s'applique à votre utilisateur sur cet ordinateur. Elle vaut pour tous vos projets Git, présents et futurs. Vous n'aurez pas à la refaire à chaque nouveau dépôt.
+
+Si un jour vous voulez une configuration différente pour un projet précis, vous pourrez refaire la commande dans le dossier de ce projet, sans le `--global`. Mais ce cas est rare au début.
+
+La ligne `init.defaultBranch` dit à Git de nommer la branche principale `main` dans tous les nouveaux dépôts. C'est le nom moderne et standard. Si vous voyez parfois `master` dans des projets plus anciens, ce sont la même chose, juste avec un ancien nom.
+
+## Exemple
+
+Voyons un cas concret. Vous vous appelez Alice Martin, et votre email est `alice.martin@exemple.fr`. Vous tapez les commandes suivantes.
+
+```bash
+git config --global user.name "Alice Martin"
+git config --global user.email "alice.martin@exemple.fr"
+git config --global init.defaultBranch main
+```
+
+Pour vérifier que tout est bien enregistré, tapez la commande de listing.
+
+```bash
+git config --list
+```
+
+La sortie ressemble à ceci. Les lignes exactes dépendent de votre installation. Cherchez les lignes qui commencent par `user.` et `init.`.
+
+```
+# Sortie:
+user.name=Alice Martin
+user.email=alice.martin@exemple.fr
+init.defaultbranch=main
+core.editor=code --wait
+core.autocrlf=true
+credential.helper=manager
+```
+
+Vous pouvez aussi afficher une seule valeur, par exemple votre nom, avec la commande suivante.
+
+```bash
+git config user.name
+```
+
+Sortie attendue.
+
+```
+# Sortie:
+Alice Martin
+```
+
+C'est pratique pour vérifier rapidement une configuration sans tout afficher.
+
+## Changer une valeur plus tard
+
+Si vous vous trompez, vous pouvez relancer la même commande avec la nouvelle valeur. Git écrase l'ancienne sans rien demander.
+
+```bash
+git config --global user.email "nouvel.email@exemple.fr"
+```
+
+C'est aussi utile si vous changez d'email principal après avoir créé votre compte GitHub.
+
+## Problèmes courants
+
+- **`git: 'config' is not a git command`.** Vous avez fait une faute de frappe. Tapez bien `config` avec un seul `f`.
+- **`git n'est pas reconnu`.** Git n'est pas installé, ou la fenêtre de terminal a été ouverte avant l'installation. Revoyez la leçon précédente.
+- **Vos commits affichent un autre nom.** Vous avez peut être tapé la commande sans `--global` dans un dossier précis. Refaites la avec `--global` pour fixer la configuration générale.
+
+## À retenir
+
+- Git a besoin de votre nom et de votre email pour signer chaque enregistrement.
+- L'option `--global` applique la configuration à tous vos projets sur cet ordinateur.
+- Utilisez le même email que pour votre futur compte GitHub.
+- `git config --list` affiche toute la configuration, `git config user.name` affiche une seule valeur.
+- La branche par défaut est `main`, le nom moderne et standard.

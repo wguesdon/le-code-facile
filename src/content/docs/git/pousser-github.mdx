@@ -1,0 +1,156 @@
+---
+title: Pousser son code sur GitHub
+description: Créer un dépôt distant et synchroniser son travail avec push et pull.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Vous avez un commit en local. Il est temps de publier votre travail sur GitHub pour le sauvegarder et le partager.
+
+## Vue d'ensemble
+
+Jusqu'ici, tout votre travail vit sur votre ordinateur. Si votre disque dur tombe en panne, tout est perdu. GitHub est un service en ligne qui héberge une copie de votre dépôt. On appelle cette copie un **dépôt distant**.
+
+Le cycle est toujours le même. Vous travaillez en local. Vous faites un commit. Vous envoyez le commit vers GitHub avec `git push`. Si quelqu'un a modifié le dépôt distant, vous récupérez ses changements avec `git pull`.
+
+## Créer le dépôt distant sur GitHub
+
+<Steps>
+
+1. Ouvrez votre navigateur et allez sur [https://github.com/new](https://github.com/new).
+
+2. Dans le champ **Repository name**, tapez `mon-premier-projet`. Utilisez le même nom que votre dossier local. Cela évite la confusion.
+
+3. Ajoutez une courte description si vous le souhaitez. Par exemple : « Mon premier projet pour apprendre Git ».
+
+4. Choisissez **Public**. Vos premiers projets gagnent à être visibles. Vous pourrez toujours créer des dépôts privés plus tard.
+
+5. **N'ajoutez ni README, ni .gitignore, ni licence.** Nous avons déjà un commit en local. Si GitHub crée un README de son côté, les deux historiques entrent en conflit dès le premier `push`.
+
+6. Cliquez sur **Create repository**.
+
+</Steps>
+
+GitHub affiche alors une page d'aide avec plusieurs blocs de commandes. C'est le bloc intitulé **push an existing repository from the command line** qui nous intéresse.
+
+## Relier le dépôt local au dépôt distant
+
+Ouvrez Anaconda Prompt et placez vous dans votre projet.
+
+```powershell
+cd %USERPROFILE%\mon-premier-projet
+```
+
+Tapez ensuite les trois commandes affichées par GitHub. Remplacez `votre-username` par votre nom d'utilisateur GitHub.
+
+```bash
+git remote add origin https://github.com/votre-username/mon-premier-projet.git
+git branch -M main
+git push -u origin main
+```
+
+Décortiquons ces trois lignes.
+
+- `git remote add origin ...` enregistre l'adresse du dépôt distant sous le surnom `origin`. C'est juste un raccourci pratique. Vous pourriez l'appeler autrement, mais `origin` est la convention universelle pour le dépôt distant principal.
+- `git branch -M main` renomme votre branche locale en `main`. C'est le nom de branche par défaut sur GitHub depuis quelques années.
+- `git push -u origin main` envoie la branche `main` vers `origin`. L'option `-u` règle le lien entre les deux. Les prochaines fois, un simple `git push` suffira.
+
+## La fenêtre d'authentification
+
+Au tout premier `push`, le Gestionnaire d'identifiants Git (Git Credential Manager) entre en jeu. Une fenêtre s'ouvre. Selon votre configuration, on vous demande de vous connecter via le navigateur ou de saisir un nom d'utilisateur et un mot de passe.
+
+Si on vous demande un mot de passe, **collez votre Personal Access Token** à la place. C'est le jeton que vous avez créé dans la leçon précédente. Pour le nom d'utilisateur, tapez votre nom d'utilisateur GitHub.
+
+<Aside type="tip">
+Le PAT est enregistré dans le coffre Windows. Vous ne le ressaisirez plus pour ce dépôt, ni pour les suivants. Les `push` suivants sont silencieux.
+</Aside>
+
+Une fois le `push` terminé, rechargez la page GitHub de votre dépôt. Vos fichiers y sont. Bravo.
+
+## Le cycle de travail quotidien
+
+Imaginez que vous ouvrez `bonjour.py` et que vous changez le message affiché.
+
+<Steps>
+
+1. Vérifiez ce qui a changé.
+
+   ```bash
+   git status
+   ```
+
+2. Ajoutez le fichier à la zone d'index.
+
+   ```bash
+   git add bonjour.py
+   ```
+
+3. Enregistrez le commit avec un message clair.
+
+   ```bash
+   git commit -m "Change le message d'accueil"
+   ```
+
+4. Envoyez le commit sur GitHub.
+
+   ```bash
+   git push
+   ```
+
+</Steps>
+
+Comme `-u` a été utilisé au premier `push`, Git sait où envoyer le commit. Pas besoin de répéter `origin main`.
+
+## Récupérer les modifications distantes avec git pull
+
+Imaginez maintenant que vous modifiez le fichier `README.md` directement sur le site github.com. Le dépôt distant contient alors un commit que votre copie locale n'a pas.
+
+Avant de continuer à coder en local, récupérez les changements.
+
+```bash
+git pull
+```
+
+`git pull` fait deux choses. Il télécharge les commits du dépôt distant. Puis il les fusionne avec votre branche locale. Après un `pull` réussi, votre copie locale est à jour.
+
+<Aside type="note">
+Si vous modifiez le même fichier en local et en ligne, Git peut signaler un **conflit de fusion**. Ne vous inquiétez pas pour l'instant. Tant que vous travaillez seul, faites toujours un `git pull` avant un `git push`, et vous n'en rencontrerez quasiment jamais.
+</Aside>
+
+## Exemple complet
+
+Voici une session typique du début à la fin.
+
+```powershell
+cd %USERPROFILE%\mon-premier-projet
+git remote add origin https://github.com/votre-username/mon-premier-projet.git
+git branch -M main
+git push -u origin main
+```
+
+Sortie attendue après le `push` :
+
+```
+# Sortie:
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 220 bytes | 220.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/votre-username/mon-premier-projet.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+```
+
+## Problèmes courants
+
+- **`fatal: remote origin already exists`.** Vous avez déjà ajouté un dépôt distant. Utilisez `git remote set-url origin <nouvelle-url>` pour le mettre à jour, ou `git remote remove origin` pour repartir de zéro.
+- **`Authentication failed`.** Le PAT est probablement expiré ou mal collé. Régénérez en un sur GitHub et recommencez.
+- **`Updates were rejected`.** Le dépôt distant contient des commits que vous n'avez pas en local. Faites `git pull` puis `git push`.
+
+## À retenir
+
+- Un dépôt distant sauvegarde et partage votre code.
+- `git remote add origin` relie le dépôt local à GitHub.
+- `git push -u origin main` envoie le premier commit et règle le lien.
+- Le cycle quotidien : `git status`, `git add`, `git commit`, `git push`.
+- `git pull` récupère les commits faits ailleurs sur le dépôt distant.

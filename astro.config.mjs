@@ -89,6 +89,21 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Git et GitHub',
+          collapsed: true,
+          items: [
+            { label: 'Pourquoi le contrôle de version', slug: 'git/pourquoi-version-control' },
+            { label: 'Installer Git sous Windows', slug: 'git/installer-git' },
+            { label: 'Configurer Git pour la première fois', slug: 'git/configurer-git' },
+            { label: 'Créer un compte GitHub et s\'authentifier', slug: 'git/compte-github' },
+            { label: 'Votre premier dépôt Git', slug: 'git/premier-depot' },
+            { label: 'Pousser son code sur GitHub', slug: 'git/pousser-github' },
+            { label: 'Le fichier .gitignore', slug: 'git/gitignore' },
+            { label: 'Git dans VSCode', slug: 'git/git-vscode' },
+            { label: 'Authentification SSH (pour plus tard)', slug: 'git/authentification-ssh' },
+          ],
+        },
+        {
           label: 'Les bases de Python',
           collapsed: true,
           items: [

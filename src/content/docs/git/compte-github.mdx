@@ -1,0 +1,124 @@
+---
+title: Créer un compte GitHub et s'authentifier
+description: Ouvrir un compte gratuit et configurer l'authentification HTTPS avec un Personal Access Token.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Maintenant que Git est installé et configuré, créons votre compte GitHub. Vous aurez votre propre espace en ligne pour héberger vos projets.
+
+## Vue d'ensemble
+
+GitHub est gratuit pour un usage personnel. Vous pouvez créer autant de dépôts publics et privés que vous voulez. Aucun paiement n'est demandé, aucune carte bancaire à fournir.
+
+La création du compte se fait en quelques minutes. Ensuite, nous configurerons l'authentification. C'est l'étape qui permet à votre ordinateur de prouver à GitHub que c'est bien vous qui envoyez du code.
+
+## Étapes : créer le compte
+
+<Steps>
+
+1. Ouvrez votre navigateur et allez sur [https://github.com/signup](https://github.com/signup).
+
+2. Entrez votre email. Utilisez le même que celui configuré dans Git, c'est plus simple.
+
+3. Choisissez un mot de passe solide. GitHub vous demandera au moins quinze caractères, ou huit avec un chiffre et une lettre minuscule.
+
+4. Choisissez un **nom d'utilisateur**. Attention, ce nom est visible publiquement. Il apparaît dans l'URL de tous vos projets. Choisissez quelque chose de propre, idéalement un nom proche de votre vrai nom, ou un pseudonyme simple. Évitez les blagues que vous ne voudrez pas voir sur un CV.
+
+5. GitHub vous demande si vous voulez recevoir des emails. Répondez selon votre préférence.
+
+6. Cliquez sur **Continue** et résolvez le petit puzzle de vérification anti robot.
+
+7. Cliquez sur **Create account**. GitHub vous envoie un code par email.
+
+8. Ouvrez votre boîte mail, copiez le code, et entrez le sur la page de GitHub.
+
+9. À l'étape du plan, choisissez **Free**. C'est le plan gratuit. Il suffit largement pour apprendre et pour des projets personnels.
+
+10. GitHub vous pose quelques questions pour personnaliser votre expérience. Répondez ce que vous voulez, ou cliquez sur **Skip personalization** en bas pour passer.
+
+</Steps>
+
+Bravo. Vous avez maintenant un compte GitHub. Vous pouvez le voir à l'adresse `https://github.com/votre-pseudo`.
+
+<Aside type="tip">
+Notez votre nom d'utilisateur quelque part. Il vous servira souvent. Et pensez à activer la double authentification dans les paramètres de sécurité quand vous serez à l'aise. C'est important.
+</Aside>
+
+## L'authentification, c'est quoi
+
+Avoir un compte GitHub ne suffit pas. Quand votre ordinateur envoie du code vers GitHub, GitHub doit pouvoir vérifier que c'est bien vous. C'est l'**authentification**.
+
+Il existe deux méthodes principales. Les clés SSH, qui demandent un peu de configuration. Et le HTTPS avec un Personal Access Token, plus simple sous Windows. Nous allons utiliser cette deuxième méthode.
+
+Un **Personal Access Token**, ou PAT, est un long mot de passe spécial que GitHub vous donne. Vous l'utilisez à la place de votre vrai mot de passe quand Git en demande un. Il est plus sûr, et vous pouvez le révoquer à tout moment sans changer votre mot de passe principal.
+
+## Étapes : créer un Personal Access Token
+
+<Steps>
+
+1. Connectez vous à GitHub si ce n'est pas déjà fait.
+
+2. Cliquez sur votre photo de profil en haut à droite, puis sur **Settings**.
+
+3. Dans le menu de gauche, descendez tout en bas et cliquez sur **Developer settings**.
+
+4. Dans le menu de gauche, cliquez sur **Personal access tokens**, puis sur **Tokens (classic)**.
+
+5. Cliquez sur le bouton **Generate new token**, puis sur **Generate new token (classic)**. GitHub vous demande peut être votre mot de passe pour confirmer.
+
+6. Dans le champ **Note**, donnez un nom au token. Par exemple `Le Code Facile`. C'est juste un libellé pour vous rappeler à quoi il sert.
+
+7. Dans **Expiration**, choisissez **90 days** pour une première utilisation. Vous pourrez en créer un autre dans trois mois. Pour un usage plus long, vous pouvez choisir une durée plus longue, voire **No expiration**, mais c'est moins prudent.
+
+8. Dans **Select scopes**, cochez uniquement la case **repo**. Cela donne au token le droit de lire et d'écrire dans vos dépôts. C'est tout ce dont nous avons besoin pour l'instant.
+
+9. Tout en bas, cliquez sur **Generate token**.
+
+10. GitHub affiche votre token. C'est une longue chaîne de caractères, qui ressemble à `ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. **Copiez le tout de suite**, et collez le dans un endroit sûr, par exemple un gestionnaire de mots de passe.
+
+</Steps>
+
+<Aside type="caution">
+Une fois que vous quittez cette page, le token ne sera **plus jamais affiché**. Si vous le perdez, il faudra en créer un nouveau. Copiez le maintenant, pas plus tard.
+</Aside>
+
+## Utiliser le token avec Git
+
+Pendant l'installation de Git, vous avez choisi **Git Credential Manager**. C'est lui qui va gérer le token pour vous.
+
+La première fois que vous enverrez du code vers GitHub, une fenêtre va s'ouvrir, ou Git va vous demander dans le terminal vos identifiants. Vous tapez votre nom d'utilisateur GitHub. Puis, quand Git demande le mot de passe, vous collez le **token** à la place. Pas votre vrai mot de passe.
+
+Git Credential Manager stocke ce token dans le coffre fort de Windows. Les fois suivantes, vous n'aurez plus à le retaper. C'est transparent.
+
+Nous verrons cette étape en pratique dans la leçon suivante, quand nous enverrons notre premier dépôt sur GitHub.
+
+## Sécurité du token
+
+Un token donne accès à vos dépôts. Il faut le traiter comme un mot de passe.
+
+<Aside type="caution">
+**Ne mettez jamais votre token dans le code que vous envoyez sur GitHub.** Même par accident. Si un token apparaît dans un fichier publié, GitHub le détecte automatiquement et le révoque, mais entre temps quelqu'un peut s'en servir. Si cela arrive, allez immédiatement dans **Developer settings** et cliquez sur **Revoke** à côté du token concerné.
+</Aside>
+
+Quelques règles simples pour rester en sécurité.
+
+- Ne tapez jamais votre token directement dans un fichier `.py` ou autre.
+- Si vous devez l'utiliser dans un script, lisez le depuis une variable d'environnement.
+- Donnez à chaque token le minimum de droits nécessaires. Pour nous, c'est `repo` et rien de plus.
+- Renouvelez vos tokens régulièrement, en suivant la date d'expiration.
+
+## Problèmes courants
+
+- **Vous avez perdu le token avant de le copier.** Pas grave. Retournez dans **Developer settings**, supprimez l'ancien, et créez en un nouveau.
+- **GitHub refuse votre mot de passe quand vous poussez du code.** C'est normal. GitHub n'accepte plus le mot de passe du compte en ligne de commande depuis 2021. Utilisez le token à la place.
+- **Vous voyez une erreur `Authentication failed`.** Vérifiez que vous avez bien collé le token entier, sans espace au début ni à la fin.
+
+## À retenir
+
+- GitHub est gratuit. Choisissez le plan **Free** et un nom d'utilisateur que vous assumerez longtemps.
+- L'authentification HTTPS sous Windows passe par un Personal Access Token, pas par votre mot de passe GitHub.
+- Créez votre token dans **Settings**, **Developer settings**, **Personal access tokens (classic)**, avec le scope `repo`.
+- Copiez le token tout de suite. Il ne sera plus jamais affiché.
+- Git Credential Manager retient le token après la première utilisation. Vous ne le retapez pas à chaque fois.
+- Ne publiez jamais votre token dans du code.
