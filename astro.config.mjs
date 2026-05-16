@@ -34,6 +34,7 @@ export default defineConfig({
             { label: 'Vérifier votre installation', slug: 'installation/verifier-installation' },
             { label: 'Premier programme : Bonjour le monde', slug: 'installation/bonjour-monde' },
             { label: 'Bonus : installer uv', slug: 'installation/uv-bonus' },
+            { label: 'Créer un environnement virtuel', slug: 'installation/environnements-virtuels' },
           ],
         },
         {

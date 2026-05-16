@@ -7,6 +7,10 @@ import { Aside } from '@astrojs/starlight/components';
 
 Tous les outils ne sont pas livrés avec Python. Beaucoup de bibliothèques très utiles s'installent en une commande.
 
+<Aside type="danger" title="Activez d'abord un environnement virtuel">
+N'installez jamais un paquet dans l'environnement Python principal. Avant toute commande d'installation, activez un environnement virtuel dédié à votre projet. Voir la leçon [Créer un environnement virtuel](/le-code-facile/installation/environnements-virtuels/) dans le chapitre Installation.
+</Aside>
+
 ## Le concept
 
 Un paquet, c'est un module ou un ensemble de modules disponible sur internet. Avec Anaconda, deux outils permettent d'installer un paquet : `conda` et `pip`. On utilise d'abord `conda`, car il gère bien les dépendances. Si le paquet n'est pas disponible dans conda, on passe à `pip`.

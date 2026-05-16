@@ -1,0 +1,134 @@
+---
+title: Créer un environnement virtuel
+description: La première règle avant d'installer le moindre paquet, avec conda et avec uv.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Avant d'installer le moindre paquet, créez un environnement virtuel. C'est l'habitude la plus importante à prendre dès le début.
+
+## Le concept
+
+Un environnement virtuel est une « bulle » Python séparée. Vous y installez les paquets dont votre projet a besoin, sans toucher à l'installation principale. Chaque projet a sa bulle.
+
+Imaginez votre cuisine. La cuisine principale est utilisée par tout le monde. Si chaque cuisinier y range ses propres ustensiles, le tiroir devient vite ingérable. La solution : donner à chaque cuisinier sa propre boîte à outils, sortie quand il cuisine, rangée quand il a fini.
+
+<Aside type="danger" title="Ne jamais installer dans l'environnement principal">
+N'utilisez **jamais** `pip install` ou `conda install` dans l'environnement Python de base. Au début ça marche. Après quelques mois, les versions s'entrechoquent, des projets cessent de fonctionner, et c'est très difficile à réparer. La règle : un projet, un environnement.
+</Aside>
+
+## Avec conda
+
+Anaconda est livré avec l'outil `conda`. C'est la voie recommandée pour ce cours.
+
+<Steps>
+
+1. Ouvrez l'**Anaconda Prompt** depuis le menu Démarrer. Ne l'ouvrez pas dans PowerShell classique.
+
+2. Créez l'environnement. Donnez lui un nom court, par exemple `code-facile`.
+
+   ```bash
+   conda create -n code-facile python=3.12
+   ```
+
+   Conda affiche la liste des paquets à installer. Tapez `y` puis Entrée.
+
+3. Activez l'environnement.
+
+   ```bash
+   conda activate code-facile
+   ```
+
+   Le début de la ligne change. Vous voyez le nom de l'environnement entre parenthèses.
+
+   ```
+   (code-facile) C:\Users\Alice>
+   ```
+
+4. À partir de maintenant, tout `conda install` ou `pip install` va dans cette bulle. Essayez :
+
+   ```bash
+   conda install requests
+   ```
+
+5. Quand vous avez fini de travailler, désactivez l'environnement.
+
+   ```bash
+   conda deactivate
+   ```
+
+</Steps>
+
+La prochaine fois que vous reprenez votre projet, vous refaites seulement l'étape 3 : `conda activate code-facile`.
+
+## Avec uv
+
+Si vous avez installé `uv` dans la leçon précédente, voici la méthode équivalente. `uv` gère l'environnement et les paquets en une seule commande.
+
+<Steps>
+
+1. Dans PowerShell, placez-vous dans le dossier de votre projet.
+
+   ```powershell
+   cd C:\Users\Alice\code-facile
+   ```
+
+2. Créez le projet. uv prépare automatiquement un environnement virtuel dans un dossier caché `.venv`.
+
+   ```powershell
+   uv init mon-projet
+   cd mon-projet
+   ```
+
+3. Ajoutez un paquet. uv installe le paquet dans `.venv` et met à jour `pyproject.toml`.
+
+   ```powershell
+   uv add requests
+   ```
+
+4. Exécutez du code Python avec le bon environnement.
+
+   ```powershell
+   uv run python -c "import requests; print(requests.__version__)"
+   ```
+
+</Steps>
+
+Avec uv, pas besoin d'activer ou de désactiver. La commande `uv run` s'occupe de tout. C'est plus rapide à l'usage, mais conda reste l'option la plus simple pour débuter.
+
+## Vérifier où vous êtes
+
+Une commande utile pour savoir dans quel environnement Python vous êtes.
+
+```bash
+python -c "import sys; print(sys.executable)"
+```
+
+Le chemin affiché vous dit tout. Si vous voyez `envs\code-facile`, vous êtes dans le bon environnement. Si vous voyez un chemin sans nom d'environnement, vous êtes dans l'environnement de base. Activez votre environnement avant d'installer quoi que ce soit.
+
+## En pratique
+
+Quelques commandes à garder sous la main.
+
+```bash
+# Lister tous les environnements conda
+conda env list
+
+# Supprimer un environnement conda
+conda remove -n code-facile --all
+
+# Voir les paquets installés dans l'environnement actif
+conda list
+```
+
+<Aside type="tip" title="Un environnement par projet">
+La règle simple : un environnement par projet sérieux. Donnez lui le même nom que le projet. Vous éviterez les surprises quand vous installerez des paquets.
+</Aside>
+
+## À retenir
+
+- Toujours créer un environnement virtuel avant d'installer un paquet.
+- Avec conda : `conda create -n nom python=3.12`, puis `conda activate nom`.
+- Avec uv : `uv init projet`, puis `uv add paquet` et `uv run python ...`.
+- L'Anaconda Prompt affiche le nom de l'environnement actif entre parenthèses.
+- Ne jamais installer un paquet dans l'environnement Python de base.
