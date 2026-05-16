@@ -156,6 +156,7 @@ export default defineConfig({
             { label: 'Écrire dans un fichier', slug: 'fichiers/ecrire-texte' },
             { label: 'Le format CSV', slug: 'fichiers/csv' },
             { label: 'Le format JSON', slug: 'fichiers/json' },
+            { label: 'Le format Excel', slug: 'fichiers/excel' },
           ],
         },
         {
@@ -198,6 +199,7 @@ export default defineConfig({
             { label: 'Analyseur de fichier CSV', slug: 'projets/analyseur-csv' },
             { label: 'Devine le nombre', slug: 'projets/devine-nombre' },
             { label: 'Générateur de mots de passe', slug: 'projets/generateur-mots-de-passe' },
+            { label: 'Analyse de finances personnelles', slug: 'projets/finance-personnelle' },
           ],
         },
         {
@@ -206,6 +208,7 @@ export default defineConfig({
           items: [
             { label: 'Découvrir pandas', slug: 'aller-plus-loin/pandas' },
             { label: 'Découvrir matplotlib', slug: 'aller-plus-loin/matplotlib' },
+            { label: 'Découvrir Quarto', slug: 'aller-plus-loin/quarto' },
             { label: 'Ressources francophones', slug: 'aller-plus-loin/ressources' },
           ],
         },

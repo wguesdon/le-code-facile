@@ -1,0 +1,308 @@
+---
+title: Analyse de finances personnelles
+description: Charger des transactions depuis un fichier Excel et générer un rapport Quarto avec totaux, catégories, tendance mensuelle et top dépenses.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Suivre ses dépenses, c'est la première étape pour mieux gérer son budget. Construisons ensemble un vrai petit rapport mensuel à partir d'un fichier Excel de transactions.
+
+## L'objectif
+
+Vous avez un fichier Excel qui liste toutes vos transactions du mois. Nous allons écrire un seul fichier Quarto qui produit un rapport HTML propre. Le rapport affiche vos revenus, vos dépenses, votre solde, la répartition par catégorie, la tendance mois par mois, et la liste de vos 10 plus grosses dépenses. Vous pourrez le garder pour vous ou le partager en famille.
+
+## Les données
+
+Le fichier d'exemple s'appelle `transactions.xlsx`. Il contient 234 lignes réparties sur six mois, de janvier à juin 2026. Les transactions se trouvent sur la feuille `Transactions`.
+
+Voici les colonnes :
+
+- `date` : la date de la transaction.
+- `description` : un court texte qui décrit l'opération.
+- `categorie` : la catégorie. Les valeurs possibles sont `Salaire`, `Freelance`, `Loyer`, `Alimentation`, `Transport`, `Loisirs`, `Restaurant`, `Santé`, `Vêtements`, `Abonnements`, `Cadeaux`.
+- `montant` : un nombre. Positif pour un revenu, négatif pour une dépense.
+
+<Aside type="tip" title="Télécharger le fichier d'exemple">
+Le fichier est disponible ici : [transactions.xlsx](https://wguesdon.github.io/le-code-facile/sample-data/transactions.xlsx). Placez le dans le dossier de votre projet.
+</Aside>
+
+Plus tard, vous pourrez remplacer ce fichier par un export de votre vraie banque. La plupart des banques permettent de télécharger les opérations en Excel. Les noms de colonnes seront sûrement différents. Il suffira de les renommer pour qu'ils correspondent à ceux du tutoriel.
+
+## Le plan
+
+- Créer un dossier de projet et activer un environnement.
+- Télécharger le fichier `transactions.xlsx` et le placer dans ce dossier.
+- Créer le fichier `rapport-finances.qmd` avec un en tête Quarto.
+- Charger les données avec pandas.
+- Calculer les revenus, les dépenses et le solde.
+- Afficher la répartition par catégorie sous forme de tableau et de graphique.
+- Tracer la tendance mensuelle des revenus et des dépenses.
+- Lister les 10 plus grosses dépenses.
+- Rendre le rapport avec `quarto render`.
+
+<Aside type="note">
+Si vous découvrez Quarto, jetez d'abord un œil à la leçon Découvrir Quarto. Elle explique l'en tête YAML et la commande `quarto render`.
+</Aside>
+
+## Le code
+
+Nous allons construire un seul fichier Quarto. Créez le dans VSCode et nommez le `rapport-finances.qmd`. Voici les six morceaux à assembler.
+
+### Le préambule
+
+L'en tête YAML décrit le rapport. Il fixe le titre, l'auteur, la date et le format de sortie. Les options `echo: false` et `warning: false` rendent le rapport propre.
+
+```yaml
+---
+title: "Mes finances personnelles"
+author: "Alice Dupont"
+date: today
+format:
+  html:
+    toc: true
+    toc-title: "Sommaire"
+    theme: cosmo
+execute:
+  echo: false
+  warning: false
+---
+```
+
+Quelques explications. `toc: true` ajoute un sommaire cliquable à gauche du rapport. `theme: cosmo` choisit un style visuel sobre. `echo: false` cache le code Python dans le rendu final. On garde les graphiques et les tableaux, mais pas les lignes de code. `warning: false` masque les avertissements que pandas et matplotlib affichent parfois.
+
+### Le chargement des données
+
+Premier bloc Python. On importe les bibliothèques, on lit le fichier Excel, on convertit la colonne `date` au bon format, et on ajoute une colonne `mois`.
+
+````markdown
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_excel("transactions.xlsx", sheet_name="Transactions")
+df["date"] = pd.to_datetime(df["date"])
+df["mois"] = df["date"].dt.to_period("M").astype(str)
+```
+````
+
+`pd.read_excel` ouvre le fichier et renvoie un tableau pandas. Le paramètre `sheet_name="Transactions"` précise quelle feuille lire. `pd.to_datetime` s'assure que la colonne `date` est bien reconnue comme une date. La dernière ligne crée une nouvelle colonne `mois` qui contient des valeurs comme `2026-01`, `2026-02`, et ainsi de suite. On l'utilisera plus loin pour grouper par mois.
+
+### Les totaux
+
+On calcule trois nombres clés. Les revenus, les dépenses, et le solde net.
+
+````markdown
+```{python}
+revenus = df[df["montant"] > 0]["montant"].sum()
+depenses = -df[df["montant"] < 0]["montant"].sum()
+solde = revenus - depenses
+
+print(f"Revenus : {revenus:,.2f} €")
+print(f"Dépenses : {depenses:,.2f} €")
+print(f"Solde net : {solde:,.2f} €")
+```
+````
+
+`df["montant"] > 0` est un filtre. Il garde seulement les lignes où le montant est positif. On additionne ensuite avec `.sum()`. Même chose pour les dépenses, sauf qu'on prend les montants négatifs et qu'on inverse le signe pour afficher un nombre positif. Le solde net est la différence entre les deux. Le format `:,.2f` ajoute un séparateur de milliers et deux décimales.
+
+### La répartition par catégorie
+
+On veut savoir où part l'argent. Pour cela, on groupe les dépenses par catégorie et on additionne.
+
+````markdown
+```{python}
+depenses_par_cat = (
+    df[df["montant"] < 0]
+    .groupby("categorie")["montant"]
+    .sum()
+    .abs()
+    .sort_values(ascending=True)
+)
+pourcentages = (depenses_par_cat / depenses_par_cat.sum() * 100).round(1)
+tableau = pd.DataFrame({"Total (€)": depenses_par_cat.round(2), "Part (%)": pourcentages})
+tableau
+```
+````
+
+`groupby("categorie")` regroupe les lignes qui partagent la même catégorie. `.sum()` additionne les montants à l'intérieur de chaque groupe. `.abs()` rend les valeurs positives pour faciliter la lecture. `.sort_values` trie du plus petit au plus grand. On construit ensuite un petit `DataFrame` qui affiche le total et le pourcentage de chaque catégorie. Quand un nom de variable seul est la dernière ligne d'un bloc, Quarto affiche le tableau dans le rapport.
+
+Pour le graphique, on utilise un diagramme à barres horizontales. Lisible et clair.
+
+````markdown
+```{python}
+ax = depenses_par_cat.plot.barh(figsize=(8, 5), color="#2563eb")
+ax.set_xlabel("Montant (€)")
+ax.set_title("Dépenses par catégorie")
+plt.tight_layout()
+plt.show()
+```
+````
+
+`plot.barh` produit un diagramme à barres horizontales. `figsize` règle la taille en pouces. `tight_layout` évite que les étiquettes débordent. `plt.show()` indique à Quarto d'afficher la figure.
+
+### La tendance mensuelle
+
+On veut voir comment les revenus et les dépenses évoluent mois après mois. On crée d'abord un tableau pivoté.
+
+````markdown
+```{python}
+mensuel = (
+    df.assign(type=df["montant"].apply(lambda m: "Revenus" if m > 0 else "Dépenses"))
+    .assign(montant_abs=df["montant"].abs())
+    .groupby(["mois", "type"])["montant_abs"]
+    .sum()
+    .unstack(fill_value=0)
+)
+
+ax = mensuel.plot(figsize=(8, 4), marker="o")
+ax.set_xlabel("Mois")
+ax.set_ylabel("Montant (€)")
+ax.set_title("Revenus et dépenses par mois")
+plt.tight_layout()
+plt.show()
+```
+````
+
+`assign` ajoute une nouvelle colonne au tableau sans modifier l'original. On crée d'abord une colonne `type` qui vaut `Revenus` ou `Dépenses` selon le signe du montant. Puis une colonne `montant_abs` avec la valeur absolue. `groupby(["mois", "type"])` regroupe les lignes par mois et par type. `unstack` transforme l'index `type` en colonnes. Le résultat a une colonne `Revenus` et une colonne `Dépenses`, indexées par mois. Le graphique `.plot` trace les deux courbes avec des marqueurs ronds à chaque mois.
+
+### Le top 10 des dépenses
+
+Dernière section. On veut voir les dix plus grosses dépenses.
+
+````markdown
+```{python}
+top10 = (
+    df[df["montant"] < 0]
+    .assign(montant=lambda d: d["montant"].abs())
+    .nlargest(10, "montant")[["date", "description", "categorie", "montant"]]
+)
+top10
+```
+````
+
+On filtre les lignes où le montant est négatif, donc les dépenses. `assign` remplace la colonne `montant` par sa valeur absolue. `nlargest(10, "montant")` garde les dix lignes avec le plus grand montant, triées du plus grand au plus petit. On ne garde que quatre colonnes utiles pour la lecture. La dernière ligne `top10` affiche le tableau dans le rapport.
+
+### Le fichier complet
+
+Voici le fichier `rapport-finances.qmd` en entier, prêt à copier coller.
+
+````markdown
+---
+title: "Mes finances personnelles"
+author: "Alice Dupont"
+date: today
+format:
+  html:
+    toc: true
+    toc-title: "Sommaire"
+    theme: cosmo
+execute:
+  echo: false
+  warning: false
+---
+
+## Chargement
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_excel("transactions.xlsx", sheet_name="Transactions")
+df["date"] = pd.to_datetime(df["date"])
+df["mois"] = df["date"].dt.to_period("M").astype(str)
+```
+
+## Totaux du mois
+
+```{python}
+revenus = df[df["montant"] > 0]["montant"].sum()
+depenses = -df[df["montant"] < 0]["montant"].sum()
+solde = revenus - depenses
+
+print(f"Revenus : {revenus:,.2f} €")
+print(f"Dépenses : {depenses:,.2f} €")
+print(f"Solde net : {solde:,.2f} €")
+```
+
+## Répartition par catégorie
+
+```{python}
+depenses_par_cat = (
+    df[df["montant"] < 0]
+    .groupby("categorie")["montant"]
+    .sum()
+    .abs()
+    .sort_values(ascending=True)
+)
+pourcentages = (depenses_par_cat / depenses_par_cat.sum() * 100).round(1)
+tableau = pd.DataFrame({"Total (€)": depenses_par_cat.round(2), "Part (%)": pourcentages})
+tableau
+```
+
+```{python}
+ax = depenses_par_cat.plot.barh(figsize=(8, 5), color="#2563eb")
+ax.set_xlabel("Montant (€)")
+ax.set_title("Dépenses par catégorie")
+plt.tight_layout()
+plt.show()
+```
+
+## Tendance mensuelle
+
+```{python}
+mensuel = (
+    df.assign(type=df["montant"].apply(lambda m: "Revenus" if m > 0 else "Dépenses"))
+    .assign(montant_abs=df["montant"].abs())
+    .groupby(["mois", "type"])["montant_abs"]
+    .sum()
+    .unstack(fill_value=0)
+)
+
+ax = mensuel.plot(figsize=(8, 4), marker="o")
+ax.set_xlabel("Mois")
+ax.set_ylabel("Montant (€)")
+ax.set_title("Revenus et dépenses par mois")
+plt.tight_layout()
+plt.show()
+```
+
+## Top 10 des dépenses
+
+```{python}
+top10 = (
+    df[df["montant"] < 0]
+    .assign(montant=lambda d: d["montant"].abs())
+    .nlargest(10, "montant")[["date", "description", "categorie", "montant"]]
+)
+top10
+```
+````
+
+### Rendre le rapport
+
+Ouvrez un terminal dans le dossier du projet, puis lancez :
+
+```bash
+quarto render rapport-finances.qmd
+```
+
+Quarto crée un fichier `rapport-finances.html`. Double cliquez dessus pour l'ouvrir dans votre navigateur. Vous y trouverez le titre, le sommaire, les totaux, les deux graphiques et la table des dix plus grosses dépenses.
+
+<Aside type="tip" title="Le fichier ne se rend pas ?">
+Vérifiez deux choses. Le fichier `transactions.xlsx` doit être dans le même dossier que `rapport-finances.qmd`. Et l'environnement actif doit contenir `pandas`, `matplotlib` et `openpyxl`. La leçon Découvrir Quarto explique comment installer ces paquets avec `conda`.
+</Aside>
+
+## Pour aller plus loin
+
+- Ajoutez un graphique en camembert pour visualiser la part de chaque catégorie. La méthode `.plot.pie` de pandas suffit.
+- Rendez le rapport interactif avec des paramètres Quarto. Vous pourrez choisir le mois à analyser sans toucher au code. La leçon Découvrir Quarto montre comment faire.
+- Exportez le rapport en PDF en remplaçant `format: html` par `format: pdf`. Quarto crée alors un PDF prêt à imprimer.
+- Adaptez le script à votre vraie banque. Téléchargez vos opérations en Excel, ouvrez le fichier, et renommez les colonnes pour qu'elles correspondent à `date`, `description`, `categorie` et `montant`.
+
+## À retenir
+
+- Un fichier Quarto peut produire un rapport complet avec des chiffres, des tableaux et des graphiques, à partir d'un simple Excel.
+- `groupby` est l'outil clé pour répondre à des questions du type "combien par catégorie" ou "combien par mois".
+- `assign` ajoute une colonne sans modifier le tableau original. `nlargest` trouve les plus grandes valeurs.
+- Les options `echo: false` et `warning: false` rendent le rapport propre pour un partage en famille.
+- Une fois le rapport prêt, il suffit de remplacer le fichier de données pour le mettre à jour chaque mois.

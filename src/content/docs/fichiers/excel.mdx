@@ -1,0 +1,187 @@
+---
+title: Le format Excel
+description: Lire et écrire des fichiers .xlsx avec pandas et openpyxl.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Excel reste très utilisé pour la comptabilité, les budgets et les listes de courses. Python sait lire et écrire ces fichiers sans ouvrir l'application.
+
+## Le concept
+
+Un fichier `.xlsx` est un classeur. Un classeur contient une ou plusieurs feuilles. Chaque feuille a des lignes et des colonnes, comme un tableau.
+
+Pour travailler avec ces fichiers en Python, deux bibliothèques font équipe :
+
+- `pandas` lit et écrit les données sous forme de tableau.
+- `openpyxl` est le moteur qui ouvre vraiment le fichier `.xlsx`.
+
+Vous écrivez votre code avec `pandas`. En coulisses, `pandas` appelle `openpyxl`. Vous n'avez presque jamais besoin d'utiliser `openpyxl` directement.
+
+<Aside type="tip">
+Anaconda installe déjà `pandas` et `openpyxl`. Si vous utilisez `uv`, lancez `uv add pandas openpyxl` dans votre projet.
+</Aside>
+
+## Lire un fichier Excel
+
+La fonction `pd.read_excel` lit un fichier et renvoie un tableau pandas, appelé `DataFrame`.
+
+```python
+import pandas as pd
+
+df = pd.read_excel("transactions.xlsx")
+print(df.head())
+print(df.shape)
+print(df.columns.tolist())
+# Sortie:
+#         date            description     categorie  montant
+# 0 2026-01-03            Boulangerie         Pain    -4.50
+# 1 2026-01-04                Salaire       Revenu  2100.00
+# 2 2026-01-05               Carrefour      Courses   -62.30
+# 3 2026-01-06                  Loyer      Logement  -750.00
+# 4 2026-01-08                 Cinéma       Loisirs   -12.00
+# (50, 4)
+# ['date', 'description', 'categorie', 'montant']
+```
+
+`head()` affiche les cinq premières lignes. `shape` donne le nombre de lignes et de colonnes. `columns.tolist()` donne les noms de colonnes.
+
+<Aside type="note">
+Un fichier d'exemple est disponible à l'adresse `https://wguesdon.github.io/le-code-facile/sample-data/transactions.xlsx`. Il contient les colonnes `date`, `description`, `categorie` et `montant`. Le montant est négatif pour les dépenses et positif pour les revenus.
+</Aside>
+
+## Choisir une feuille
+
+Par défaut, `pd.read_excel` lit la première feuille. Pour choisir une feuille précise, utilisez `sheet_name`.
+
+```python
+df = pd.read_excel("transactions.xlsx", sheet_name="Transactions")
+```
+
+Pour récupérer toutes les feuilles d'un coup, passez `sheet_name=None`. Vous obtenez alors un dictionnaire. Les clés sont les noms des feuilles, les valeurs sont les `DataFrame`.
+
+```python
+feuilles = pd.read_excel("budget.xlsx", sheet_name=None)
+print(feuilles.keys())
+# Sortie: dict_keys(['Janvier', 'Février', 'Mars'])
+
+print(feuilles["Janvier"].head())
+```
+
+## Lire seulement certaines colonnes
+
+Si le fichier a beaucoup de colonnes et que vous n'en voulez que deux ou trois, utilisez `usecols`.
+
+```python
+df = pd.read_excel("transactions.xlsx", usecols=["date", "montant"])
+print(df.head())
+# Sortie:
+#         date  montant
+# 0 2026-01-03    -4.50
+# 1 2026-01-04  2100.00
+# 2 2026-01-05   -62.30
+# 3 2026-01-06  -750.00
+# 4 2026-01-08   -12.00
+```
+
+C'est plus rapide et plus clair quand vous savez d'avance ce qui vous intéresse.
+
+## Écrire un fichier Excel
+
+La méthode `to_excel` enregistre un `DataFrame` dans un fichier `.xlsx`.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "produit": ["Pain", "Lait", "Pommes"],
+    "prix": [1.20, 0.95, 2.40],
+})
+
+df.to_excel("export.xlsx", index=False)
+```
+
+<Aside type="caution">
+Mettez presque toujours `index=False`. Sans cette option, pandas ajoute les numéros de lignes comme une colonne dans le fichier. Ce n'est presque jamais ce que vous voulez.
+</Aside>
+
+## Plusieurs feuilles dans un même fichier
+
+Pour écrire plusieurs feuilles dans le même classeur, utilisez `pd.ExcelWriter`.
+
+```python
+import pandas as pd
+
+df_ventes = pd.DataFrame({
+    "produit": ["Pain", "Lait"],
+    "quantite": [12, 8],
+})
+
+df_clients = pd.DataFrame({
+    "nom": ["Dupont", "Martin"],
+    "ville": ["Lyon", "Paris"],
+})
+
+with pd.ExcelWriter("rapport.xlsx") as writer:
+    df_ventes.to_excel(writer, sheet_name="Ventes", index=False)
+    df_clients.to_excel(writer, sheet_name="Clients", index=False)
+```
+
+Le fichier `rapport.xlsx` contient deux feuilles, `Ventes` et `Clients`. Le bloc `with` ferme proprement le fichier à la fin.
+
+## En pratique
+
+Voici un programme complet. Il lit les transactions, calcule la somme par catégorie, puis enregistre le résultat dans un nouveau fichier.
+
+```python
+import pandas as pd
+
+df = pd.read_excel("transactions.xlsx")
+
+resume = df.groupby("categorie")["montant"].sum().reset_index()
+print(resume)
+# Sortie:
+#     categorie  montant
+# 0    Courses  -184.20
+# 1   Logement  -750.00
+# 2    Loisirs   -45.00
+# 3       Pain   -18.00
+# 4     Revenu  2100.00
+
+resume.to_excel("resume_par_categorie.xlsx", index=False)
+print("Résumé enregistré.")
+```
+
+## openpyxl tout seul
+
+Parfois, vous avez besoin d'accéder à une cellule précise, à une formule ou au style. Dans ce cas, utilisez `openpyxl` directement.
+
+```python
+from openpyxl import load_workbook
+
+wb = load_workbook("transactions.xlsx")
+ws = wb["Transactions"]
+
+print(ws["A1"].value)
+# Sortie: date
+
+for row in ws.iter_rows(min_row=2, values_only=True):
+    print(row)
+# Sortie:
+# (datetime.datetime(2026, 1, 3, 0, 0), 'Boulangerie', 'Pain', -4.5)
+# (datetime.datetime(2026, 1, 4, 0, 0), 'Salaire', 'Revenu', 2100.0)
+# ...
+```
+
+`load_workbook` ouvre le classeur. `wb["Transactions"]` choisit la feuille. `ws["A1"].value` lit la cellule A1. `iter_rows` parcourt les lignes, en sautant la première qui contient les titres.
+
+Pour des données en tableau, pandas reste plus simple. Gardez `openpyxl` pour les cas où vous avez besoin de toucher aux cellules individuelles.
+
+## À retenir
+
+- Un fichier `.xlsx` contient des feuilles, et chaque feuille contient des lignes et des colonnes.
+- `pandas` fait le gros du travail, `openpyxl` est le moteur derrière.
+- `pd.read_excel` lit un fichier, `to_excel` l'écrit. Pensez à `index=False`.
+- `sheet_name` choisit une feuille, `sheet_name=None` les récupère toutes.
+- `pd.ExcelWriter` permet d'écrire plusieurs feuilles dans le même classeur.
+- Utilisez `openpyxl` directement pour lire ou écrire des cellules précises.

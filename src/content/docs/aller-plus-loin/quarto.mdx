@@ -1,0 +1,152 @@
+---
+title: Découvrir Quarto
+description: Transformer un script Python en rapport HTML, PDF, ou Word, en mélangeant texte et code.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Quarto te permet d'écrire un document qui contient à la fois du texte et du code Python, et qui se met à jour tout seul.
+
+## Le concept
+
+Quarto est un outil gratuit et open source créé par Posit. Tu écris un fichier qui ressemble à un document Markdown. À l'intérieur, tu glisses des blocs de code Python. Au moment de la génération, Quarto exécute ton code. Les résultats sont insérés automatiquement dans le document final. Les nombres, les tableaux, les graphiques apparaissent au bon endroit, sans copier coller.
+
+Imagine un document Word où l'étape « je colle mes graphiques » serait automatique. Et toujours à jour. C'est exactement l'idée de Quarto.
+
+Cette approche change beaucoup de choses au quotidien. Tu modifies tes données. Tu relances une commande. Tout le rapport se met à jour. Les chiffres dans le texte, les tableaux, les graphiques. Plus de risque d'oublier de mettre à jour une moyenne ou un titre de figure.
+
+Quarto est très utilisé pour des rapports d'analyse, des billets de blog techniques, des supports de cours, ou des livres entiers. La documentation, les sites web, et les présentations sont tous possibles à partir des mêmes outils.
+
+Tu peux choisir le format de sortie. HTML pour une page web. PDF pour un document imprimable. Word pour partager avec des collègues. Ou même des diapositives pour une présentation. Le fichier source porte l'extension `.qmd`. À partir du même fichier source, tu peux générer plusieurs formats.
+
+## Installer Quarto
+
+<Steps>
+
+1. Va sur https://quarto.org/docs/get-started/ . Choisis l'installateur pour Windows.
+
+2. Lance l'installateur. Laisse toutes les options par défaut et clique sur « Suivant » jusqu'à la fin.
+
+3. Ouvre une nouvelle fenêtre Anaconda Prompt. Tape la commande suivante pour vérifier l'installation.
+
+   ```bash
+   quarto --version
+   ```
+
+   Tu devrais voir quelque chose comme `1.6.x`.
+
+4. Quarto a besoin de Jupyter pour exécuter du code Python. Anaconda l'inclut déjà. Si tu utilises un autre environnement, installe le avec `pip install jupyter` ou `uv add jupyter`.
+
+5. Tu es prêt. Quarto est maintenant disponible dans tous tes terminaux.
+
+</Steps>
+
+<Aside type="note">
+Pense à activer le bon environnement conda avant d'installer ou de générer un rapport. Par exemple `conda activate mon-projet`. Quarto utilisera alors le Python de cet environnement.
+</Aside>
+
+## Premier rapport
+
+Crée un fichier `mon-rapport.qmd` dans ton dossier de projet. Colle ce contenu dedans.
+
+````markdown
+---
+title: "Mon premier rapport"
+author: "Alice Dupont"
+date: today
+format: html
+---
+
+# Bonjour
+
+Voici un rapport généré avec Quarto.
+
+```{python}
+prenom = "Alice"
+print(f"Bonjour {prenom}")
+```
+
+## Un petit calcul
+
+```{python}
+ages = [25, 30, 45, 22]
+moyenne = sum(ages) / len(ages)
+print(f"Âge moyen : {moyenne}")
+```
+````
+
+<Aside type="tip">
+Attention au détail : les blocs de code Python dans Quarto commencent par ```` ```{python} ```` avec des accolades. Et non ```` ```python ````. C'est ce qui dit à Quarto d'exécuter le code.
+</Aside>
+
+Pour te déplacer dans le bon dossier, tu peux utiliser la commande `cd`. Par exemple `cd C:\Users\Alice\rapports`.
+
+Maintenant, dans Anaconda Prompt, place toi dans le dossier de ton fichier. Lance la commande suivante.
+
+```bash
+quarto render mon-rapport.qmd
+```
+
+Quarto exécute le code, puis crée un fichier `mon-rapport.html` à côté de ton `.qmd`. Double clique dessus pour l'ouvrir dans ton navigateur. Tu verras ton texte, et juste après, les résultats `Bonjour Alice` et `Âge moyen : 30.5`.
+
+Pendant que tu travailles, tu peux aussi lancer le mode aperçu. Quarto ouvre une page qui se met à jour toute seule à chaque fois que tu sauvegardes ton fichier.
+
+```bash
+quarto preview mon-rapport.qmd
+```
+
+Quand tu as fini, ferme la fenêtre du terminal pour arrêter l'aperçu.
+
+Tu peux ajouter d'autres blocs Python à ton rapport. Par exemple un petit graphique avec matplotlib.
+
+````markdown
+```{python}
+import matplotlib.pyplot as plt
+
+fruits = ["pomme", "banane", "orange"]
+ventes = [12, 8, 6]
+
+plt.bar(fruits, ventes)
+plt.title("Ventes par fruit")
+plt.show()
+```
+````
+
+Quarto va exécuter ce code, et l'image du graphique apparaîtra dans le rapport HTML, juste sous le bloc.
+
+Tu peux aussi cacher le code dans le rapport final, et garder seulement le résultat. Il suffit d'ajouter une option en début de bloc.
+
+````markdown
+```{python}
+#| echo: false
+print("Le code n'apparaît pas, seul le résultat reste.")
+```
+````
+
+C'est pratique pour un rapport destiné à des lecteurs qui veulent voir les conclusions, pas le code.
+
+## Pour explorer plus
+
+Tu peux changer le format de sortie en modifiant la ligne `format:` dans l'en tête.
+
+- `format: pdf` pour un PDF. La première fois, installe TinyTeX avec `quarto install tinytex`. TinyTeX est un petit moteur qui fabrique le PDF.
+- `format: docx` pour un fichier Word. Pratique si ton équipe travaille avec Word.
+- `format: revealjs` pour des diapositives au format web.
+
+VSCode possède une extension officielle pour Quarto. Elle ajoute la coloration syntaxique pour les fichiers `.qmd` et un bouton « Render » qui évite de passer par le terminal. C'est souvent l'environnement le plus confortable pour rédiger un rapport.
+
+Quarto sait aussi recevoir des paramètres au moment de la génération. C'est très utile pour produire plusieurs rapports à partir du même modèle. Par exemple un rapport par client, ou un rapport par mois. Tu écris un seul fichier `.qmd`, et tu laisses Quarto générer une dizaine de versions.
+
+Tu peux aussi combiner Quarto avec pandas et matplotlib. Tu charges tes données dans un bloc Python, tu crées un graphique, et il apparaît directement dans le rapport. C'est une façon naturelle de présenter une petite analyse.
+
+Enfin, Quarto comprend la plupart des options de Markdown. Tu peux mettre du texte en **gras**, en *italique*, ajouter des listes à puces, des liens, des images, et des titres. Cela suffit pour écrire un rapport très propre, sans toucher à un logiciel de traitement de texte.
+
+Pour aller plus loin, le guide officiel est complet et illustré : https://quarto.org/docs/guide/ .
+
+## À retenir
+
+- Quarto mélange texte et code Python dans un fichier `.qmd`.
+- Le code s'exécute à la génération. Les résultats sont insérés automatiquement.
+- Les blocs Python commencent par ```` ```{python} ````, avec des accolades.
+- `quarto render` produit le rapport final. `quarto preview` affiche un aperçu qui se met à jour tout seul.
+- Tu choisis le format de sortie dans l'en tête : `html`, `pdf`, `docx`, ou diapositives.
