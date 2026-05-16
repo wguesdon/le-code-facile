@@ -9,15 +9,41 @@ export default defineConfig({
     starlight({
       title: 'Le Code Facile',
       description: 'La programmation à la portée de tous.',
-      favicon: '/favicon.svg',
+      favicon: '/favicon.ico',
       defaultLocale: 'fr',
       head: [
         {
           tag: 'link',
           attrs: {
             rel: 'icon',
+            type: 'image/png',
+            sizes: '32x32',
+            href: '/le-code-facile/favicon-32x32.png',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'icon',
+            type: 'image/png',
+            sizes: '16x16',
+            href: '/le-code-facile/favicon-16x16.png',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'icon',
             type: 'image/svg+xml',
             href: '/le-code-facile/favicon.svg',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'apple-touch-icon',
+            sizes: '180x180',
+            href: '/le-code-facile/apple-touch-icon.png',
           },
         },
         {
